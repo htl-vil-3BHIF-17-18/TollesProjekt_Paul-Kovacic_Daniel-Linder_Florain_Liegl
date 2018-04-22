@@ -63,20 +63,14 @@ public class DatabaseConnection {
 		return tasks;
 	}
 	
-	public void syncToDatabase() {
+	public void addEntry(Task task) {
 		try {
 			Connection con = this.createConnection();
-			//TODO: Sync with database (maybe this was obvious)
+			Statement stmtInsert = con.createStatement();
+			stmtInsert.executeQuery("INSERT INTO task VALUES(" + task.toString());
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			try {
-				con.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 	}
 }
