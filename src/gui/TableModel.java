@@ -19,6 +19,10 @@ public class TableModel extends AbstractTableModel {
 		// TODO Auto-generated method stub
 		return columnNames.length;
 	}
+	
+	public String getColumnName(int col) {
+        return columnNames[col];
+    }
 
 	@Override
 	public int getRowCount() {
