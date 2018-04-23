@@ -1,11 +1,14 @@
 package gui;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import bll.Task;
 
 public class TaskTable extends JPanel{
 
@@ -47,6 +50,18 @@ public class TaskTable extends JPanel{
 		
 		this.setVisible(true);
 		
+	}
+	public void insertValuesIntoTable(ArrayList<Task> tasks) {
+		int i=0;
+		for(Task t : tasks) {
+			this.jTable.setValueAt(t.getDone(), i, 0);
+			this.jTable.setValueAt(t.getCategorie(), i, 1);
+			this.jTable.setValueAt(t.getSubject(), i, 2);
+			this.jTable.setValueAt(t.getDescription(), i, 3);
+			this.jTable.setValueAt(t.getFrom(), i, 4);
+			this.jTable.setValueAt(t.getUntil(), i, 5);
+			i++;
+		}
 	}
 
 	
