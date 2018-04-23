@@ -11,8 +11,9 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.UIManager;
 
-public class MainFrame extends JFrame implements ActionListener {
+public class MainFrame extends JFrame implements ActionListener{
 
 	/**
 	 * 
@@ -39,17 +40,16 @@ public class MainFrame extends JFrame implements ActionListener {
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setMinimumSize(new Dimension(600, 400));
 		this.setPreferredSize(new Dimension(1080, 720));
+		System.out.println(this.getMinimumSize());
 		this.setResizable(true);
 		this.setLocationRelativeTo(this);
-		System.out.println(Toolkit.getDefaultToolkit().getScreenSize());
-		this.taskTable=new TaskTable(1,123,this);
+		this.taskTable=new TaskTable(Toolkit.getDefaultToolkit().getScreenSize(),this);
 		this.initializeControls();
 	}
 
 	private void initializeControls() {
 		// TODO Auto-generated method stub
-		GridLayout gridLayout = new GridLayout(1,1);
-		this.setLayout(gridLayout);
+		this.setLayout(new GridLayout(0,1));
 		//create MenuBa
 		this.menuBar = new JMenuBar();
 
@@ -101,5 +101,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 
 	}
+
+
 
 }

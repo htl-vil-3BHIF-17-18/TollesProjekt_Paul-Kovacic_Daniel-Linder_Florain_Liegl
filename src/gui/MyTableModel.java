@@ -1,14 +1,9 @@
 package gui;
 
-import java.io.File;
 import java.util.Date;
-
-import javax.swing.ImageIcon;
 import javax.swing.table.AbstractTableModel;
 
-import javafx.scene.control.Separator;
-
-public class TableModel extends AbstractTableModel {
+public class MyTableModel extends AbstractTableModel {
 
 	/**
 	 * 

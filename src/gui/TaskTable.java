@@ -1,11 +1,11 @@
 package gui;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -34,20 +34,20 @@ public class TaskTable extends JPanel{
 	
 	
 	
-	public TaskTable(int width, int height, MainFrame mf) {
+	public TaskTable(Dimension d, MainFrame mf) {
 		super();
-		this.width=width;
-		this.height=height;
-		this.setSize(new Dimension(width, height));
-//		this.setMinimumSize(minimumSize);
 		this.mf = mf;
+		this.width=d.width;
+		this.height=d.height;
+		this.setSize(new Dimension(width, height));
+		this.setMinimumSize(this.mf.getMinimumSize());
 		this.initializeControls();
 	}
 
 	private void initializeControls() {
 		// TODO Auto-generated method stub
-		this.jTable=new JTable(new TableModel());
-		this.jTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		this.setLayout(new GridLayout(0,1));
+		this.jTable=new JTable(new MyTableModel());
 		this.setHeaderWidth();
 		this.jTable.getTableHeader().setReorderingAllowed(false);
 
@@ -70,7 +70,7 @@ public class TaskTable extends JPanel{
 		this.scrollpane.setPreferredSize(new Dimension(this.width, this.height));
 		
 		this.add(this.scrollpane);
-		
+		//set visible
 		this.setVisible(true);
 		
 	}
@@ -78,16 +78,11 @@ public class TaskTable extends JPanel{
 	private void setHeaderWidth() {
 		this.jTable.getColumnModel().getColumn(0).setMinWidth(30);
 		this.jTable.getColumnModel().getColumn(0).setMaxWidth(30);
-		this.jTable.getColumnModel().getColumn(1).setMinWidth(75);;
-		this.jTable.getColumnModel().getColumn(1).setMaxWidth(30);
-		this.jTable.getColumnModel().getColumn(2).setMinWidth(30);
-		this.jTable.getColumnModel().getColumn(2).setMaxWidth(30);
-		this.jTable.getColumnModel().getColumn(3).setMinWidth(30);
-		this.jTable.getColumnModel().getColumn(3).setMaxWidth(30);
-		this.jTable.getColumnModel().getColumn(4).setMinWidth(30);
-		this.jTable.getColumnModel().getColumn(4).setMaxWidth(30);
-		this.jTable.getColumnModel().getColumn(5).setMinWidth(30);
-		this.jTable.getColumnModel().getColumn(5).setMaxWidth(30);
+		this.jTable.getColumnModel().getColumn(1).setMinWidth(100);
+		this.jTable.getColumnModel().getColumn(2).setMinWidth(100);
+		this.jTable.getColumnModel().getColumn(3).setMinWidth(100);
+		this.jTable.getColumnModel().getColumn(4).setMinWidth(100);
+		this.jTable.getColumnModel().getColumn(5).setMinWidth(100);
 	}
 	
 
