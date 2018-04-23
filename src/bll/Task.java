@@ -3,7 +3,7 @@ package bll;
 import java.util.Date;
 
 public class Task {
-
+	//TODO: private boolean done;
     private Categories category;
     private Subjects subject;
     private String description;
@@ -11,6 +11,7 @@ public class Task {
     private Date until;
 
     public Task(Categories category, Subjects subject, String description, Date from, Date until) {
+    	//TODO: this.done = false;
         this.category = category;
         this.subject = subject;
         this.description = description;
