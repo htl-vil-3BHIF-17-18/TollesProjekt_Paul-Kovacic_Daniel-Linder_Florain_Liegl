@@ -84,4 +84,9 @@ public class DatabaseConnection {
 			e.printStackTrace();
 		}
 	}
+	
+	public void renewEntry(Task oldTask, Task newTask) {
+		removeEntry(oldTask);
+		addEntry(newTask);
+	}
 }
