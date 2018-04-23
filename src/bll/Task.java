@@ -38,4 +38,10 @@ public class Task {
     public Date getUntil() {
         return until;
     }
+
+	@Override
+	public String toString() {
+		return this.done ? "Y" : "N" + ", " + category + ", " + subject + ", " + description + ", " + from
+				+ ", " + until;
+	}
 }
