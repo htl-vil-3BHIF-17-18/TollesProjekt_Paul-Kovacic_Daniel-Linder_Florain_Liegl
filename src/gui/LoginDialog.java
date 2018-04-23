@@ -5,12 +5,17 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import bll.Task;
+import dal.DatabaseConnection;
 
 public class LoginDialog extends JDialog implements ActionListener{
 
@@ -28,9 +33,11 @@ public class LoginDialog extends JDialog implements ActionListener{
 	private JTextField tfIp = null;
 	private JButton btnLogin = null;
 	private JButton btnCancel = null;
+	private List<Task> tl=null;
 
 	public LoginDialog(Frame owner, String title, boolean modal) {
 		super(owner, title, modal);
+		this.tl=new ArrayList<Task>();
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		this.setMinimumSize(new Dimension(300,150));
 		this.setResizable(false);
@@ -75,11 +82,7 @@ public class LoginDialog extends JDialog implements ActionListener{
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(this.btnLogin))
 		{
-			//daniööl das abfragen ob de daten richtig sind und verbinden, dass darfst du machn
-			
-			
-			
-			//fenster schließen
+			DatabaseConnection db =new DatabaseConnection(this.tfUsername.getText(),this.pfPasswordField.getPassword().toString(),this.tfIp.getText());
 				this.setVisible(false);
 				this.dispose();		
 		}

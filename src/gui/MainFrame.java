@@ -15,7 +15,10 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 import javax.swing.UIManager;
+
+import javafx.scene.control.Separator;
 
 public class MainFrame extends JFrame implements ActionListener {
 
@@ -26,6 +29,10 @@ public class MainFrame extends JFrame implements ActionListener {
 	private TaskTable taskTable;
 	private JMenuBar menuBar;
 	private JMenu file;
+	private JMenuItem newTable;
+	private JMenuItem open;
+	private JMenuItem saveAs;
+	private JMenuItem save;
 	private JMenuItem settings;
 
 	private JMenu edit;
@@ -48,7 +55,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		this.setResizable(true);
 		this.taskTable = new TaskTable(Toolkit.getDefaultToolkit().getScreenSize(), this);
 		this.initializeControls();
-		this.pack();	
+		this.pack();
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
@@ -60,6 +67,10 @@ public class MainFrame extends JFrame implements ActionListener {
 		this.menuBar = new JMenuBar();
 
 		this.file = new JMenu("File");
+		this.newTable = new JMenuItem("New");
+		this.open = new JMenuItem("Open");
+		this.saveAs = new JMenuItem("Save As...");
+		this.save = new JMenuItem("Save");
 		this.settings = new JMenuItem("Settings");
 
 		this.edit = new JMenu("Edit");
@@ -75,6 +86,10 @@ public class MainFrame extends JFrame implements ActionListener {
 		this.github = new JMenuItem("Github");
 
 		// add to ActionListener
+		this.newTable.addActionListener(this);
+		this.open.addActionListener(this);
+		this.saveAs.addActionListener(this);
+		this.save.addActionListener(this);
 		this.settings.addActionListener(this);
 		this.login.addActionListener(this);
 		this.logout.addActionListener(this);
@@ -85,6 +100,12 @@ public class MainFrame extends JFrame implements ActionListener {
 		this.setJMenuBar(this.menuBar);
 
 		this.menuBar.add(this.file);
+		this.file.add(this.newTable);
+		this.file.add(this.open);
+		this.file.add(new JSeparator());
+		this.file.add(this.saveAs);
+		this.file.add(this.save);
+		this.file.add(new JSeparator());
 		this.file.add(this.settings);
 
 		this.menuBar.add(this.edit);
@@ -95,7 +116,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		this.menuBar.add(this.window);
 		this.window.add(this.preferences);
-		
+
 		this.menuBar.add(this.help);
 		this.help.add(this.github);
 
@@ -106,7 +127,15 @@ public class MainFrame extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource().equals(this.settings)) {
+		if (e.getSource().equals(this.newTable)) {
+			this.taskTable = new TaskTable(Toolkit.getDefaultToolkit().getScreenSize(), this);
+		} else if (e.getSource().equals(this.open)) {
+
+		} else if (e.getSource().equals(this.saveAs)) {
+
+		} else if (e.getSource().equals(this.save)) {
+
+		} else if (e.getSource().equals(this.settings)) {
 
 		} else if (e.getSource().equals(this.login)) {
 			LoginDialog dialog = new LoginDialog(this, "Login", true);
@@ -116,23 +145,25 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		} else if (e.getSource().equals(this.github)) {
 
-			if(Desktop.isDesktopSupported()){
-	            Desktop desktop = Desktop.getDesktop();
-	            try {
-	                desktop.browse(new URI("https://github.com/htl-vil-3BHIF-17-18/TollesProjekt_Paul-Kovacic_Daniel-Linder_Florain_Liegl/issues"));
-	            } catch (IOException | URISyntaxException ex) {
-	                // TODO Auto-generated catch block
-	                ex.printStackTrace();
-	            }
-	        }else{
-	            Runtime runtime = Runtime.getRuntime();
-	            try {
-	                runtime.exec("xdg-open " + "https://github.com/htl-vil-3BHIF-17-18/TollesProjekt_Paul-Kovacic_Daniel-Linder_Florain_Liegl/issues");
-	            } catch (IOException ex) {
-	                // TODO Auto-generated catch block
-	                ex.printStackTrace();
-	            }
-	        }
+			if (Desktop.isDesktopSupported()) {
+				Desktop desktop = Desktop.getDesktop();
+				try {
+					desktop.browse(new URI(
+							"https://github.com/htl-vil-3BHIF-17-18/TollesProjekt_Paul-Kovacic_Daniel-Linder_Florain_Liegl/issues"));
+				} catch (IOException | URISyntaxException ex) {
+					// TODO Auto-generated catch block
+					ex.printStackTrace();
+				}
+			} else {
+				Runtime runtime = Runtime.getRuntime();
+				try {
+					runtime.exec("xdg-open "
+							+ "https://github.com/htl-vil-3BHIF-17-18/TollesProjekt_Paul-Kovacic_Daniel-Linder_Florain_Liegl/issues");
+				} catch (IOException ex) {
+					// TODO Auto-generated catch block
+					ex.printStackTrace();
+				}
+			}
 		}
 	}
 
