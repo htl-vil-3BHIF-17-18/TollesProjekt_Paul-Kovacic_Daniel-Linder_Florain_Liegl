@@ -34,6 +34,7 @@ public class TaskTable extends JPanel{
 		this.jTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		this.jTable.getColumnModel().getColumn(0).setWidth(50);
 		this.jTable.getTableHeader().setReorderingAllowed(false);
+		
 //		System.out.println("test");
 		
 		
