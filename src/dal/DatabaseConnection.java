@@ -34,7 +34,7 @@ public class DatabaseConnection {
 			ResultSet rs = stmtSelect.executeQuery("SELECT * FROM task");
 			
 			while(rs.next()) {
-				tasks.add(new Task(Categories.valueOf(rs.getString(1)), Subjects.valueOf(rs.getString(2)), rs.getString(3), rs.getDate(4), rs.getDate(5)));
+				tasks.add(new Task(rs.getString(1) == "Y", Categories.valueOf(rs.getString(2)), Subjects.valueOf(rs.getString(3)), rs.getString(4), rs.getDate(5), rs.getDate(6)));
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
@@ -72,5 +72,9 @@ public class DatabaseConnection {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void removeEntry(Task task) {
+		
 	}
 }
