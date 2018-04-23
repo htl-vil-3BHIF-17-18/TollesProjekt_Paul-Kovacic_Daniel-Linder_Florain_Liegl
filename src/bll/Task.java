@@ -28,7 +28,7 @@ public class Task {
         this.until = until;
 	}
     
-    public boolean getDone() {
+    public boolean isDone() {
     	return done; 
     }
 
