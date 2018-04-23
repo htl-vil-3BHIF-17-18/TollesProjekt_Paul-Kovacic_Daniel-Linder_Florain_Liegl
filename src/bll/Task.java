@@ -3,7 +3,7 @@ package bll;
 import java.util.Date;
 
 public class Task {
-	//TODO: private boolean done;
+	private boolean done;
     private Categories category;
     private Subjects subject;
     private String description;
@@ -11,7 +11,7 @@ public class Task {
     private Date until;
 
     public Task(Categories category, Subjects subject, String description, Date from, Date until) {
-    	//TODO: this.done = false;
+    	this.done = false;
         this.category = category;
         this.subject = subject;
         this.description = description;
@@ -19,7 +19,20 @@ public class Task {
         this.until = until;
     }
 
-    public Categories getCategorie() {
+    public Task(boolean done, Categories category, Subjects subject, String description, Date from, Date until) {
+    	this.done = done;
+        this.category = category;
+        this.subject = subject;
+        this.description = description;
+        this.from = from;
+        this.until = until;
+	}
+    
+    public boolean getDone() {
+    	return done;
+    }
+
+	public Categories getCategorie() {
         return category;
     }
 
@@ -41,7 +54,7 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return this.done ? "Y" : "N" + ", " + category + ", " + subject + ", " + description + ", " + from
+		return (this.done ? "Y" : "N") + ", " + category + ", " + subject + ", " + description + ", " + from
 				+ ", " + until;
 	}
 }
