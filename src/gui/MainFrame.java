@@ -3,6 +3,7 @@ package gui;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -40,7 +41,8 @@ public class MainFrame extends JFrame implements ActionListener {
 		this.setPreferredSize(new Dimension(1080, 720));
 		this.setResizable(true);
 		this.setLocationRelativeTo(this);
-		this.taskTable=new TaskTable(1800,1000,this);
+		System.out.println(Toolkit.getDefaultToolkit().getScreenSize());
+		this.taskTable=new TaskTable(1,123,this);
 		this.initializeControls();
 	}
 
