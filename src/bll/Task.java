@@ -29,7 +29,7 @@ public class Task {
 	}
     
     public boolean getDone() {
-    	return done;
+    	return done; 
     }
 
 	public Categories getCategorie() {
