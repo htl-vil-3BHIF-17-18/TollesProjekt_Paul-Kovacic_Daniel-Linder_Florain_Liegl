@@ -1,8 +1,10 @@
 package gui;
 
 import java.awt.Dimension;
+import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -21,6 +23,10 @@ public class TaskTable extends JPanel{
 	private int width;
 	private int height;
 	private JTable jTable;
+	private String separator=File.separator;
+	private ImageIcon ii =new ImageIcon("images"+separator+"check_24.png");
+	
+	
 	
 	public TaskTable(int width, int height, MainFrame mf) {
 		super();
@@ -37,8 +43,10 @@ public class TaskTable extends JPanel{
 		this.jTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		this.jTable.getColumnModel().getColumn(0).setWidth(50);
 		this.jTable.getTableHeader().setReorderingAllowed(false);
-//		System.out.println("test");
-		
+//		this.jTable.getColumnModel().
+//		System.out.println(ii);
+//		ii.setImageObserver(this.jTable.getTableHeader());
+
 		
 		this.scrollpane = new JScrollPane(this.jTable);
 		
@@ -51,6 +59,9 @@ public class TaskTable extends JPanel{
 		this.setVisible(true);
 		
 	}
+	
+
+	
 	public void insertValuesIntoTable(ArrayList<Task> tasks) {
 		int i=0;
 		for(Task t : tasks) {

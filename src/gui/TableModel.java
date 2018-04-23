@@ -1,8 +1,12 @@
 package gui;
 
+import java.io.File;
 import java.util.Date;
 
+import javax.swing.ImageIcon;
 import javax.swing.table.AbstractTableModel;
+
+import javafx.scene.control.Separator;
 
 public class TableModel extends AbstractTableModel {
 
@@ -10,9 +14,13 @@ public class TableModel extends AbstractTableModel {
 	 * 
 	 */
 	private static final long serialVersionUID = -2412407473703651652L;
+	private String separator=File.separator;
+	private ImageIcon ii =new ImageIcon("images"+separator+"check_24.png");
 	private String[] columnNames = { "DONE", "Category", "Subject", "Description", "From", "Until" };
 
 	private Object[][] data = {{new Boolean(false),"Homework","Math","Page 42",new Date(),new Date()}};
+	
+	
 
 	@Override
 	public int getColumnCount() {
@@ -54,5 +62,7 @@ public class TableModel extends AbstractTableModel {
 		// TODO Auto-generated method stub
 		return data[row][col];
 	}
+	
+	
 
 }
