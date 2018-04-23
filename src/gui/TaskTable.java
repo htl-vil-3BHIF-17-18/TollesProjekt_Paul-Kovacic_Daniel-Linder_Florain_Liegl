@@ -65,7 +65,7 @@ public class TaskTable extends JPanel{
 	public void insertValuesIntoTable(ArrayList<Task> tasks) {
 		int i=0;
 		for(Task t : tasks) {
-			this.jTable.setValueAt(t.getDone(), i, 0);
+			this.jTable.setValueAt(t.isDone(), i, 0);
 			this.jTable.setValueAt(t.getCategorie(), i, 1);
 			this.jTable.setValueAt(t.getSubject(), i, 2);
 			this.jTable.setValueAt(t.getDescription(), i, 3);
