@@ -20,6 +20,25 @@ public class TableModel extends AbstractTableModel {
 		return columnNames.length;
 	}
 	
+	public void setValueAt(Object value, int row, int col) {
+		data[row][col] = value;
+        fireTableCellUpdated(row, col);
+	}
+	
+	@Override
+	public Class<?> getColumnClass(int columnIndex) {
+	    if (columnIndex == 0)
+	        return Boolean.class;
+	    return super.getColumnClass(columnIndex);
+	}
+	
+	
+	
+	@Override
+	public boolean isCellEditable(int row, int col) {
+	    return (col == 0); 
+	}
+	
 	public String getColumnName(int col) {
         return columnNames[col];
     }

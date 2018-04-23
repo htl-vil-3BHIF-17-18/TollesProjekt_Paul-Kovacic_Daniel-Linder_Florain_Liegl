@@ -31,6 +31,9 @@ public class TaskTable extends JPanel{
 	private void initializeControls() {
 		// TODO Auto-generated method stub
 		this.jTable=new JTable(new TableModel());
+		this.jTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		this.jTable.getColumnModel().getColumn(0).setWidth(50);
+		this.jTable.getTableHeader().setReorderingAllowed(false);
 //		System.out.println("test");
 		
 		
