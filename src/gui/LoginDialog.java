@@ -29,8 +29,6 @@ public class LoginDialog extends JDialog implements ActionListener{
 	private JTextField tfUsername = null;
 	private JLabel lPassword = null;
 	private JPasswordField pfPasswordField = null;
-	private JLabel lIp = null;
-	private JTextField tfIp = null;
 	private JButton btnLogin = null;
 	private JButton btnCancel = null;
 	private List<Task> tl=null;
@@ -39,7 +37,7 @@ public class LoginDialog extends JDialog implements ActionListener{
 		super(owner, title, modal);
 		this.tl=new ArrayList<Task>();
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		this.setMinimumSize(new Dimension(300,150));
+		this.setMinimumSize(new Dimension(300,130));
 		this.setResizable(false);
 		this.initializeControls();
 		this.pack();
@@ -49,7 +47,7 @@ public class LoginDialog extends JDialog implements ActionListener{
 
 	private void initializeControls() {
 		// TODO Auto-generated method stub
-		GridLayout grid = new GridLayout(4,2);
+		GridLayout grid = new GridLayout(3,2);
 		this.setLayout(grid);
 		
 		this.lUsername=new JLabel("Username: ");
@@ -57,9 +55,6 @@ public class LoginDialog extends JDialog implements ActionListener{
 		
 		this.lPassword=new JLabel("Password: ");
 		this.pfPasswordField=new JPasswordField();
-		
-		this.lIp=new JLabel("Ip: ");
-		this.tfIp=new JTextField("192.168.xxx.xxx");
 		
 		this.btnLogin=new JButton("Login");
 		this.btnCancel=new JButton("Cancel");
@@ -71,8 +66,6 @@ public class LoginDialog extends JDialog implements ActionListener{
 		this.add(this.tfUsername);
 		this.add(this.lPassword);
 		this.add(this.pfPasswordField);
-		this.add(this.lIp);
-		this.add(this.tfIp);
 		this.add(this.btnLogin);
 		this.add(this.btnCancel);
 	}
@@ -82,7 +75,7 @@ public class LoginDialog extends JDialog implements ActionListener{
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(this.btnLogin))
 		{
-			DatabaseConnection db =new DatabaseConnection(this.tfUsername.getText(),this.pfPasswordField.getPassword().toString(),this.tfIp.getText());
+//			DatabaseConnection db =new DatabaseConnection(this.tfUsername.getText(),this.pfPasswordField.getPassword().toString());
 				this.setVisible(false);
 				this.dispose();		
 		}
