@@ -9,27 +9,25 @@ import java.util.*;
 import bll.*;
 
 public class DatabaseConnection {
-	String username = null;
-	String password = null;
-	String targetDB = null;
-	Connection con = null;
-	
-    public DatabaseConnection(String username, String password, String targetDB) {
+	private String username;
+	private String password;
+
+    public DatabaseConnection(String username, String password) {
 		super();
-		this.username = username;
+        this.username = username;
 		this.password = password;
-		this.targetDB = targetDB;
 	}
 
 	private Connection createConnection() throws ClassNotFoundException, SQLException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        return DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@" + this.targetDB);
+        return DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@192.168.128.152");
     }
 	
 	public List<Task> getAllTasks() {
 		List<Task> tasks = new ArrayList<>();
+		Connection con = null;
 		try {
-			Connection con = this.createConnection();
+			con = this.createConnection();
 			Statement stmtSelect = con.createStatement();
 			ResultSet rs = stmtSelect.executeQuery("SELECT * FROM task");
 			
