@@ -18,11 +18,6 @@ import bll.Task;
 import dal.DatabaseConnection;
 
 public class LoginDialog extends JDialog implements ActionListener {
-
-
-    /**
-     *
-     */
     private static final long serialVersionUID = 6158225161645311129L;
     private JLabel lUsername = null;
     private JTextField tfUsername = null;
@@ -30,7 +25,7 @@ public class LoginDialog extends JDialog implements ActionListener {
     private JPasswordField pfPasswordField = null;
     private JButton btnLogin = null;
     private JButton btnCancel = null;
-    private List<Task> tl = null;
+    private List<Task> tl;
 
     public LoginDialog(Frame owner, String title, boolean modal) {
         super(owner, title, modal);
