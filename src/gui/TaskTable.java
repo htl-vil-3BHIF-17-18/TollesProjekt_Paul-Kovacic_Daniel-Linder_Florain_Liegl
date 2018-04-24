@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -87,9 +88,9 @@ public class TaskTable extends JPanel{
 	
 
 	
-	public void insertValuesIntoTable(ArrayList<Task> tasks) {
+	public void insertValuesIntoTable(List<Task> tl) {
 		int i=0;
-		for(Task t : tasks) {
+		for(Task t : tl) {
 			this.jTable.setValueAt(t.isDone(), i, 0);
 			this.jTable.setValueAt(t.getCategorie(), i, 1);
 			this.jTable.setValueAt(t.getSubject(), i, 2);

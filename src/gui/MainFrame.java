@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -18,6 +20,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.UIManager;
 
+import bll.Task;
 import javafx.scene.control.Separator;
 
 public class MainFrame extends JFrame implements ActionListener {
@@ -46,9 +49,12 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	private JMenu help;
 	private JMenuItem github;
+	
+	private List<Task> tl=null;
 
 	public MainFrame(String identifier) throws HeadlessException {
 		super(identifier);
+		this.tl=new ArrayList<>();
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setMinimumSize(new Dimension(600, 400));
 		this.setPreferredSize(new Dimension(1080, 720));
@@ -128,7 +134,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource().equals(this.newTable)) {
-			this.taskTable = new TaskTable(Toolkit.getDefaultToolkit().getScreenSize(), this);
+//			this.taskTable = new TaskTable(Toolkit.getDefaultToolkit().getScreenSize(), this);
 		} else if (e.getSource().equals(this.open)) {
 
 		} else if (e.getSource().equals(this.saveAs)) {
@@ -139,6 +145,8 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		} else if (e.getSource().equals(this.login)) {
 			LoginDialog dialog = new LoginDialog(this, "Login", true);
+			this.tl=dialog.getTl();
+			this.taskTable.insertValuesIntoTable(this.tl);
 		} else if (e.getSource().equals(this.logout)) {
 
 		} else if (e.getSource().equals(this.preferences)) {
