@@ -9,11 +9,10 @@ import java.util.*;
 import bll.*;
 
 public class DatabaseConnection {
-	String username = null;
-	String password = null;
-	String targetDB = null;
-	Connection con = null;
-	
+	String username;
+	String password;
+	String targetDB;
+
     public DatabaseConnection(String username, String password, String targetDB) {
 		super();
 		this.username = username;
