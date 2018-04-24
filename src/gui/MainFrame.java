@@ -19,11 +19,13 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.UIManager;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import bll.Task;
 import javafx.scene.control.Separator;
 
-public class MainFrame extends JFrame implements ActionListener {
+public class MainFrame extends JFrame implements ActionListener, ListSelectionListener {
 
 	/**
 	 * 
@@ -207,6 +209,12 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	public JMenu getHelp() {
 		return help;
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
