@@ -42,7 +42,6 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	private JMenu connection;
 	private JMenuItem login;
-	private JMenuItem logout;
 
 	private JMenu window;
 	private JMenuItem preferences;
@@ -83,7 +82,6 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		this.connection = new JMenu("Connection");
 		this.login = new JMenuItem("Login");
-		this.logout = new JMenuItem("Logout");
 
 		this.window = new JMenu("Window");
 		this.preferences = new JMenuItem("Preferences");
@@ -98,7 +96,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		this.save.addActionListener(this);
 		this.settings.addActionListener(this);
 		this.login.addActionListener(this);
-		this.logout.addActionListener(this);
 		this.preferences.addActionListener(this);
 		this.github.addActionListener(this);
 
@@ -118,7 +115,6 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		this.menuBar.add(this.connection);
 		this.connection.add(this.login);
-		this.connection.add(this.logout);
 
 		this.menuBar.add(this.window);
 		this.window.add(this.preferences);
@@ -147,8 +143,6 @@ public class MainFrame extends JFrame implements ActionListener {
 			LoginDialog dialog = new LoginDialog(this, "Login", true);
 			this.tl=dialog.getTl();
 			this.taskTable.insertValuesIntoTable(this.tl);
-		} else if (e.getSource().equals(this.logout)) {
-
 		} else if (e.getSource().equals(this.preferences)) {
 
 		} else if (e.getSource().equals(this.github)) {
@@ -201,10 +195,6 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	public JMenuItem getLogin() {
 		return login;
-	}
-
-	public JMenuItem getLogout() {
-		return logout;
 	}
 
 	public JMenu getWindow() {
