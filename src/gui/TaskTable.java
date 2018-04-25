@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -91,13 +92,19 @@ public class TaskTable extends JPanel{
 	
 	public void insertValuesIntoTable(List<Task> tl) {
 		int i=0;
+		
+		MyTableModel model =  (MyTableModel) this.jTable.getModel();
+		
+
 		for(Task t : tl) {
-			this.jTable.setValueAt(t.isDone(), i, 0);
-			this.jTable.setValueAt(t.getCategorie(), i, 1);
-			this.jTable.setValueAt(t.getSubject(), i, 2);
-			this.jTable.setValueAt(t.getDescription(), i, 3);
-			this.jTable.setValueAt(t.getFrom(), i, 4);
-			this.jTable.setValueAt(t.getUntil(), i, 5);
+			model.addRow(new Object[] {t.isDone(),t.getCategorie(),t.getSubject(),t.getDescription(),t.getFrom(),t.getUntil()},i);
+			System.out.println(this.jTable.getRowCount());
+//			this.jTable.setValueAt(t.isDone(), i, 0);
+//			this.jTable.setValueAt(t.getCategorie(), i, 1);
+//			this.jTable.setValueAt(t.getSubject(), i, 2);
+//			this.jTable.setValueAt(t.getDescription(), i, 3);
+//			this.jTable.setValueAt(t.getFrom(), i, 4);
+//			this.jTable.setValueAt(t.getUntil(), i, 5);
 			i++;
 		}
 	}

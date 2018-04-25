@@ -135,7 +135,6 @@ public class TaskDialog extends JDialog implements ActionListener {
 						Subjects.values()[this.JSubject.getSelectedIndex()], this.tfDescription.getText(),
 						time.parse(this.datePicker.getJFormattedTextField().getText()),
 						time.parse(this.datePickerTo.getJFormattedTextField().getText()));
-				System.out.println(this.task.toString());
 			}
 
 		} catch (ParseException e) {
