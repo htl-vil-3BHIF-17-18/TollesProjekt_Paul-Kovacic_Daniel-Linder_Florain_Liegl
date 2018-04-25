@@ -49,6 +49,7 @@ public class TaskTable extends JPanel{
 		// TODO Auto-generated method stub
 		this.setLayout(new GridLayout(0,1));
 		this.jTable=new JTable(new MyTableModel());
+		this.jTable.getSelectionModel().addListSelectionListener(this.mf);
 		this.setHeaderWidth();
 		this.jTable.getTableHeader().setReorderingAllowed(false);
 
