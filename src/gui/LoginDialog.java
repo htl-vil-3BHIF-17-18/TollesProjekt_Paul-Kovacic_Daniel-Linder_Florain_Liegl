@@ -71,6 +71,7 @@ public class LoginDialog extends JDialog implements ActionListener {
             this.setVisible(false);
             this.dispose();
         } else if (e.getSource().equals(this.btnCancel)) {
+        	this.lUsername.setText("");
             this.setVisible(false);
             this.dispose();
         }
