@@ -10,10 +10,12 @@ import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Frame;
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.swing.*;
+
 
 
 public class TaskDialog extends JDialog  implements ActionListener{
@@ -113,8 +115,8 @@ public class TaskDialog extends JDialog  implements ActionListener{
                this.task.setSubject(Subjects.values()[this.JSubject.getSelectedIndex()]);
                this.task.setDescription(this.tfDescription.getText());
                SimpleDateFormat time=new SimpleDateFormat("dd--mm--yyyy");
-               this.task.setFrom(time.parse(this.tfFrom.getText()));
-               this.task.setUntil(time.parse(this.tfFrom.getText()));
+               this.task.setFrom((Date) time.parse(this.tfFrom.getText()));
+               this.task.setUntil((Date)time.parse(this.tfFrom.getText()));
                isValid = true;
             }
 

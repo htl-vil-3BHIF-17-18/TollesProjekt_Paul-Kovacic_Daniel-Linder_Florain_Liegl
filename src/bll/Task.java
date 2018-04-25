@@ -1,6 +1,6 @@
 package bll;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Task {
 	private boolean done;
