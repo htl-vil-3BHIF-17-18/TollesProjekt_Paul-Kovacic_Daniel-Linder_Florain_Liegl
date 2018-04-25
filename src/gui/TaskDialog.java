@@ -111,13 +111,13 @@ public class TaskDialog extends JDialog  implements ActionListener{
         try {
             if (!this.tfDescription.getText().trim().isEmpty() && !this.tfFrom.getText().trim().isEmpty()
                     && !this.tfto.getText().trim().isEmpty()) {
-               this.task.setCategory(Categories.values()[this.JCategory.getSelectedIndex()]);
-               this.task.setSubject(Subjects.values()[this.JSubject.getSelectedIndex()]);
-               this.task.setDescription(this.tfDescription.getText());
-               SimpleDateFormat time=new SimpleDateFormat("dd--mm--yyyy");
-               this.task.setFrom((Date) time.parse(this.tfFrom.getText()));
-               this.task.setUntil((Date)time.parse(this.tfFrom.getText()));
+               SimpleDateFormat time=new SimpleDateFormat("dd-mm-yyyy");
+
+
                isValid = true;
+
+               this.task= new Task(Categories.values()[this.JCategory.getSelectedIndex()],Subjects.values()[this.JSubject.getSelectedIndex()],this.tfDescription.getText(), time.parse(this.tfFrom.getText()),time.parse(this.tfFrom.getText()));
+               System.out.println(this.task.toString());
             }
 
         } catch (ParseException e) {

@@ -1,6 +1,6 @@
 package bll;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Task {
 	private boolean done;
@@ -9,6 +9,7 @@ public class Task {
     private String description;
     private Date from;
     private Date until;
+    private int id;
 
     public Task(Categories category, Subjects subject, String description, Date from, Date until) {
     	this.done = false;
