@@ -122,6 +122,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.task.add(this.newTask);
 		this.task.add(this.edit);
 		this.task.add(this.delete);
+		
 
 		this.menuBar.add(this.settings);
 
