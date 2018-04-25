@@ -34,19 +34,19 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	private TaskTable taskTable;
 	private JMenuBar menuBar;
 	private JMenu file;
-	private JMenuItem newTable;
-	private JMenuItem open;
+	private JMenu loadFrom;
+	private JMenuItem fromDatabase;
+	private JMenuItem fromFile;
 	private JMenuItem saveAs;
-	private JMenuItem save;
-	private JMenuItem settings;
+	private JMenuItem sync;
+	private JMenuItem exit;
 
-	private JMenu edit;
+	private JMenu task;
+	private JMenuItem newTask;
+	private JMenuItem edit;
+	private JMenuItem delete;
 
-	private JMenu connection;
-	private JMenuItem login;
-
-	private JMenu window;
-	private JMenuItem preferences;
+	private JMenu settings;
 
 	private JMenu help;
 	private JMenuItem github;
@@ -74,54 +74,58 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.menuBar = new JMenuBar();
 
 		this.file = new JMenu("File");
-		this.newTable = new JMenuItem("New");
-		this.open = new JMenuItem("Open");
+		this.loadFrom = new JMenu("Load From");
 		this.saveAs = new JMenuItem("Save As...");
-		this.save = new JMenuItem("Save");
-		this.settings = new JMenuItem("Settings");
+		this.fromDatabase = new JMenuItem("Database");
+		this.fromFile = new JMenuItem("File");
+		this.sync = new JMenuItem("Sync");
+		this.exit = new JMenuItem("Exit");
 
-		this.edit = new JMenu("Edit");
+		this.task = new JMenu("Task");
+		this.newTask = new JMenuItem("New");
+		this.edit = new JMenuItem("Edit");
+		this.delete = new JMenuItem("Delete");
 
-		this.connection = new JMenu("Connection");
-		this.login = new JMenuItem("Login");
-
-		this.window = new JMenu("Window");
-		this.preferences = new JMenuItem("Preferences");
+		this.settings = new JMenu("Settings");
 
 		this.help = new JMenu("Help");
-		this.github = new JMenuItem("Github");
+		this.github = new JMenuItem("Report a Bug");
 
 		// add to ActionListener
-		this.newTable.addActionListener(this);
-		this.open.addActionListener(this);
+		this.loadFrom.addActionListener(this);
 		this.saveAs.addActionListener(this);
-		this.save.addActionListener(this);
+		this.exit.addActionListener(this);
+		this.sync.addActionListener(this);
+		this.newTask.addActionListener(this);
+		this.edit.addActionListener(this);
+		this.delete.addActionListener(this);
 		this.settings.addActionListener(this);
-		this.login.addActionListener(this);
-		this.preferences.addActionListener(this);
 		this.github.addActionListener(this);
+		this.fromDatabase.addActionListener(this);
+		this.fromFile.addActionListener(this);
 
 		// add to Frame
 
 		this.setJMenuBar(this.menuBar);
 
 		this.menuBar.add(this.file);
-		this.file.add(this.newTable);
-		this.file.add(this.open);
+		this.file.add(this.loadFrom);
+		this.loadFrom.add(this.fromDatabase);
+		this.loadFrom.add(this.fromFile);
 		this.file.add(new JSeparator());
 		this.file.add(this.saveAs);
-		this.file.add(this.save);
+		this.file.add(this.sync);
 		this.file.add(new JSeparator());
-		this.file.add(this.settings);
+		this.file.add(this.exit);
 
-		this.menuBar.add(this.edit);
+		this.menuBar.add(this.task);
+		this.task.add(this.newTask);
+		this.task.add(this.edit);
+		this.task.add(this.delete);
 
-		this.menuBar.add(this.connection);
-		this.connection.add(this.login);
+		this.menuBar.add(this.settings);
 
-		this.menuBar.add(this.window);
-		this.window.add(this.preferences);
-
+		
 		this.menuBar.add(this.help);
 		this.help.add(this.github);
 
@@ -132,24 +136,27 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource().equals(this.newTable)) {
-//			this.taskTable = new TaskTable(Toolkit.getDefaultToolkit().getScreenSize(), this);
-			new TaskDialog(this,"new task",true);
-		} else if (e.getSource().equals(this.open)) {
-
-
-
-		} else if (e.getSource().equals(this.saveAs)) {
-
-		} else if (e.getSource().equals(this.save)) {
-
-		} else if (e.getSource().equals(this.settings)) {
-
-		} else if (e.getSource().equals(this.login)) {
+		if (e.getSource().equals(this.fromDatabase)) {	
 			LoginDialog dialog = new LoginDialog(this, "Login", true);
 			this.tl=dialog.getTl();
 			this.taskTable.insertValuesIntoTable(this.tl);
-		} else if (e.getSource().equals(this.preferences)) {
+		} else if (e.getSource().equals(this.fromFile)) {
+			
+		} else if (e.getSource().equals(this.newTask)) {
+//			this.taskTable = new TaskTable(Toolkit.getDefaultToolkit().getScreenSize(), this);
+			new TaskDialog(this,"new task",true);
+
+		} else if (e.getSource().equals(this.saveAs)) {
+
+		} else if (e.getSource().equals(this.exit)) {
+
+		} else if (e.getSource().equals(this.sync)) {
+
+		} else if (e.getSource().equals(this.edit)) {
+			
+		} else if (e.getSource().equals(this.delete)) {
+			
+		} else if (e.getSource().equals(this.settings)) {
 
 		} else if (e.getSource().equals(this.github)) {
 
@@ -188,28 +195,23 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	}
 
 	public JMenuItem getSettings() {
-		return settings;
+		return sync;
 	}
 
-	public JMenu getEdit() {
-		return edit;
-	}
 
 	public JMenu getConnection() {
-		return connection;
+		return task;
 	}
 
 	public JMenuItem getLogin() {
-		return login;
+		return newTask;
 	}
 
 	public JMenu getWindow() {
-		return window;
+		return settings;
 	}
 
-	public JMenuItem getPreferences() {
-		return preferences;
-	}
+	
 
 	public JMenu getHelp() {
 		return help;
