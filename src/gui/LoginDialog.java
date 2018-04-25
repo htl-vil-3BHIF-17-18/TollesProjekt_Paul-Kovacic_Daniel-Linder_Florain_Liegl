@@ -70,6 +70,7 @@ public class LoginDialog extends JDialog implements ActionListener {
         if (e.getSource().equals(this.btnLogin)) {
 
             DatabaseConnection db = new DatabaseConnection(this.tfUsername.getText(), String.valueOf(this.pfPasswordField.getPassword()));
+            db.checkTaskTable();
             tl = db.getAllTasks();
             this.setVisible(false);
             this.dispose();

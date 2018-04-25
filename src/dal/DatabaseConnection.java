@@ -1,10 +1,7 @@
 package dal;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.ResultSet;
+import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 
 import bll.*;
@@ -32,14 +29,14 @@ public class DatabaseConnection {
             stmtCreate = con.createStatement();
             stmtCreate.execute("CREATE TABLE task (" +
                     "done VARCHAR2(1)," +
-                    "    category VARCHAR2(20)," +
-                    "    subject VARCHAR2(20)," +
-                    "    description VARCHAR2(50)," +
-                    "    von DATE," +
-                    "    until DATE," +
-                    "    CONSTRAINT pkTask PRIMARY KEY (category, subject, von)," +
-                    "    CONSTRAINT ckDatum CHECK (von <= until)," +
-                    "    CONSTRAINT ckErledigt CHECK (upper(done) LIKE 'Y' OR upper(done) LIKE 'N')" +
+                    "category VARCHAR2(20)," +
+                    "subject VARCHAR2(20)," +
+                    "description VARCHAR2(50)," +
+                    "von DATE," +
+                    "until DATE," +
+                    "CONSTRAINT pkTask PRIMARY KEY (category, subject, von)," +
+                    "CONSTRAINT ckDatum CHECK (von <= until)," +
+                    "CONSTRAINT ckErledigt CHECK (upper(done) LIKE 'Y' OR upper(done) LIKE 'N')" +
                     ");");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -91,29 +88,64 @@ public class DatabaseConnection {
     }
 
     public void addEntry(Task task) {
+        Connection con = null;
         try {
-            Connection con = this.createConnection();
-            Statement stmtInsert = con.createStatement();
-            stmtInsert.executeQuery("INSERT INTO task VALUES (" + task.toString() + ");");
+            con = this.createConnection();
+            PreparedStatement stmtInsert = con.prepareStatement("INSERT INTO task (done, category, subject, description, von, until) VALUES (?,?,?,?,?,?);");
+            stmtInsert.setString(1, task.isDone() ? "Y" : "N");
+            stmtInsert.setString(2, task.getCategorie().toString());
+            stmtInsert.setString(3, task.getSubject().toString());
+            stmtInsert.setString(4, task.getDescription());
+            stmtInsert.setDate(5, task.getFrom());
+            stmtInsert.setDate(6, task.getUntil());
+            con.commit();
         } catch (ClassNotFoundException | SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void removeEntry(Task task) {
+        Connection con = null;
         try {
-            Connection con = this.createConnection();
+            con = this.createConnection();
             Statement stmtDelete = con.createStatement();
-            stmtDelete.executeQuery("DELETE * FROM task WHERE category LIKE " + task.getCategorie().toString() + " AND subject LIKE " + task.getSubject().toString() + " AND description LIKE " + task.getDescription() + " AND von = " + task.getFrom() + " AND until = " + task.getUntil() + ";");
+            stmtDelete.execute("DELETE FROM task WHERE category LIKE " + task.getCategorie().toString() + " AND subject LIKE " + task.getSubject().toString() + " AND description LIKE " + task.getDescription() + " AND von = " + task.getFrom() + " AND until = " + task.getUntil() + ";");
+            con.close();
         } catch (ClassNotFoundException | SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public void renewEntry(Task oldTask, Task newTask) {
+    public void updateEntry(Task oldTask, Task newTask) {
         removeEntry(oldTask);
         addEntry(newTask);
+    }
+
+    public void checkTaskTable() {
+        try {
+            Connection con = this.createConnection();
+            DatabaseMetaData metadata = con.getMetaData();
+            ResultSet rs = metadata.getTables(null, null, "TASK", new String[] {"TABLE"});
+            rs.getRow();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
