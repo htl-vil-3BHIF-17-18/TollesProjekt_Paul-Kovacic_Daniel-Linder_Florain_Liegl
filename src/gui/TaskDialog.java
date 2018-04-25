@@ -81,6 +81,8 @@ public class TaskDialog extends JDialog  implements ActionListener{
 
 
         UtilDateModel modelFrom= new UtilDateModel();
+        modelFrom.setValue(java.util.Calendar.getInstance().getTime());
+        modelFrom.setSelected(true);
         Properties p = new Properties();
         p.put("text.today", "Today");
         p.put("text.month", "Month");
@@ -89,6 +91,8 @@ public class TaskDialog extends JDialog  implements ActionListener{
         datePicker = new JDatePickerImpl(datePanelFrom, new DateLabelFormatter());
 
         UtilDateModel modelTo= new UtilDateModel();
+        modelTo.setValue(java.util.Calendar.getInstance().getTime());
+        modelFrom.setSelected(true);
         datePanelTo = new JDatePanelImpl(modelTo,p);
         datePickerTo = new JDatePickerImpl(datePanelTo, new DateLabelFormatter());
 
