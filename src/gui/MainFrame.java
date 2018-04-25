@@ -23,6 +23,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import bll.Task;
+import dal.DatabaseConnection;
 import javafx.scene.control.Separator;
 
 public class MainFrame extends JFrame implements ActionListener, ListSelectionListener {
@@ -52,6 +53,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	private JMenuItem github;
 	
 	private List<Task> tl=null;
+	private DatabaseConnection db;
 
 	public MainFrame(String identifier) throws HeadlessException {
 		super(identifier);
@@ -138,7 +140,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		// TODO Auto-generated method stub
 		if (e.getSource().equals(this.fromDatabase)) {	
 			LoginDialog dialog = new LoginDialog(this, "Login", true);
-			this.tl=dialog.getTl();
 			this.taskTable.insertValuesIntoTable(this.tl);
 		} else if (e.getSource().equals(this.fromFile)) {
 			
@@ -151,6 +152,9 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		} else if (e.getSource().equals(this.exit)) {
 
 		} else if (e.getSource().equals(this.sync)) {
+			for(Task t : this.tl) {
+				
+			}
 
 		} else if (e.getSource().equals(this.edit)) {
 			
@@ -220,6 +224,16 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	@Override
 	public void valueChanged(ListSelectionEvent arg0) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	public void openConnection(String username, String password) {
+		// TODO Auto-generated method stub
+		if(this.db==null)
+		this.db = new DatabaseConnection(username,password);
+		
+        db.checkTaskTable();
+        tl = db.getAllTasks();
 		
 	}
 

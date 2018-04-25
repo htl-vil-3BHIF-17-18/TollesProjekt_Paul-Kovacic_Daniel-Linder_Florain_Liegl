@@ -25,11 +25,11 @@ public class LoginDialog extends JDialog implements ActionListener {
     private JPasswordField pfPasswordField = null;
     private JButton btnLogin = null;
     private JButton btnCancel = null;
-    private List<Task> tl;
+    private MainFrame mf;
 
-    public LoginDialog(Frame owner, String title, boolean modal) {
+    public LoginDialog(MainFrame owner, String title, boolean modal) {
         super(owner, title, modal);
-        this.tl = new ArrayList<>();
+        this.mf=owner;
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setMinimumSize(new Dimension(300, 130));
         this.setResizable(false);
@@ -68,10 +68,7 @@ public class LoginDialog extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
         if (e.getSource().equals(this.btnLogin)) {
-
-            DatabaseConnection db = new DatabaseConnection(this.tfUsername.getText(), String.valueOf(this.pfPasswordField.getPassword()));
-            db.checkTaskTable();
-            tl = db.getAllTasks();
+        	mf.openConnection(this.tfUsername.getText(), String.valueOf(this.pfPasswordField.getPassword()));       
             this.setVisible(false);
             this.dispose();
         } else if (e.getSource().equals(this.btnCancel)) {
@@ -81,9 +78,6 @@ public class LoginDialog extends JDialog implements ActionListener {
 
     }
 
-    public List<Task> getTl() {
-        return tl;
-    }
 
 
 }
