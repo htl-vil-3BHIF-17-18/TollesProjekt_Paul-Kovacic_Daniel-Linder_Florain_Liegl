@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Frame;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.swing.*;
 
@@ -58,7 +59,7 @@ public class TaskDialog extends JDialog  implements ActionListener{
         this.tfDescription=new JTextField();
 
         this.lbDateFrom=new JLabel("From:");
-        SimpleDateFormat time=new SimpleDateFormat("dd-mm-yyyy");
+        SimpleDateFormat time=new SimpleDateFormat("dd--mm--yyyy");
         this.tfFrom=new JFormattedTextField(time);
 
         this.lbto=new JLabel("To:");
@@ -78,6 +79,8 @@ public class TaskDialog extends JDialog  implements ActionListener{
         this.add(this.tfDescription);
         this.add(this.lbDateFrom);
         this.add(this.tfFrom);
+        this.add(this.lbto);
+        this.add(this.tfto);
         this.add(this.btnOk);
         this.add(this.btnCancel);
     }
@@ -88,10 +91,10 @@ public class TaskDialog extends JDialog  implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
         if (e.getSource().equals(this.btnOk)) {
-            //if (this.writeValuesToMenu()) {
-           //     this.setVisible(false);
-             //   this.dispose();
-            //}
+            if (this.writeValuesToMenu()) {
+                this.setVisible(false);
+                this.dispose();
+            }
 
         } else if (e.getSource().equals(this.btnCancel)) {
             this.setVisible(false);
@@ -100,6 +103,28 @@ public class TaskDialog extends JDialog  implements ActionListener{
 
     }
 
+    private boolean writeValuesToMenu() {
+        boolean isValid = false;
+
+        try {
+            if (!this.tfDescription.getText().trim().isEmpty() && !this.tfFrom.getText().trim().isEmpty()
+                    && !this.tfto.getText().trim().isEmpty()) {
+               this.task.setCategory(Categories.values()[this.JCategory.getSelectedIndex()]);
+               this.task.setSubject(Subjects.values()[this.JSubject.getSelectedIndex()]);
+               this.task.setDescription(this.tfDescription.getText());
+               SimpleDateFormat time=new SimpleDateFormat("dd--mm--yyyy");
+               this.task.setFrom(time.parse(this.tfFrom.getText()));
+               this.task.setUntil(time.parse(this.tfFrom.getText()));
+               isValid = true;
+            }
+
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return isValid;
+
+    }
 
 }
 
