@@ -125,6 +125,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 		this.menuBar.add(this.settings);
 
+		
 		this.menuBar.add(this.help);
 		this.help.add(this.github);
 
