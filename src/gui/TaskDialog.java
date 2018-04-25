@@ -5,22 +5,13 @@ import bll.Subjects;
 import bll.Task;
 
 
-import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Frame;
-import java.sql.Date;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Properties;
 import javax.swing.*;
-import org.jdatepicker.impl.*;
-import org.jdatepicker.util.*;
-import org.jdatepicker.*;
 
 
 
@@ -80,42 +71,6 @@ public class TaskDialog extends JDialog  implements ActionListener{
         this.btnCancel.addActionListener(this);
 
 
-         class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
-
-            private String datePattern = "dd.mm.yyyy";
-            private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
-
-            @Override
-            public Object stringToValue(String text) throws ParseException {
-                return dateFormatter.parseObject(text);
-            }
-
-            @Override
-            public String valueToString(Object value) throws ParseException {
-                if (value != null) {
-                    Calendar cal = (Calendar) value;
-                    return dateFormatter.format(cal.getTime());
-                }
-
-                return "";
-            }
-
-        }
-
-
-        UtilDateModel model = new UtilDateModel();
-        Properties p = new Properties();
-        p.put("text.today", "Today");
-        p.put("text.month", "Month");
-        p.put("text.year", "Year");
-        JDatePanelImpl datePanel = new JDatePanelImpl(model,p);
-        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel,new DateLabelFormatter());
-
-
-        JDatePanelImpl datePanelTo = new JDatePanelImpl(model,p);
-        JDatePickerImpl datePickerTo = new JDatePickerImpl(datePanelTo,new DateLabelFormatter());
-
-
         this.add(this.lbCategory);
         this.add(this.JCategory);
         this.add(this.lbSubject);
@@ -123,9 +78,9 @@ public class TaskDialog extends JDialog  implements ActionListener{
         this.add(this.lbDescription);
         this.add(this.tfDescription);
         this.add(this.lbDateFrom);
-        this.add(datePicker);
+
         this.add(this.lbto);
-        this.add(datePickerTo);
+
         this.add(this.btnOk);
         this.add(this.btnCancel);
     }
@@ -136,6 +91,7 @@ public class TaskDialog extends JDialog  implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
         if (e.getSource().equals(this.btnOk)) {
+
             if (this.writeValuesToMenu()) {
                 this.setVisible(false);
                 this.dispose();
