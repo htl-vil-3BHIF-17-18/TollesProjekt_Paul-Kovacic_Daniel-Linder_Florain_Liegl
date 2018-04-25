@@ -142,7 +142,7 @@ public class DatabaseConnection {
             rs.getRow();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (SQLException e) {0
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
