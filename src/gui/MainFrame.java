@@ -103,6 +103,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		this.github.addActionListener(this);
 
 		// add to Frame
+
 		this.setJMenuBar(this.menuBar);
 
 		this.menuBar.add(this.file);
@@ -135,7 +136,10 @@ public class MainFrame extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		if (e.getSource().equals(this.newTable)) {
 //			this.taskTable = new TaskTable(Toolkit.getDefaultToolkit().getScreenSize(), this);
+			new TaskDialog(this,"new task",true);
 		} else if (e.getSource().equals(this.open)) {
+
+
 
 		} else if (e.getSource().equals(this.saveAs)) {
 
