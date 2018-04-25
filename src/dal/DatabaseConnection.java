@@ -1,7 +1,6 @@
 package dal;
 
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
 import bll.*;
@@ -27,9 +26,7 @@ public class DatabaseConnection {
         try {
             con = createConnection();
             stmtCreate = con.createStatement();
-            stmtCreate.execute("CREATE SEQUENCE idTask START WITH 1 INCREMENT BY 1; ");
             stmtCreate.execute("CREATE TABLE task (" +
-                    "id INT," +
                     "done VARCHAR2(1)," +
                     "category VARCHAR2(20)," +
                     "subject VARCHAR2(20)," +
@@ -60,7 +57,7 @@ public class DatabaseConnection {
             ResultSet rs = stmtSelect.executeQuery("SELECT * FROM task");
 
             while (rs.next()) {
-                tasks.add(new Task(rs.getString(1) == "Y", Categories.valueOf(rs.getString(2)), Subjects.valueOf(rs.getString(3)), rs.getString(4), rs.getDate(5), rs.getDate(6)));
+                tasks.add(new Task(rs.getString(1).equals("Y"), Categories.valueOf(rs.getString(2)), Subjects.valueOf(rs.getString(3)), rs.getString(4), rs.getDate(5), rs.getDate(6)));
             }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -158,9 +155,8 @@ public class DatabaseConnection {
             DatabaseMetaData metadata = con.getMetaData();
             ResultSet rs = metadata.getTables(null, null, "TASK", new String[] {"TABLE"});
             rs.getRow();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
