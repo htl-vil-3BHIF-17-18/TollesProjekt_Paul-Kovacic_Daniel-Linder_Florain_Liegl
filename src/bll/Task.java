@@ -3,24 +3,16 @@ package bll;
 import java.util.Date;
 
 public class Task {
+    private int id;
 	private boolean done;
     private Categories category;
     private Subjects subject;
     private String description;
     private Date from;
     private Date until;
-    private int id;
 
-    public Task(Categories category, Subjects subject, String description, Date from, Date until) {
-    	this.done = false;
-        this.category = category;
-        this.subject = subject;
-        this.description = description;
-        this.from = from;
-        this.until = until;
-    }
-
-    public Task(boolean done, Categories category, Subjects subject, String description, Date from, Date until) {
+    public Task(int id, boolean done, Categories category, Subjects subject, String description, Date from, Date until) {
+        this.id = id;
     	this.done = done;
         this.category = category;
         this.subject = subject;
@@ -28,6 +20,8 @@ public class Task {
         this.from = from;
         this.until = until;
 	}
+
+	public int getId() { return id; }
     
     public boolean isDone() {
     	return done; 

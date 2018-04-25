@@ -91,7 +91,7 @@ public class DatabaseConnection {
         Connection con = null;
         try {
             con = this.createConnection();
-            PreparedStatement stmtInsert = con.prepareStatement("INSERT INTO task (done, category, subject, description, von, until) VALUES (?,?,?,?,?,?);");
+            PreparedStatement stmtInsert = con.prepareStatement("INSERT INTO task (id, done, category, subject, description, von, until) VALUES (idTask.NEXTVAL,?,?,?,?,?,?);");
             stmtInsert.setString(1, task.isDone() ? "Y" : "N");
             stmtInsert.setString(2, task.getCategorie().toString());
             stmtInsert.setString(3, task.getSubject().toString());
@@ -100,7 +100,6 @@ public class DatabaseConnection {
             stmtInsert.setDate(6, task.getUntil());
             con.commit();
         } catch (ClassNotFoundException | SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } finally {
             try {
@@ -116,10 +115,9 @@ public class DatabaseConnection {
         try {
             con = this.createConnection();
             Statement stmtDelete = con.createStatement();
-            stmtDelete.execute("DELETE FROM task WHERE category LIKE " + task.getCategorie().toString() + " AND subject LIKE " + task.getSubject().toString() + " AND description LIKE " + task.getDescription() + " AND von = " + task.getFrom() + " AND until = " + task.getUntil() + ";");
+            stmtDelete.execute("DELETE FROM task WHERE id = " + task.getId() + ";");
             con.close();
         } catch (ClassNotFoundException | SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } finally {
             try {
