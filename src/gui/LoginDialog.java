@@ -68,7 +68,6 @@ public class LoginDialog extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
         if (e.getSource().equals(this.btnLogin)) {
-        	mf.openConnection(this.tfUsername.getText(), String.valueOf(this.pfPasswordField.getPassword()));       
             this.setVisible(false);
             this.dispose();
         } else if (e.getSource().equals(this.btnCancel)) {
@@ -78,6 +77,14 @@ public class LoginDialog extends JDialog implements ActionListener {
 
     }
 
+	public String getUsername() {
+		return tfUsername.getText();
+	}
 
+	public String getPassword() {
+		return String.valueOf(pfPasswordField.getPassword());
+	}
+
+    
 
 }

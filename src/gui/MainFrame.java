@@ -139,12 +139,13 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource().equals(this.fromDatabase)) {	
-			LoginDialog dialog = new LoginDialog(this, "Login", true);
+			this.openConnection();
+			this.getTaskFromDb();
 			this.taskTable.insertValuesIntoTable(this.tl);
 		} else if (e.getSource().equals(this.fromFile)) {
 			
 		} else if (e.getSource().equals(this.newTask)) {
-//			this.taskTable = new TaskTable(Toolkit.getDefaultToolkit().getScreenSize(), this);
+			this.taskTable = new TaskTable(Toolkit.getDefaultToolkit().getScreenSize(), this);
 			new TaskDialog(this,"new task",true);
 
 		} else if (e.getSource().equals(this.saveAs)) {
@@ -152,6 +153,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		} else if (e.getSource().equals(this.exit)) {
 
 		} else if (e.getSource().equals(this.sync)) {
+			this.openConnection();
 			for(Task t : this.tl) {
 				
 			}
@@ -227,14 +229,20 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		
 	}
 
-	public void openConnection(String username, String password) {
+	public void openConnection() {
 		// TODO Auto-generated method stub
-		if(this.db==null)
-		this.db = new DatabaseConnection(username,password);
-		
-        db.checkTaskTable();
-        tl = db.getAllTasks();
-		
+		if(this.db==null) {
+		LoginDialog dialog = new LoginDialog(this, "Login", true);
+		System.out.println(dialog.getUsername());
+		this.db = new DatabaseConnection(dialog.getUsername(),dialog.getPassword());
+		}
+	}
+	
+	public void getTaskFromDb() {
+		if(this.db!=null) {
+		db.checkTaskTable();
+        this.tl = db.getAllTasks();
+		}
 	}
 
 }
