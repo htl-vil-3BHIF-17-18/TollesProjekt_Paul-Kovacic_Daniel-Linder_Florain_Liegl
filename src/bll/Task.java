@@ -1,6 +1,6 @@
 package bll;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Task {
 	private boolean done;
@@ -52,7 +52,27 @@ public class Task {
         return until;
     }
 
-	@Override
+    public void setCategory(Categories category) {
+        this.category = category;
+    }
+
+    public void setSubject(Subjects subject) {
+        this.subject = subject;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setFrom(Date from) {
+        this.from = from;
+    }
+
+    public void setUntil(Date until) {
+        this.until = until;
+    }
+
+    @Override
 	public String toString() {
 		return (this.done ? "Y" : "N") + ", " + category + ", " + subject + ", " + description + ", " + from
 				+ ", " + until;
