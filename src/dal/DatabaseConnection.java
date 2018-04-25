@@ -130,8 +130,26 @@ public class DatabaseConnection {
     }
 
     public void updateEntry(Task oldTask, Task newTask) {
-        removeEntry(oldTask);
-        addEntry(newTask);
+        Connection con = null;
+        try {
+            con = this.createConnection();
+            PreparedStatement stmtDelete = con.prepareStatement("UPDATE task SET category LIKE ?, subject LIKE, von = ? WHERE category LIKE ? AND subject LIKE ? AND von = ?;");
+            stmtDelete.setString(1, oldTask.getCategorie().toString());
+            stmtDelete.setString(2, oldTask.getSubject().toString());
+            stmtDelete.setDate(3, this.convertDate(oldTask.getFrom()));
+            stmtDelete.setString(4, newTask.getCategorie().toString());
+            stmtDelete.setString(5, newTask.getSubject().toString());
+            stmtDelete.setDate(6, this.convertDate(newTask.getFrom()));
+            con.close();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void checkTaskTable() {
@@ -145,7 +163,6 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     public java.sql.Date convertDate(java.util.Date utilDate) {
