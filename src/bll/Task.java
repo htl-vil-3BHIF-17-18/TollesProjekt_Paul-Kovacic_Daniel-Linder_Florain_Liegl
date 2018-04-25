@@ -11,7 +11,7 @@ public class Task {
     private Date from;
     private Date until;
 
-    public Task(int id, boolean done, Categories category, Subjects subject, String description, Date from, Date until) {
+    public Task(boolean done, Categories category, Subjects subject, String description, Date from, Date until) {
         this.id = id;
     	this.done = done;
         this.category = category;
@@ -20,6 +20,10 @@ public class Task {
         this.from = from;
         this.until = until;
 	}
+
+
+
+
 
 	public int getId() { return id; }
     

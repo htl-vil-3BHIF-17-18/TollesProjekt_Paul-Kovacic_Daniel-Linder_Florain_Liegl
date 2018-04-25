@@ -116,7 +116,7 @@ public class TaskDialog extends JDialog  implements ActionListener{
 
                isValid = true;
 
-               this.task= new Task(Categories.values()[this.JCategory.getSelectedIndex()],Subjects.values()[this.JSubject.getSelectedIndex()],this.tfDescription.getText(), time.parse(this.tfFrom.getText()),time.parse(this.tfFrom.getText()));
+               this.task= new Task(false,Categories.values()[this.JCategory.getSelectedIndex()],Subjects.values()[this.JSubject.getSelectedIndex()],this.tfDescription.getText(), time.parse(this.tfFrom.getText()),time.parse(this.tfFrom.getText()));
                System.out.println(this.task.toString());
             }
 
