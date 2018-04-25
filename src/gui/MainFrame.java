@@ -73,7 +73,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	private void initializeControls() {
 		// TODO Auto-generated method stub
 		this.setLayout(new GridLayout(0, 1));
-		// create MenuBa
+		// create MenuBar
 		this.menuBar = new JMenuBar();
 
 		this.file = new JMenu("File");
@@ -146,8 +146,9 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 		} else if (e.getSource().equals(this.newTask)) {
 			this.taskTable = new TaskTable(Toolkit.getDefaultToolkit().getScreenSize(), this);
-			new TaskDialog(this, "new task", true);
-
+			TaskDialog td=new TaskDialog(this, "new task", true);
+			this.tl.add(td.getTask());
+			this.taskTable.insertValuesIntoTable(this.tl);
 		} else if (e.getSource().equals(this.saveAs)) {
 
 		} else if (e.getSource().equals(this.exit)) {
@@ -155,7 +156,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		} else if (e.getSource().equals(this.sync)) {
 			this.openConnection();
 			for (Task t : this.tl) {
-
+				this.db.addEntry(t);
 			}
 
 		} else if (e.getSource().equals(this.edit)) {
@@ -163,7 +164,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		} else if (e.getSource().equals(this.delete)) {
 
 		} else if (e.getSource().equals(this.settings)) {
-
+			
 		} else if (e.getSource().equals(this.github)) {
 
 			if (Desktop.isDesktopSupported()) {
@@ -190,16 +191,15 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 	
 	@Override
-	public void valueChanged(ListSelectionEvent arg0) {
+	public void valueChanged(ListSelectionEvent e) {
 		// TODO Auto-generated method stub
-
+//		System.out.println(e.getSource());
 	}
 
 	public void openConnection() {
 		// TODO Auto-generated method stub
 		if (this.db == null) {
 			LoginDialog dialog = new LoginDialog(this, "Login", true);
-			System.out.println(dialog.getUsername() != "");
 			if (dialog.isLogedIn())
 				this.db = new DatabaseConnection(dialog.getUsername(), dialog.getPassword());
 			if (!db.checkTaskTable()) {

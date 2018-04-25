@@ -117,7 +117,6 @@ public class TaskDialog extends JDialog  implements ActionListener{
         // TODO Auto-generated method stub
         if (e.getSource().equals(this.btnOk)) {
 
-            System.out.println(this.datePicker.getJFormattedTextField().getText());
             if (this.writeValuesToMenu()) {
                 this.setVisible(false);
                 this.dispose();
@@ -152,7 +151,15 @@ public class TaskDialog extends JDialog  implements ActionListener{
 
     }
 
+	public Task getTask() {
+		return task;
+	}
+    
+    
+
 }
+
+
 
  class DateLabelFormatter extends JFormattedTextField.AbstractFormatter
 {
