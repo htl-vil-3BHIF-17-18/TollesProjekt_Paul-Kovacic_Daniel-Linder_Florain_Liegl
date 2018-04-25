@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
@@ -51,13 +52,13 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 	private JMenu help;
 	private JMenuItem github;
-	
-	private List<Task> tl=null;
+
+	private List<Task> tl = null;
 	private DatabaseConnection db;
 
 	public MainFrame(String identifier) throws HeadlessException {
 		super(identifier);
-		this.tl=new ArrayList<>();
+		this.tl = new ArrayList<>();
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setMinimumSize(new Dimension(600, 400));
 		this.setPreferredSize(new Dimension(1080, 720));
@@ -127,7 +128,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 		this.menuBar.add(this.settings);
 
-		
 		this.menuBar.add(this.help);
 		this.help.add(this.github);
 
@@ -138,15 +138,15 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource().equals(this.fromDatabase)) {	
+		if (e.getSource().equals(this.fromDatabase)) {
 			this.openConnection();
 			this.getTaskFromDb();
 			this.taskTable.insertValuesIntoTable(this.tl);
 		} else if (e.getSource().equals(this.fromFile)) {
-			
+
 		} else if (e.getSource().equals(this.newTask)) {
 			this.taskTable = new TaskTable(Toolkit.getDefaultToolkit().getScreenSize(), this);
-			new TaskDialog(this,"new task",true);
+			new TaskDialog(this, "new task", true);
 
 		} else if (e.getSource().equals(this.saveAs)) {
 
@@ -154,14 +154,14 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 		} else if (e.getSource().equals(this.sync)) {
 			this.openConnection();
-			for(Task t : this.tl) {
-				
+			for (Task t : this.tl) {
+
 			}
 
 		} else if (e.getSource().equals(this.edit)) {
-			
+
 		} else if (e.getSource().equals(this.delete)) {
-			
+
 		} else if (e.getSource().equals(this.settings)) {
 
 		} else if (e.getSource().equals(this.github)) {
@@ -188,6 +188,34 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		}
 	}
 
+	
+	@Override
+	public void valueChanged(ListSelectionEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void openConnection() {
+		// TODO Auto-generated method stub
+		if (this.db == null) {
+			LoginDialog dialog = new LoginDialog(this, "Login", true);
+			System.out.println(dialog.getUsername() != "");
+			if (dialog.isLogedIn())
+				this.db = new DatabaseConnection(dialog.getUsername(), dialog.getPassword());
+			if (!db.checkTaskTable()) {
+				JOptionPane.showMessageDialog(null, "Wrong credentials!!", "Warning", JOptionPane.INFORMATION_MESSAGE);
+				this.db = null;
+			}
+
+		}
+	}
+
+	public void getTaskFromDb() {
+		if (this.db != null) {
+			this.tl = db.getAllTasks();
+		}
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -204,7 +232,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		return sync;
 	}
 
-
 	public JMenu getConnection() {
 		return task;
 	}
@@ -217,32 +244,8 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		return settings;
 	}
 
-	
-
 	public JMenu getHelp() {
 		return help;
-	}
-
-	@Override
-	public void valueChanged(ListSelectionEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void openConnection() {
-		// TODO Auto-generated method stub
-		if(this.db==null) {
-		LoginDialog dialog = new LoginDialog(this, "Login", true);
-		if(dialog.getUsername()!="")
-		this.db = new DatabaseConnection(dialog.getUsername(),dialog.getPassword());
-		}
-	}
-	
-	public void getTaskFromDb() {
-		if(this.db!=null) {
-		db.checkTaskTable();
-        this.tl = db.getAllTasks();
-		}
 	}
 
 }

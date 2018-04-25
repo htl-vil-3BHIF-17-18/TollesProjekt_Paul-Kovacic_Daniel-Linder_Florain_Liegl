@@ -149,7 +149,8 @@ public class DatabaseConnection {
         }
     }
 
-    public void checkTaskTable() {
+    public boolean checkTaskTable() {
+    	boolean connencted=true;
         try {
             Connection con = this.createConnection();
             DatabaseMetaData metadata = con.getMetaData();
@@ -158,7 +159,10 @@ public class DatabaseConnection {
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
+            connencted=false;
         }
+        return connencted;	
+        
     }
 
     public java.sql.Date convertDate(java.util.Date utilDate) {
