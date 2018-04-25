@@ -27,7 +27,9 @@ public class DatabaseConnection {
         try {
             con = createConnection();
             stmtCreate = con.createStatement();
+            stmtCreate.execute("CREATE SEQUENCE idTask START WITH 1 INCREMENT BY 1; ");
             stmtCreate.execute("CREATE TABLE task (" +
+                    "id INT," +
                     "done VARCHAR2(1)," +
                     "category VARCHAR2(20)," +
                     "subject VARCHAR2(20)," +
@@ -58,16 +60,14 @@ public class DatabaseConnection {
             ResultSet rs = stmtSelect.executeQuery("SELECT * FROM task");
 
             while (rs.next()) {
-                tasks.add(new Task(rs.getString(1) == "Y", Categories.valueOf(rs.getString(2)), Subjects.valueOf(rs.getString(3)), rs.getString(4), rs.getDate(5), rs.getDate(6)));
+                tasks.add(new Task(rs.getInt(1),rs.getString(2) == "Y", Categories.valueOf(rs.getString(3)), Subjects.valueOf(rs.getString(4)), rs.getString(5), rs.getDate(6), rs.getDate(7)));
             }
         } catch (ClassNotFoundException | SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } finally {
             try {
                 con.close();
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -81,7 +81,6 @@ public class DatabaseConnection {
             Statement stmtSelect = con.createStatement();
             stmtSelect.executeQuery("SELECT * FROM task WHERE " + tableCol + " LIKE \'" + filter + "\';");
         } catch (ClassNotFoundException | SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return tasks;
