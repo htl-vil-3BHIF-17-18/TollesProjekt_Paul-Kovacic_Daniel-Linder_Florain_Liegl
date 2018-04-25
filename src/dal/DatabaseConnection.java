@@ -60,7 +60,7 @@ public class DatabaseConnection {
             ResultSet rs = stmtSelect.executeQuery("SELECT * FROM task");
 
             while (rs.next()) {
-                tasks.add(new Task(rs.getInt(1),rs.getString(2) == "Y", Categories.valueOf(rs.getString(3)), Subjects.valueOf(rs.getString(4)), rs.getString(5), rs.getDate(6), rs.getDate(7)));
+                tasks.add(new Task(rs.getString(1) == "Y", Categories.valueOf(rs.getString(2)), Subjects.valueOf(rs.getString(3)), rs.getString(4), rs.getDate(5), rs.getDate(6)));
             }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -90,13 +90,13 @@ public class DatabaseConnection {
         Connection con = null;
         try {
             con = this.createConnection();
-            PreparedStatement stmtInsert = con.prepareStatement("INSERT INTO task (id, done, category, subject, description, von, until) VALUES (idTask.NEXTVAL,?,?,?,?,?,?);");
+            PreparedStatement stmtInsert = con.prepareStatement("INSERT INTO task (done, category, subject, description, von, until) VALUES (?,?,?,?,?,?);");
             stmtInsert.setString(1, task.isDone() ? "Y" : "N");
             stmtInsert.setString(2, task.getCategorie().toString());
             stmtInsert.setString(3, task.getSubject().toString());
             stmtInsert.setString(4, task.getDescription());
-            stmtInsert.setDate(5, task.getFrom());
-            stmtInsert.setDate(6, task.getUntil());
+            stmtInsert.setDate(5, convertDate(this.convertDate(task.getFrom())));
+            stmtInsert.setDate(6, convertDate(this.convertDate(task.getUntil())));
             con.commit();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -113,8 +113,10 @@ public class DatabaseConnection {
         Connection con = null;
         try {
             con = this.createConnection();
-            Statement stmtDelete = con.createStatement();
-            stmtDelete.execute("DELETE FROM task WHERE id = " + task.getId() + ";");
+            PreparedStatement stmtDelete = con.prepareStatement("DELETE FROM task WHERE category LIKE ? AND subject LIKE ? AND von = ?;");
+            stmtDelete.setString(1, task.getCategorie().toString());
+            stmtDelete.setString(2, task.getSubject().toString());
+            stmtDelete.setDate(3, this.convertDate(task.getFrom()));
             con.close();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -140,7 +142,7 @@ public class DatabaseConnection {
             rs.getRow();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (SQLException e) {0
             e.printStackTrace();
         }
 
