@@ -233,7 +233,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		// TODO Auto-generated method stub
 		if(this.db==null) {
 		LoginDialog dialog = new LoginDialog(this, "Login", true);
-		System.out.println(dialog.getUsername());
+		if(dialog.getUsername()!="")
 		this.db = new DatabaseConnection(dialog.getUsername(),dialog.getPassword());
 		}
 	}
