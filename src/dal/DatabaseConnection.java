@@ -1,6 +1,7 @@
 package dal;
 
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 
 import bll.*;
@@ -18,34 +19,6 @@ public class DatabaseConnection {
     private Connection createConnection() throws ClassNotFoundException, SQLException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
         return DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@192.168.128.152:1521:ora11g"); //212.152.179.117
-    }
-
-    public void createTaskTable() {
-        Connection con = null;
-        Statement stmtCreate;
-        try {
-            con = createConnection();
-            stmtCreate = con.createStatement();
-            stmtCreate.execute("CREATE TABLE task (" +
-                    "done VARCHAR2(1)," +
-                    "category VARCHAR2(20)," +
-                    "subject VARCHAR2(20)," +
-                    "description VARCHAR2(50)," +
-                    "von DATE," +
-                    "until DATE," +
-                    "CONSTRAINT pkTask PRIMARY KEY (category, subject, von)," +
-                    "CONSTRAINT ckDatum CHECK (von <= until)," +
-                    "CONSTRAINT ckErledigt CHECK (upper(done) LIKE 'Y' OR upper(done) LIKE 'N')" +
-                    ");");
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                con.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public List<Task> getAllTasks() {
@@ -71,14 +44,25 @@ public class DatabaseConnection {
         return tasks;
     }
 
-    public List<Task> getFilteredTasks(String tableCol, String filter) {
+    public List<Task> getUndoneTasks() {
         List<Task> tasks = new ArrayList<>();
+        Connection con = null;
         try {
-            Connection con = this.createConnection();
+            con = this.createConnection();
             Statement stmtSelect = con.createStatement();
-            stmtSelect.executeQuery("SELECT * FROM task WHERE " + tableCol + " LIKE \'" + filter + "\';");
+            ResultSet rs = stmtSelect.executeQuery("SELECT * FROM task WHERE done LIKE 'N'");
+
+            while (rs.next()) {
+                tasks.add(new Task(rs.getString(1).equals("Y"), Categories.valueOf(rs.getString(2)), Subjects.valueOf(rs.getString(3)), rs.getString(4), this.convertDate(rs.getDate(5)), this.convertDate(rs.getDate(6))));
+            }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return tasks;
     }
@@ -92,8 +76,8 @@ public class DatabaseConnection {
             stmtInsert.setString(2, task.getCategorie().toString());
             stmtInsert.setString(3, task.getSubject().toString());
             stmtInsert.setString(4, task.getDescription());
-            stmtInsert.setDate(5, convertDate(this.convertDate(task.getFrom())));
-            stmtInsert.setDate(6, convertDate(this.convertDate(task.getUntil())));
+            stmtInsert.setDate(5, this.convertDate(task.getFrom()));
+            stmtInsert.setDate(6, this.convertDate(task.getUntil()));
             con.commit();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -173,8 +157,10 @@ public class DatabaseConnection {
     }
 
     private java.sql.Date convertDate(java.util.Date utilDate) {
-        java.sql.Date sqlDate = null;
-        System.out.print(utilDate.toString());
-        return sqlDate;
+        return new java.sql.Date(utilDate.getTime());
+    }
+
+    private java.util.Date convertDate(java.sql.Date sqlDate) {
+        return new java.util.Date(sqlDate.getTime());
     }
 }
