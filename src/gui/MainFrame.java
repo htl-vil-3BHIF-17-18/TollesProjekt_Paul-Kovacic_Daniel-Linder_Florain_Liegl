@@ -201,7 +201,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			LoginDialog dialog = new LoginDialog(this, "Login", true);
 			if (dialog.isLogedIn())
 				this.db = new DatabaseConnection(dialog.getUsername(), dialog.getPassword());
-			if (!db.checkTaskTable()) {
+			if (!db.checkConnection()) {
 				JOptionPane.showMessageDialog(null, "Wrong credentials!!", "Warning", JOptionPane.INFORMATION_MESSAGE);
 				this.db = null;
 			}

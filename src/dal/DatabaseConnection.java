@@ -130,13 +130,16 @@ public class DatabaseConnection {
         Connection con = null;
         try {
             con = this.createConnection();
-            PreparedStatement stmtDelete = con.prepareStatement("UPDATE task SET category LIKE ?, subject LIKE, von = ? WHERE category LIKE ? AND subject LIKE ? AND von = ?;");
-            stmtDelete.setString(1, oldTask.getCategorie().toString());
-            stmtDelete.setString(2, oldTask.getSubject().toString());
-            stmtDelete.setDate(3, this.convertDate(oldTask.getFrom()));
-            stmtDelete.setString(4, newTask.getCategorie().toString());
-            stmtDelete.setString(5, newTask.getSubject().toString());
-            stmtDelete.setDate(6, this.convertDate(newTask.getFrom()));
+            PreparedStatement stmtDelete = con.prepareStatement("UPDATE task SET done LIKE ?, category LIKE ?, subject LIKE ?, description LIKE ?, von = ?, until = ? WHERE category LIKE ? AND subject LIKE ? AND von = ?;");
+            stmtDelete.setString(1, newTask.isDone() ? "Y" : "N");
+            stmtDelete.setString(2, newTask.getCategorie().toString());
+            stmtDelete.setString(3, newTask.getSubject().toString());
+            stmtDelete.setString(4, newTask.getDescription());
+            stmtDelete.setDate(5, this.convertDate(newTask.getFrom()));
+            stmtDelete.setDate(6, this.convertDate(newTask.getUntil()));
+            stmtDelete.setString(7, oldTask.getCategorie().toString());
+            stmtDelete.setString(8, oldTask.getSubject().toString());
+            stmtDelete.setDate(9, this.convertDate(oldTask.getFrom()));
             con.close();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -149,20 +152,24 @@ public class DatabaseConnection {
         }
     }
 
-    public boolean checkTaskTable() {
-    	boolean connnected=true;
+    public boolean checkConnection() {
+        Connection con = null;
+        boolean connnected = true;
         try {
-            Connection con = this.createConnection();
-            DatabaseMetaData metadata = con.getMetaData();
-            ResultSet rs = metadata.getTables(null, null, "TASK", new String[] {"TABLE"});
-            rs.getRow();
+            con = this.createConnection();
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-            connnected=false;
+            connnected = false;
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return connnected;
-        
+
     }
 
     private java.sql.Date convertDate(java.util.Date utilDate) {
