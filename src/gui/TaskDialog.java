@@ -14,6 +14,7 @@ import java.awt.Frame;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 import javax.swing.*;
 
@@ -122,12 +123,20 @@ public class TaskDialog extends JDialog implements ActionListener {
 
 	private boolean writeValuesToMenu() {
 		boolean isValid = false;
+		SimpleDateFormat time = new SimpleDateFormat("dd.MM.yyyy");
+
+		try {
+			Date d1=time.parse(this.datePicker.getJFormattedTextField().getText());
+			Date d2=time.parse(this.datePickerTo.getJFormattedTextField().getText());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 
 		try {
 			if (!this.tfDescription.getText().trim().isEmpty()
 					&& !this.datePicker.getJFormattedTextField().getText().trim().isEmpty()
 					&& !this.datePickerTo.getJFormattedTextField().getText().trim().isEmpty()) {
-				SimpleDateFormat time = new SimpleDateFormat("dd.MM.yyyy");
+
 
 				isValid = true;
 
