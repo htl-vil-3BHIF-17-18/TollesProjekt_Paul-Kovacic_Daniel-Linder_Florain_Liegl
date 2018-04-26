@@ -125,17 +125,16 @@ public class TaskDialog extends JDialog implements ActionListener {
 		boolean isValid = false;
 		SimpleDateFormat time = new SimpleDateFormat("dd.MM.yyyy");
 
+
+
+
+
 		try {
 			Date d1=time.parse(this.datePicker.getJFormattedTextField().getText());
 			Date d2=time.parse(this.datePickerTo.getJFormattedTextField().getText());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		try {
 			if (!this.tfDescription.getText().trim().isEmpty()
 					&& !this.datePicker.getJFormattedTextField().getText().trim().isEmpty()
-					&& !this.datePickerTo.getJFormattedTextField().getText().trim().isEmpty()) {
+					&& !this.datePickerTo.getJFormattedTextField().getText().trim().isEmpty()&& d2.compareTo(d1)>=0) {
 
 
 				isValid = true;
