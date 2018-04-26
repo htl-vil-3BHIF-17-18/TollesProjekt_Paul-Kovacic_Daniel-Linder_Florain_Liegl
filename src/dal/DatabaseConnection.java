@@ -77,6 +77,7 @@ public class DatabaseConnection {
             stmtInsert.setString(4, task.getDescription());
             stmtInsert.setDate(5, this.convertDate(task.getFrom()));
             stmtInsert.setDate(6, this.convertDate(task.getUntil()));
+            stmtInsert.execute();
             con.commit();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -97,7 +98,8 @@ public class DatabaseConnection {
             stmtDelete.setString(1, task.getCategory().toString());
             stmtDelete.setString(2, task.getSubject().toString());
             stmtDelete.setDate(3, this.convertDate(task.getFrom()));
-            con.close();
+            stmtDelete.execute();
+            con.commit();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } finally {
@@ -113,16 +115,17 @@ public class DatabaseConnection {
         Connection con = null;
         try {
             con = this.createConnection();
-            PreparedStatement stmtDelete = con.prepareStatement("UPDATE task SET done LIKE ?, category LIKE ?, subject LIKE ?, description LIKE ?, von = ?, until = ? WHERE category LIKE ? AND subject LIKE ? AND von = ?;");
-            stmtDelete.setString(1, newTask.isDone() ? "Y" : "N");
-            stmtDelete.setString(2, newTask.getCategory().toString());
-            stmtDelete.setString(3, newTask.getSubject().toString());
-            stmtDelete.setString(4, newTask.getDescription());
-            stmtDelete.setDate(5, this.convertDate(newTask.getFrom()));
-            stmtDelete.setDate(6, this.convertDate(newTask.getUntil()));
-            stmtDelete.setString(7, oldTask.getCategory().toString());
-            stmtDelete.setString(8, oldTask.getSubject().toString());
-            stmtDelete.setDate(9, this.convertDate(oldTask.getFrom()));
+            PreparedStatement stmtUpdate = con.prepareStatement("UPDATE task SET done LIKE ?, category LIKE ?, subject LIKE ?, description LIKE ?, von = ?, until = ? WHERE category LIKE ? AND subject LIKE ? AND von = ?;");
+            stmtUpdate.setString(1, newTask.isDone() ? "Y" : "N");
+            stmtUpdate.setString(2, newTask.getCategory().toString());
+            stmtUpdate.setString(3, newTask.getSubject().toString());
+            stmtUpdate.setString(4, newTask.getDescription());
+            stmtUpdate.setDate(5, this.convertDate(newTask.getFrom()));
+            stmtUpdate.setDate(6, this.convertDate(newTask.getUntil()));
+            stmtUpdate.setString(7, oldTask.getCategory().toString());
+            stmtUpdate.setString(8, oldTask.getSubject().toString());
+            stmtUpdate.setDate(9, this.convertDate(oldTask.getFrom()));
+            stmtUpdate.execute();
             con.close();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();

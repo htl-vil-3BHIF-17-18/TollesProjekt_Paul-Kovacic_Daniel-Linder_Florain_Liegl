@@ -85,7 +85,7 @@ public class TaskTable extends JPanel {
 		this.jTable.getColumnModel().getColumn(5).setMinWidth(100);
 	}
 
-	public void InsertValueIntoTable(Task t) {
+	public void insertValueIntoTable(Task t) {
 		DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
 		model.addRow(new Object[] { t.isDone(), t.getCategory(), t.getSubject(), t.getDescription(), t.getFrom(),
 				t.getUntil() });
