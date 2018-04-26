@@ -48,7 +48,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	private JMenu help;
 	private JMenuItem github;
 
-	private List<Task> tl = null;
+	private List<Task> tl ;
 	private DatabaseConnection db;
 
 	public MainFrame(String identifier) throws HeadlessException {
@@ -145,7 +145,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		} else if (e.getSource().equals(this.fromFile)) {
 
 			try {
-				SerializationHelper.readSerializablePerson(chooseFile().toString());
+				System.out.println(SerializationHelper.readSerializableTask("Tasks.bat"));
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			} catch (ClassNotFoundException e1) {
@@ -157,6 +157,12 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			this.tl.add(td.getTask());
 			this.taskTable.insertValueIntoTable(td.getTask());
 		} else if (e.getSource().equals(this.saveAs)) {
+
+			try {
+				SerializationHelper.writeSerializedTask(this.tl,"Tasks.bat");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 
 		} else if (e.getSource().equals(this.exit)) {
 
@@ -208,7 +214,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		}
 	}
 
-	public void openConnection() {
+	private void openConnection() {
 		// TODO Auto-generated method stub
 		if (this.db == null) {
 			LoginDialog dialog = new LoginDialog(this, "Login", true);
@@ -222,7 +228,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		}
 	}
 
-	public void getTaskFromDb() {
+	private void getTaskFromDb() {
 		if (this.db != null) {
 			this.tl = db.getAllTasks();
 		}
@@ -258,17 +264,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 	public JMenu getHelp() {
 		return help;
-	}
-
-	private File chooseFile() {
-		JFileChooser fc = new JFileChooser();
-		fc.setCurrentDirectory(new File("."));
-		fc.setDialogTitle("Please choose an File...");
-		File selectedFile = null;
-		if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			selectedFile = fc.getSelectedFile();
-		}
-		return selectedFile;
 	}
 
 }

@@ -108,22 +108,29 @@ public class TaskTable extends JPanel {
 		 return tl;
 	 }
 
-	public Task getTask(int row) {
-		return tl.get(row);
+	public Task getTask() {
+		return tl.get(getSelected());
 	}
 	
-	public void insertTask(Task t,int row) {
-		this.jTable.setValueAt(t.isDone(), row, 0);
-		this.jTable.setValueAt(t.getCategory(), row, 1);
-		this.jTable.setValueAt(t.getSubject(), row, 2);
-		this.jTable.setValueAt(t.getDescription(), row, 3);
-		this.jTable.setValueAt(t.getFrom(), row, 4);
-		this.jTable.setValueAt(t.getUntil(), row, 5);
+	public void insertTask(Task t) {
+		int i=getSelected();
+		this.jTable.setValueAt(t.isDone(), i, 0);
+		this.jTable.setValueAt(t.getCategory(), i, 1);
+		this.jTable.setValueAt(t.getSubject(), i, 2);
+		this.jTable.setValueAt(t.getDescription(), i, 3);
+		this.jTable.setValueAt(t.getFrom(), i, 4);
+		this.jTable.setValueAt(t.getUntil(), i, 5);
+		this.tl.set(getSelected(), t);
+		
+	}
+	
+	public int getSelected() {
+		return this.jTable.getSelectedRow();
 	}
 	
 	
-	public void deleteTask(int row) {
-		tl.remove(row);
+	public void deleteTask() {
+		tl.remove(getSelected());
 		//doTo: delete from table
 	}
 
