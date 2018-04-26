@@ -51,6 +51,7 @@ public class TaskDialog extends JDialog implements ActionListener {
 	public TaskDialog(Frame owner, String title, boolean modal,Task task) {
 		super(owner, title, modal);
 		this.task=task;
+
 		this.initializeControls();
 		this.fillControls();
 		this.pack();
