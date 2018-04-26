@@ -18,7 +18,6 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import bll.Categories;
 import bll.Task;
 
 public class TaskTable extends JPanel {
@@ -49,7 +48,7 @@ public class TaskTable extends JPanel {
 	private void initializeControls() {
 		// TODO Auto-generated method stub
 		this.setLayout(new GridLayout(0, 1));
-		this.tl = new ArrayList<Task>();
+		this.tl=new ArrayList<Task>();
 		this.jTable = new JTable(new MyTableModel());
 		this.jTable.getSelectionModel().addListSelectionListener(this.mf);
 		this.setHeaderWidth();
@@ -88,49 +87,51 @@ public class TaskTable extends JPanel {
 
 	public void insertValueIntoTable(Task t) {
 		DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
-		model.addRow(new Object[] { t.isDone(), t.getCategorie(), t.getSubject(), t.getDescription(), t.getFrom(),
+		model.addRow(new Object[] { t.isDone(), t.getCategory(), t.getSubject(), t.getDescription(), t.getFrom(),
 				t.getUntil() });
 		tl.add(t);
 	}
 
 	public void insertValuesIntoTable(List<Task> tl) {
 		int i = 0;
-		this.tl = new ArrayList<>();
+		this.tl=new ArrayList<>();
 		DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
 		for (Task t : tl) {
-			model.addRow(new Object[] { t.isDone(), t.getCategorie(), t.getSubject(), t.getDescription(), t.getFrom(),
+			model.addRow(new Object[] { t.isDone(), t.getCategory(), t.getSubject(), t.getDescription(), t.getFrom(),
 					t.getUntil() });
 			i++;
 			tl.add(t);
 		}
 	}
 
-	public List<Task> getAllTasks() {
-		return tl;
-	}
+	 public List<Task> getAllTasks(){
+		 return tl;
+	 }
 
 	public Task getTask() {
 		return tl.get(getSelected());
 	}
-
+	
 	public void insertTask(Task t) {
-		int i = getSelected();
+		int i=getSelected();
 		this.jTable.setValueAt(t.isDone(), i, 0);
-		this.jTable.setValueAt(t.getCategorie(), i, 1);
+		this.jTable.setValueAt(t.getCategory(), i, 1);
 		this.jTable.setValueAt(t.getSubject(), i, 2);
 		this.jTable.setValueAt(t.getDescription(), i, 3);
 		this.jTable.setValueAt(t.getFrom(), i, 4);
 		this.jTable.setValueAt(t.getUntil(), i, 5);
-		tl.set(i, t);
+		this.tl.set(getSelected(), t);
+		
 	}
-
+	
 	public int getSelected() {
 		return this.jTable.getSelectedRow();
 	}
-
-	public void deleteTask(int row) {
-		tl.remove(row);
-		// doTo: delete from table
+	
+	
+	public void deleteTask() {
+		tl.remove(getSelected());
+		//doTo: delete from table
 	}
 
 }

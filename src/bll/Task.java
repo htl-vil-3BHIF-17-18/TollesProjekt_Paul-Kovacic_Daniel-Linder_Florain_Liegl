@@ -23,23 +23,18 @@ public class Task  implements Serializable{
     public boolean isDone() {
         return done;
     }
-
-    public Categories getCategorie() {
+    public Categories getCategory() {
         return category;
     }
-
     public Subjects getSubject() {
         return subject;
     }
-
     public String getDescription() {
         return description;
     }
-
     public Date getFrom() {
         return from;
     }
-
     public Date getUntil() { return until; }
 
     @Override
