@@ -122,6 +122,7 @@ public class TaskTable extends JPanel {
 		this.jTable.setValueAt(t.getUntil(), row, 5);
 	}
 	
+	
 	public void deleteTask(int row) {
 		tl.remove(row);
 		//doTo: delete from table
