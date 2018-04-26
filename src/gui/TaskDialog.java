@@ -50,8 +50,8 @@ public class TaskDialog extends JDialog implements ActionListener {
 	private void initializeControls() {
 		GridLayout grid = new GridLayout(6, 2);
 		this.setLayout(grid);
-		Categories[] Categoriesvalues = Categories.values();
-		this.JCategory = new JComboBox(Categoriesvalues);
+		Categories[] Categoryvalues = Categories.values();
+		this.JCategory = new JComboBox(Categoryvalues);
 		this.lbCategory = new JLabel("Category:");
 
 		Subjects[] Subjectvalues = Subjects.values();
@@ -125,17 +125,16 @@ public class TaskDialog extends JDialog implements ActionListener {
 		boolean isValid = false;
 		SimpleDateFormat time = new SimpleDateFormat("dd.MM.yyyy");
 
+
+
+
+
 		try {
 			Date d1=time.parse(this.datePicker.getJFormattedTextField().getText());
 			Date d2=time.parse(this.datePickerTo.getJFormattedTextField().getText());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		try {
 			if (!this.tfDescription.getText().trim().isEmpty()
 					&& !this.datePicker.getJFormattedTextField().getText().trim().isEmpty()
-					&& !this.datePickerTo.getJFormattedTextField().getText().trim().isEmpty()) {
+					&& !this.datePickerTo.getJFormattedTextField().getText().trim().isEmpty()&& d2.compareTo(d1)>=0) {
 
 
 				isValid = true;
