@@ -7,25 +7,20 @@ import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JSeparator;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import bll.Task;
 import dal.DatabaseConnection;
-import javafx.scene.control.Separator;
+import dal.SerializationHelper;
 
 public class MainFrame extends JFrame implements ActionListener, ListSelectionListener {
 
@@ -146,13 +141,23 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			this.openConnection();
 			this.getTaskFromDb();
 			this.taskTable.insertValuesIntoTable(this.tl);
+
 		} else if (e.getSource().equals(this.fromFile)) {
+
+			try {
+				SerializationHelper.readSerializablePerson(chooseFile().toString());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			} catch (ClassNotFoundException e1) {
+				e1.printStackTrace();
+			}
 
 		} else if (e.getSource().equals(this.newTask)) {
 			TaskDialog td=new TaskDialog(this, "New Task", true);
 			this.tl.add(td.getTask());
 			this.taskTable.InsertValueIntoTable(td.getTask());
 		} else if (e.getSource().equals(this.saveAs)) {
+
 
 
 
@@ -257,4 +262,19 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		return help;
 	}
 
+	private File chooseFile() {
+		JFileChooser fc = new JFileChooser();
+		fc.setCurrentDirectory(new File("."));
+		fc.setDialogTitle("Please choose an File...");
+		File selectedFile = null;
+		if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			selectedFile = fc.getSelectedFile();
+		}
+		return selectedFile;
+	}
+
+
 }
+
+
+
