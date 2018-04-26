@@ -150,7 +150,7 @@ public class DatabaseConnection {
     }
 
     public boolean checkTaskTable() {
-    	boolean connencted=true;
+    	boolean connnected=true;
         try {
             Connection con = this.createConnection();
             DatabaseMetaData metadata = con.getMetaData();
@@ -159,9 +159,9 @@ public class DatabaseConnection {
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-            connencted=false;
+            connnected=false;
         }
-        return connencted;	
+        return connnected;
         
     }
 
