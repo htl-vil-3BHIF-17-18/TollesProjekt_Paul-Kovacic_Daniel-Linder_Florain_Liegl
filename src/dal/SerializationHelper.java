@@ -25,6 +25,7 @@ public class SerializationHelper {
         Object obj ;
         try( FileInputStream fis = new FileInputStream( filename )){
             ObjectInputStream ois = new ObjectInputStream(fis);
+
             obj = ois.readObject();
             fis.close();
 
