@@ -33,7 +33,6 @@ public class LoginDialog extends JDialog implements ActionListener {
     }
 
     private void initializeControls() {
-        // TODO Auto-generated method stub
         GridLayout grid = new GridLayout(3, 2);
         this.setLayout(grid);
 
@@ -61,8 +60,6 @@ public class LoginDialog extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
         if (e.getSource().equals(this.btnLogin)) {
-            this.setVisible(false);
-            this.dispose();
             this.loggedIn = true;
         } else if (e.getSource().equals(this.btnCancel)) {
             this.lUsername.setText("");

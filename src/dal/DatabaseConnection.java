@@ -167,14 +167,13 @@ public class DatabaseConnection {
             con = this.createConnection();
 
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
             connected = false;
         } finally {
             try {
                 if (con != null) {
                     con.close();
                 }
-                return connected;
+                //return connected;
             } catch (SQLException e) {
                 e.printStackTrace();
             }

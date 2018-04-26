@@ -193,10 +193,15 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 				this.localFilepath = "tasks_" + dialog.getUsername() + ".txt";
 			}
 			if (!dbConnection.checkConnection()) {
+                dialog.setVisible(false);
+                dialog.dispose();
 				JOptionPane.showMessageDialog(null, "Wrong credentials!!", "Warning", JOptionPane.INFORMATION_MESSAGE);
 				this.dbConnection = null;
                 this.openConnection();
-			}
+			} else {
+                dialog.setVisible(false);
+                dialog.dispose();
+            }
 		}
 	}
 
