@@ -96,7 +96,7 @@ public class DatabaseConnection {
         Connection con = null;
         try {
             con = this.createConnection();
-            PreparedStatement stmtDelete = con.prepareStatement("DELETE FROM task WHERE category LIKE ? AND subject LIKE ? AND von = ?;");
+            PreparedStatement stmtDelete = con.prepareStatement("DELETE FROM task WHERE category LIKE ? AND subject LIKE ? AND von = ?");
             stmtDelete.setString(1, task.getCategory().toString());
             stmtDelete.setString(2, task.getSubject().toString());
             stmtDelete.setDate(3, this.convertDate(task.getFrom()));
@@ -117,13 +117,16 @@ public class DatabaseConnection {
         Connection con = null;
         try {
             con = this.createConnection();
-            PreparedStatement stmtUpdate = con.prepareStatement("UPDATE task SET done LIKE ?, category LIKE ?, subject LIKE ?, description LIKE ?, von = ?, until = ? WHERE category LIKE ? AND subject LIKE ? AND von = ?;");
+            PreparedStatement stmtUpdate = con.prepareStatement("UPDATE task SET done LIKE ?, category LIKE ?, subject LIKE ?, description LIKE ?, von = ?, until = ? WHERE category LIKE ? AND subject LIKE ? AND von = ?");
             stmtUpdate.setString(1, newTask.isDone() ? "Y" : "N");
             stmtUpdate.setString(2, newTask.getCategory().toString());
             stmtUpdate.setString(3, newTask.getSubject().toString());
             stmtUpdate.setString(4, newTask.getDescription());
             stmtUpdate.setDate(5, this.convertDate(newTask.getFrom()));
             stmtUpdate.setDate(6, this.convertDate(newTask.getUntil()));
+            stmtUpdate.setString(7, oldTask.getCategory().toString());
+            stmtUpdate.setString(8, oldTask.getSubject().toString());
+            stmtUpdate.setDate(9, this.convertDate(oldTask.getFrom()));
             stmtUpdate.execute();
             con.close();
         } catch (ClassNotFoundException | SQLException e) {
@@ -154,6 +157,25 @@ public class DatabaseConnection {
             }
         }
         return connnected;
+    }
+
+    public java.sql.Date getTimestampDB() {
+        Connection con = null;
+        java.sql.Date timestamp = null;
+        try {
+            con = this.createConnection();
+            Statement stmtTimestamp = con.createStatement();
+            ResultSet rs = stmtTimestamp.executeQuery("SELECT SCN_TO_TIMESTAMP(MAX(ora_rowscn)) from task");
+            timestamp = rs.getDate(1);
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
