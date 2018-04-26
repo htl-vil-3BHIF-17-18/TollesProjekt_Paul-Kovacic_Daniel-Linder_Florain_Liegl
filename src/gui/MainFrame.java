@@ -176,7 +176,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			this.taskTable.insertTask(td.getTask());
 
 		} else if (e.getSource().equals(this.delete)) {
-			
+			this.taskTable.deleteTask();
 
 		} else if (e.getSource().equals(this.settings)) {
 
@@ -223,7 +223,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 				JOptionPane.showMessageDialog(null, "Wrong credentials!!", "Warning", JOptionPane.INFORMATION_MESSAGE);
 				this.db = null;
 			}
-
 		}
 	}
 

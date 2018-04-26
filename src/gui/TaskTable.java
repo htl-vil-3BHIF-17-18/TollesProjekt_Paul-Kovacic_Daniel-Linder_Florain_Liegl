@@ -129,7 +129,11 @@ public class TaskTable extends JPanel {
 	
 	
 	public void deleteTask() {
-		tl.remove(getSelected());
+		if(getSelected()>=0) {
+			tl.remove(getSelected());
+//			this.jTable.
+		}
+		
 		//doTo: delete from table
 	}
 }

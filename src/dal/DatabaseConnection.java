@@ -17,7 +17,7 @@ public class DatabaseConnection {
 
     private Connection createConnection() throws ClassNotFoundException, SQLException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        return DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@212.152.179.117:1521:ora11g");
+        return DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@192.168.128.152:1521:ora11g");
     }
 
     public List<Task> getAllTasks() {
