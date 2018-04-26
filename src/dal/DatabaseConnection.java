@@ -165,7 +165,7 @@ public class DatabaseConnection {
         
     }
 
-    public java.sql.Date convertDate(java.util.Date utilDate) {
+    private java.sql.Date convertDate(java.util.Date utilDate) {
         java.sql.Date sqlDate = null;
         System.out.print(utilDate.toString());
         return sqlDate;
