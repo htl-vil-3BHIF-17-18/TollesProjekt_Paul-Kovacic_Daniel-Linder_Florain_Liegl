@@ -171,6 +171,8 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 		} else if (e.getSource().equals(this.edit)) {
 
+			new TaskDialog(this,"New Task",true,);
+
 		} else if (e.getSource().equals(this.delete)) {
 
 		} else if (e.getSource().equals(this.settings)) {
