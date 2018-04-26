@@ -106,6 +106,10 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.github.addActionListener(this);
 		this.fromDatabase.addActionListener(this);
 		this.fromFile.addActionListener(this);
+		
+		//
+		this.edit.setEnabled(false);
+		this.delete.setEnabled(false);
 
 		// add to Frame
 
