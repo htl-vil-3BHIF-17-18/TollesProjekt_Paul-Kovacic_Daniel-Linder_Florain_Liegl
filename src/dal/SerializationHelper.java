@@ -10,7 +10,7 @@ import java.io.ObjectOutputStream;
 
 public class SerializationHelper {
 
-    public static void writeSerializedPersons( Object obj, String filename) throws IOException, ClassNotFoundException{
+    public static void writeSerializedTask( Object obj, String filename) throws IOException{
 
         try( FileOutputStream fos = new FileOutputStream( filename )){
             ObjectOutputStream oos = new ObjectOutputStream( fos );
@@ -19,8 +19,8 @@ public class SerializationHelper {
         }
     }
 
-    public static Object readSerializablePerson( String filename) throws IOException, ClassNotFoundException{
-        Object obj = null;
+    public static Object readSerializableTask( String filename) throws IOException, ClassNotFoundException{
+        Object obj ;
         try( FileInputStream fis = new FileInputStream( filename )){
             ObjectInputStream ois = new ObjectInputStream(fis);
             obj = ois.readObject();
