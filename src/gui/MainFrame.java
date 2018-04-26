@@ -207,9 +207,12 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		// TODO Auto-generated method stub
-		if (!(this.edit.isEnabled() && this.delete.isEnabled())) {
+		if (this.taskTable.getSelected()>=0) {
 			this.edit.setEnabled(true);
 			this.delete.setEnabled(true);
+		}else {
+			this.edit.setEnabled(false);
+			this.delete.setEnabled(false);
 		}
 	}
 

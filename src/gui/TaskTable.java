@@ -131,7 +131,8 @@ public class TaskTable extends JPanel {
 	public void deleteTask() {
 		if(getSelected()>=0) {
 			tl.remove(getSelected());
-//			this.jTable.
+			DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
+			model.removeRow(getSelected());
 		}
 		
 		//doTo: delete from table
