@@ -50,8 +50,8 @@ public class TaskDialog extends JDialog implements ActionListener {
 	private void initializeControls() {
 		GridLayout grid = new GridLayout(6, 2);
 		this.setLayout(grid);
-		Categories[] Categoriesvalues = Categories.values();
-		this.JCategory = new JComboBox(Categoriesvalues);
+		Categories[] Categoryvalues = Categories.values();
+		this.JCategory = new JComboBox(Categoryvalues);
 		this.lbCategory = new JLabel("Category:");
 
 		Subjects[] Subjectvalues = Subjects.values();
