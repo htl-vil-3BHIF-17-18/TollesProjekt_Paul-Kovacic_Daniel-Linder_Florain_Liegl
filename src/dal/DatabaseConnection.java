@@ -159,7 +159,7 @@ public class DatabaseConnection {
         return connnected;
     }
 
-    public java.sql.Date getTimestampDB() {
+    public java.util.Date getTimestampDB() {
         Connection con = null;
         java.sql.Date timestamp = null;
         try {
@@ -176,7 +176,7 @@ public class DatabaseConnection {
                 e.printStackTrace();
             }
         }
-
+        return timestamp;
     }
 
     private java.sql.Date convertDate(java.util.Date utilDate) {
