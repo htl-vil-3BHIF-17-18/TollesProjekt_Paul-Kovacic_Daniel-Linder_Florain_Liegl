@@ -266,15 +266,4 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		return help;
 	}
 
-	private File chooseFile() {
-		JFileChooser fc = new JFileChooser();
-		fc.setCurrentDirectory(new File("."));
-		fc.setDialogTitle("Please choose an File...");
-		File selectedFile = null;
-		if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			selectedFile = fc.getSelectedFile();
-		}
-		return selectedFile;
-	}
-
 }
