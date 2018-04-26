@@ -70,7 +70,7 @@ public class DatabaseConnection {
         Connection con = null;
         try {
             con = this.createConnection();
-            PreparedStatement stmtInsert = con.prepareStatement("INSERT INTO task (done, category, subject, description, von, until) VALUES (?,?,?,?,?,?);");
+            PreparedStatement stmtInsert = con.prepareStatement("INSERT INTO task (done, cat, subject, description, von, bis) VALUES (?,?,?,?,?,?)");
             stmtInsert.setString(1, task.isDone() ? "Y" : "N");
             stmtInsert.setString(2, task.getCategory().toString());
             stmtInsert.setString(3, task.getSubject().toString());
