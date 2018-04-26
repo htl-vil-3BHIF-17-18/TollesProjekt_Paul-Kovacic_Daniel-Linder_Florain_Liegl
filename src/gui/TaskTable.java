@@ -86,7 +86,7 @@ public class TaskTable extends JPanel {
 		this.jTable.getColumnModel().getColumn(5).setMinWidth(100);
 	}
 
-	public void InsertValueIntoTable(Task t) {
+	public void insertValueIntoTable(Task t) {
 		DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
 		model.addRow(new Object[] { t.isDone(), t.getCategorie(), t.getSubject(), t.getDescription(), t.getFrom(),
 				t.getUntil() });
@@ -109,17 +109,23 @@ public class TaskTable extends JPanel {
 		 return tl;
 	 }
 
-	public Task getTask(int row) {
-		return tl.get(row);
+	public Task getTask() {
+		return tl.get(getSelected());
 	}
 	
-	public void insertTask(Task t,int row) {
-		this.jTable.setValueAt(t.getId(), row, 0);
-		this.jTable.setValueAt(t.getCategorie(), row, 1);
-		this.jTable.setValueAt(t.getSubject(), row, 2);
-		this.jTable.setValueAt(t.getDescription(), row, 3);
-		this.jTable.setValueAt(t.getFrom(), row, 4);
-		this.jTable.setValueAt(t.getUntil(), row, 5);
+	public void insertTask(Task t) {
+		int i=getSelected();
+		this.jTable.setValueAt(t.isDone(), i, 0);
+		this.jTable.setValueAt(t.getCategorie(), i, 1);
+		this.jTable.setValueAt(t.getSubject(), i, 2);
+		this.jTable.setValueAt(t.getDescription(), i, 3);
+		this.jTable.setValueAt(t.getFrom(), i, 4);
+		this.jTable.setValueAt(t.getUntil(), i, 5);
+		tl.set(i, t);
+	}
+	
+	public int getSelected() {
+		return this.jTable.getSelectedRow();
 	}
 	
 	
