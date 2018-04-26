@@ -147,7 +147,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		} else if (e.getSource().equals(this.newTask)) {
 			TaskDialog td=new TaskDialog(this, "new task", true);
 			this.tl.add(td.getTask());
-			this.taskTable.insertValuesIntoTable(this.tl);
+			this.taskTable.InsertValueIntoTable(td.getTask());
 		} else if (e.getSource().equals(this.saveAs)) {
 
 		} else if (e.getSource().equals(this.exit)) {
