@@ -200,7 +200,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			this.edit.setEnabled(true);
 			this.delete.setEnabled(true);
 		}
-		
 	}
 
 	public void openConnection() {

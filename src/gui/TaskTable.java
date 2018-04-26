@@ -18,9 +18,10 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import bll.Categories;
 import bll.Task;
 
-public class TaskTable extends JPanel{
+public class TaskTable extends JPanel {
 
 	/**
 	 * 
@@ -31,16 +32,15 @@ public class TaskTable extends JPanel{
 	private int width;
 	private int height;
 	private JTable jTable;
-	private String separator=File.separator;
-	private ImageIcon ii =new ImageIcon("images"+separator+"check_24.png");
-	
-	
-	
+	private String separator = File.separator;
+	private ImageIcon ii = new ImageIcon("images" + separator + "check_24.png");
+	private List<Task> tl;
+
 	public TaskTable(Dimension d, MainFrame mf) {
 		super();
 		this.mf = mf;
-		this.width=d.width;
-		this.height=d.height;
+		this.width = d.width;
+		this.height = d.height;
 		this.setSize(new Dimension(width, height));
 		this.setMinimumSize(this.mf.getMinimumSize());
 		this.initializeControls();
@@ -48,36 +48,34 @@ public class TaskTable extends JPanel{
 
 	private void initializeControls() {
 		// TODO Auto-generated method stub
-		this.setLayout(new GridLayout(0,1));
-		this.jTable=new JTable(new MyTableModel());
+		this.setLayout(new GridLayout(0, 1));
+		this.tl=new ArrayList<Task>();
+		this.jTable = new JTable(new MyTableModel());
 		this.jTable.getSelectionModel().addListSelectionListener(this.mf);
 		this.setHeaderWidth();
 		this.jTable.getTableHeader().setReorderingAllowed(false);
 
-		//image in table header(s)
-	    Border headerBorder = UIManager.getBorder("TableHeader.cellBorder");
-	    JLabel blueLabel = new JLabel("", ii, JLabel.CENTER);
-	    blueLabel.setBorder(headerBorder);
-	    TableCellRenderer renderer = new JComponentTableCellRenderer();
-	    TableColumnModel columnModel = this.jTable.getColumnModel();
-	    TableColumn column0 = columnModel.getColumn(0);
-	    column0.setHeaderRenderer(renderer);
-	    column0.setHeaderValue(blueLabel);
-	    
+		// image in table header(s)
+		Border headerBorder = UIManager.getBorder("TableHeader.cellBorder");
+		JLabel blueLabel = new JLabel("", ii, JLabel.CENTER);
+		blueLabel.setBorder(headerBorder);
+		TableCellRenderer renderer = new JComponentTableCellRenderer();
+		TableColumnModel columnModel = this.jTable.getColumnModel();
+		TableColumn column0 = columnModel.getColumn(0);
+		column0.setHeaderRenderer(renderer);
+		column0.setHeaderValue(blueLabel);
 
-		
 		this.scrollpane = new JScrollPane(this.jTable);
-		
-		
+
 		this.scrollpane.setMinimumSize(new Dimension(this.width, this.height));
 		this.scrollpane.setPreferredSize(new Dimension(this.width, this.height));
-		
+
 		this.add(this.scrollpane);
-		//set visible
+		// set visible
 		this.setVisible(true);
-		
+
 	}
-	
+
 	private void setHeaderWidth() {
 		this.jTable.getColumnModel().getColumn(0).setMinWidth(30);
 		this.jTable.getColumnModel().getColumn(0).setMaxWidth(30);
@@ -87,22 +85,46 @@ public class TaskTable extends JPanel{
 		this.jTable.getColumnModel().getColumn(4).setMinWidth(100);
 		this.jTable.getColumnModel().getColumn(5).setMinWidth(100);
 	}
-	
-	public void InsertValueIntoTable(Task t) {
-		DefaultTableModel model =  (DefaultTableModel) this.jTable.getModel();
-			model.addRow(new Object[] {t.isDone(),t.getCategorie(),t.getSubject(),t.getDescription(),t.getFrom(),t.getUntil()});
-	}
-	
 
-	
+	public void InsertValueIntoTable(Task t) {
+		DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
+		model.addRow(new Object[] { t.isDone(), t.getCategorie(), t.getSubject(), t.getDescription(), t.getFrom(),
+				t.getUntil() });
+		tl.add(t);
+	}
+
 	public void insertValuesIntoTable(List<Task> tl) {
-		int i=0;
-		DefaultTableModel model =  (DefaultTableModel) this.jTable.getModel();
-		for(Task t : tl) {
-			model.addRow(new Object[] {t.isDone(),t.getCategorie(),t.getSubject(),t.getDescription(),t.getFrom(),t.getUntil()});
+		int i = 0;
+		this.tl=new ArrayList<>();
+		DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
+		for (Task t : tl) {
+			model.addRow(new Object[] { t.isDone(), t.getCategorie(), t.getSubject(), t.getDescription(), t.getFrom(),
+					t.getUntil() });
 			i++;
+			tl.add(t);
 		}
 	}
 
+	 public List<Task> getAllTasks(){
+		 return tl;
+	 }
+
+	public Task getTask(int row) {
+		return tl.get(row);
+	}
 	
+	public void insertTask(Task t,int row) {
+		this.jTable.setValueAt(t.getId(), row, 0);
+		this.jTable.setValueAt(t.getCategorie(), row, 1);
+		this.jTable.setValueAt(t.getSubject(), row, 2);
+		this.jTable.setValueAt(t.getDescription(), row, 3);
+		this.jTable.setValueAt(t.getFrom(), row, 4);
+		this.jTable.setValueAt(t.getUntil(), row, 5);
+	}
+	
+	public void deleteTask(int row) {
+		tl.remove(row);
+		//doTo: delete from table
+	}
+
 }
