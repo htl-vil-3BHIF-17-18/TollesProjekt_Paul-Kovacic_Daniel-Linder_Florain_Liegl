@@ -101,7 +101,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.github.addActionListener(this);
 		this.fromDatabase.addActionListener(this);
 		this.fromFile.addActionListener(this);
-		
+
 		//
 		this.edit.setEnabled(false);
 		this.delete.setEnabled(false);
@@ -153,13 +153,10 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			}
 
 		} else if (e.getSource().equals(this.newTask)) {
-			TaskDialog td=new TaskDialog(this, "New Task", true);
+			TaskDialog td = new TaskDialog(this, "New Task", true);
 			this.tl.add(td.getTask());
 			this.taskTable.insertValueIntoTable(td.getTask());
 		} else if (e.getSource().equals(this.saveAs)) {
-
-
-
 
 		} else if (e.getSource().equals(this.exit)) {
 
@@ -169,15 +166,15 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 				this.db.addEntry(t);
 			}
 
-		} else if (e.getSource().equals(this.edit)) {	
-			TaskDialog td=new TaskDialog(this,"New Task",true,this.taskTable.getTask());
+		} else if (e.getSource().equals(this.edit)) {
+			TaskDialog td = new TaskDialog(this, "New Task", true, this.taskTable.getTask());
 			this.tl.set(this.taskTable.getSelected(), td.getTask());
 			this.taskTable.insertTask(td.getTask());
 
 		} else if (e.getSource().equals(this.delete)) {
 
 		} else if (e.getSource().equals(this.settings)) {
-			
+
 		} else if (e.getSource().equals(this.github)) {
 
 			if (Desktop.isDesktopSupported()) {
@@ -202,11 +199,10 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		}
 	}
 
-	
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		// TODO Auto-generated method stub
-		if(!(this.edit.isEnabled()&&this.delete.isEnabled())) {
+		if (!(this.edit.isEnabled() && this.delete.isEnabled())) {
 			this.edit.setEnabled(true);
 			this.delete.setEnabled(true);
 		}
@@ -275,8 +271,4 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		return selectedFile;
 	}
 
-
 }
-
-
-
