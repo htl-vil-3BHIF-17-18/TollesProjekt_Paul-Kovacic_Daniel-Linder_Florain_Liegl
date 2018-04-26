@@ -36,6 +36,9 @@ public class SerializationHelper {
 
     public static Date getTimestampFile(String filepath) {
         File file = new File(filepath);
-        return new Date(file.lastModified());
+        if (file.exists())
+            return new Date(file.lastModified());
+        else
+            return new Date(0);
     }
 }

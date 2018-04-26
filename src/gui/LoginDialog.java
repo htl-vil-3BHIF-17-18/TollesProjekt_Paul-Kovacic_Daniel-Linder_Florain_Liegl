@@ -1,21 +1,15 @@
 package gui;
 
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
-import bll.Task;
-import dal.DatabaseConnection;
 
 public class LoginDialog extends JDialog implements ActionListener {
     private static final long serialVersionUID = 6158225161645311129L;
@@ -25,7 +19,7 @@ public class LoginDialog extends JDialog implements ActionListener {
     private JPasswordField pfPasswordField = null;
     private JButton btnLogin = null;
     private JButton btnCancel = null;
-    private boolean logedIn = false;
+    private boolean loggedIn = false;
 
     public LoginDialog(MainFrame owner, String title, boolean modal) {
         super(owner, title, modal);
@@ -69,7 +63,7 @@ public class LoginDialog extends JDialog implements ActionListener {
         if (e.getSource().equals(this.btnLogin)) {
             this.setVisible(false);
             this.dispose();
-            this.logedIn = true;
+            this.loggedIn = true;
         } else if (e.getSource().equals(this.btnCancel)) {
             this.lUsername.setText("");
             this.setVisible(false);
@@ -86,8 +80,8 @@ public class LoginDialog extends JDialog implements ActionListener {
         return String.valueOf(pfPasswordField.getPassword());
     }
 
-    public boolean isLogedIn() {
-        return logedIn;
+    public boolean isLoggedIn() {
+        return loggedIn;
     }
 
 

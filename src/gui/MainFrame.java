@@ -32,6 +32,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	private TaskTable taskTable;
 	private JMenuBar menuBar;
 	private JMenu file;
+	private JMenuItem changeUser;
 	private JMenuItem sync;
 	private JMenuItem exit;
 
@@ -45,14 +46,14 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	private JMenu help;
 	private JMenuItem github;
 
-	private List<Task> tl;
-	private DatabaseConnection db;
+	private List<Task> taskList;
+	private DatabaseConnection dbConnection;
 
 	private String localFilepath;
 
 	public MainFrame(String identifier) throws HeadlessException {
 		super(identifier);
-		this.tl = new ArrayList<>();
+		this.taskList = new ArrayList<>();
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setMinimumSize(new Dimension(600, 400));
 		this.setPreferredSize(new Dimension(1080, 720));
@@ -73,6 +74,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.menuBar = new JMenuBar();
 
 		this.file = new JMenu("File");
+		this.changeUser = new JMenuItem("Change User");
 		this.sync = new JMenuItem("Sync");
 		this.exit = new JMenuItem("Exit");
 
@@ -89,6 +91,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		// add to ActionListener
 		this.exit.addActionListener(this);
 		this.sync.addActionListener(this);
+		this.changeUser.addActionListener(this);
 		this.newTask.addActionListener(this);
 		this.edit.addActionListener(this);
 		this.delete.addActionListener(this);
@@ -132,10 +135,8 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		} else if (e.getSource().equals(this.exit)) {
 
 		} else if (e.getSource().equals(this.sync)) {
-			this.openConnection();
-			for (Task t : this.taskTable.getAllTasks()) {
-				this.db.addEntry(t);
-			}
+		    this.taskTable.getAllTasks().forEach(t -> this.dbConnection.addEntry(t));
+            this.syncAll();
 
 		} else if (e.getSource().equals(this.edit)) {
 			TaskDialog td = new TaskDialog(this, "New Task", true, this.taskTable.getTask());
@@ -154,7 +155,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 					desktop.browse(new URI(
 							"https://github.com/htl-vil-3BHIF-17-18/TollesProjekt_Paul-Kovacic_Daniel-Linder_Florain_Liegl/issues"));
 				} catch (IOException | URISyntaxException ex) {
-					// TODO Auto-generated catch block
 					ex.printStackTrace();
 				}
 			} else {
@@ -163,11 +163,13 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 					runtime.exec("xdg-open "
 							+ "https://github.com/htl-vil-3BHIF-17-18/TollesProjekt_Paul-Kovacic_Daniel-Linder_Florain_Liegl/issues");
 				} catch (IOException ex) {
-					// TODO Auto-generated catch block
 					ex.printStackTrace();
 				}
 			}
-		}
+		} else if (e.getSource().equals(this.changeUser)) {
+		    this.openConnection();
+		    this.chooseMethod();
+        }
 	}
 
 	@Override
@@ -184,25 +186,26 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 	private void openConnection() {
 		// TODO Auto-generated method stub
-		if (this.db == null) {
+		if (this.dbConnection == null) {
 			LoginDialog dialog = new LoginDialog(this, "Login", true);
-			if (dialog.isLogedIn()) {
-				this.db = new DatabaseConnection(dialog.getUsername(), dialog.getPassword());
+			if (dialog.isLoggedIn()) {
+				this.dbConnection = new DatabaseConnection(dialog.getUsername(), dialog.getPassword());
 				this.localFilepath = "tasks_" + dialog.getUsername() + ".txt";
 			}
-			if (!db.checkConnection()) {
+			if (!dbConnection.checkConnection()) {
 				JOptionPane.showMessageDialog(null, "Wrong credentials!!", "Warning", JOptionPane.INFORMATION_MESSAGE);
-				this.db = null;
+				this.dbConnection = null;
+                this.openConnection();
 			}
 		}
 	}
 
 	private void chooseMethod() {
-		Date dbDate = this.db.getTimestampDB();
+		Date dbDate = this.dbConnection.getTimestampDB();
 		Date localDate = SerializationHelper.getTimestampFile(this.localFilepath);
 		if(dbDate.after(localDate)) {
-			this.getTaskFromDb();
-			this.taskTable.insertValuesIntoTable(this.tl);
+			this.getTaskFromDB();
+			this.taskTable.insertValuesIntoTable(this.taskList);
 		} else {
 			try {
 				this.taskTable.insertValuesIntoTable((List<Task>) SerializationHelper.readSerializableTask(this.localFilepath));
@@ -215,48 +218,15 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	private void syncAll() {
         try {
             SerializationHelper.writeSerializedTask(this.taskTable.getAllTasks(),this.localFilepath);
-            this.db.commitChanges();
+            this.dbConnection.commitChanges();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-	private void getTaskFromDb() {
-		if (this.db != null) {
-			this.tl = db.getAllTasks();
+	private void getTaskFromDB() {
+		if (this.dbConnection != null) {
+			this.taskList = dbConnection.getAllTasks();
 		}
 	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public TaskTable getTaskTable() {
-		return taskTable;
-	}
-
-	public JMenu getFile() {
-		return file;
-	}
-
-	public JMenuItem getSettings() {
-		return sync;
-	}
-
-	public JMenu getConnection() {
-		return task;
-	}
-
-	public JMenuItem getLogin() {
-		return newTask;
-	}
-
-	public JMenu getWindow() {
-		return settings;
-	}
-
-	public JMenu getHelp() {
-		return help;
-	}
-
 }

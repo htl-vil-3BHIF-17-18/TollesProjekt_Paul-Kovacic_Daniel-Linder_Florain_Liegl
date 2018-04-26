@@ -2,6 +2,7 @@ package dal;
 
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 import bll.*;
 
@@ -17,7 +18,14 @@ public class DatabaseConnection {
 
     private Connection createConnection() throws ClassNotFoundException, SQLException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        return DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@192.168.128.152:1521:ora11g");
+        Connection con;
+        try {
+            con = DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@192.168.128.152:1521:ora11g");
+        } catch (SQLException e) {
+            con = DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@212.152.179.117:1521:ora11g");
+        }
+
+        return con;
     }
 
     public List<Task> getAllTasks() {
@@ -154,21 +162,24 @@ public class DatabaseConnection {
 
     public boolean checkConnection() {
         Connection con = null;
-        boolean connnected = true;
+        boolean connected = true;
         try {
             con = this.createConnection();
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-            connnected = false;
+            connected = false;
         } finally {
             try {
-                con.close();
+                if (con != null) {
+                    con.close();
+                }
+                return connected;
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        return connnected;
+        return connected;
     }
 
     public java.util.Date getTimestampDB() {
@@ -178,9 +189,12 @@ public class DatabaseConnection {
             con = this.createConnection();
             Statement stmtTimestamp = con.createStatement();
             ResultSet rs = stmtTimestamp.executeQuery("SELECT SCN_TO_TIMESTAMP(MAX(ora_rowscn)) from task");
+            rs.next();
             timestamp = rs.getDate(1);
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (SQLException e) {
+            timestamp = new java.sql.Date(0);
         } finally {
             try {
                 con.close();
