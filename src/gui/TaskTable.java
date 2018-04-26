@@ -95,7 +95,6 @@ public class TaskTable extends JPanel {
 	public void insertValuesIntoTable(List<Task> l) {
 		int i = 0;
 		this.tl=new ArrayList<>();
-		System.out.println(l);
 		DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
 		model.setRowCount(0);
 		for (Task t : l) {
