@@ -1,17 +1,12 @@
 package gui;
 
-import java.awt.Frame;
-
 import javax.swing.JDialog;
+import java.awt.*;
 
-public class Settings extends JDialog{
+public class SettingsDialog extends JDialog{
 	private static final long serialVersionUID = 4755471415460680864L;
 
-	public Settings(Frame arg0, String arg1, boolean arg2) {
-		super(arg0, arg1, arg2);
-		// TODO Auto-generated constructor stub
+	public SettingsDialog(Frame owner, String title, boolean modal) {
+		super(owner, title, modal);
 	}
-	
-	
-
 }
