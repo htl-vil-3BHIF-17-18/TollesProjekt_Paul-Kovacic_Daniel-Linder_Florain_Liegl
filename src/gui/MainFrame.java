@@ -7,12 +7,12 @@ import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.*;
@@ -32,10 +32,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	private TaskTable taskTable;
 	private JMenuBar menuBar;
 	private JMenu file;
-	private JMenu loadFrom;
-	private JMenuItem fromDatabase;
-	private JMenuItem fromFile;
-	private JMenuItem saveAs;
 	private JMenuItem sync;
 	private JMenuItem exit;
 
@@ -49,8 +45,10 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	private JMenu help;
 	private JMenuItem github;
 
-	private List<Task> tl ;
+	private List<Task> tl;
 	private DatabaseConnection db;
+
+	private String localFilepath;
 
 	public MainFrame(String identifier) throws HeadlessException {
 		super(identifier);
@@ -64,6 +62,8 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.pack();
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
+		this.openConnection();
+		this.chooseMethod();
 	}
 
 	private void initializeControls() {
@@ -73,10 +73,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.menuBar = new JMenuBar();
 
 		this.file = new JMenu("File");
-		this.loadFrom = new JMenu("Load From");
-		this.saveAs = new JMenuItem("Save As...");
-		this.fromDatabase = new JMenuItem("Database");
-		this.fromFile = new JMenuItem("File");
 		this.sync = new JMenuItem("Sync");
 		this.exit = new JMenuItem("Exit");
 
@@ -91,8 +87,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.github = new JMenuItem("Report a Bug");
 
 		// add to ActionListener
-		this.loadFrom.addActionListener(this);
-		this.saveAs.addActionListener(this);
 		this.exit.addActionListener(this);
 		this.sync.addActionListener(this);
 		this.newTask.addActionListener(this);
@@ -100,8 +94,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.delete.addActionListener(this);
 		this.settings.addActionListener(this);
 		this.github.addActionListener(this);
-		this.fromDatabase.addActionListener(this);
-		this.fromFile.addActionListener(this);
 
 		//
 		this.edit.setEnabled(false);
@@ -112,11 +104,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.setJMenuBar(this.menuBar);
 
 		this.menuBar.add(this.file);
-		this.file.add(this.loadFrom);
-		this.loadFrom.add(this.fromDatabase);
-		this.loadFrom.add(this.fromFile);
 		this.file.add(new JSeparator());
-		this.file.add(this.saveAs);
 		this.file.add(this.sync);
 		this.file.add(new JSeparator());
 		this.file.add(this.exit);
@@ -138,24 +126,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource().equals(this.fromDatabase)) {
-			this.openConnection();
-			this.getTaskFromDb();
-			this.taskTable.insertValuesIntoTable(this.tl);
-
-		} else if (e.getSource().equals(this.fromFile)) {
-
-			try {
-				this.taskTable.insertValuesIntoTable((List<Task>) SerializationHelper.readSerializableTask("Tasks.txt"));
-
-
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
-			}
-
-		} else if (e.getSource().equals(this.newTask)) {
+		if (e.getSource().equals(this.newTask)) {
 			TaskDialog td = new TaskDialog(this, "New Task", true);
 			this.taskTable.insertValueIntoTable(td.getTask());
 		} else if (e.getSource().equals(this.saveAs)) {
@@ -224,13 +195,30 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		// TODO Auto-generated method stub
 		if (this.db == null) {
 			LoginDialog dialog = new LoginDialog(this, "Login", true);
-			if (dialog.isLogedIn())
+			if (dialog.isLogedIn()) {
 				this.db = new DatabaseConnection(dialog.getUsername(), dialog.getPassword());
+				this.localFilepath = "tasks_" + dialog.getUsername() + ".txt";
+			}
 			if (!db.checkConnection()) {
 				JOptionPane.showMessageDialog(null, "Wrong credentials!!", "Warning", JOptionPane.INFORMATION_MESSAGE);
 				this.db = null;
 			}
 		}
+	}
+
+	private void chooseMethod() {
+		Date dbDate = this.db.getTimestampDB();
+		Date localDate = SerializationHelper.getTimestampFile(this.localFilepath)
+		if(dbDate.after(localDate)) {
+			this.getTaskFromDb();
+			this.taskTable.insertValuesIntoTable(this.tl);
+		} else {
+			try {
+				this.taskTable.insertValuesIntoTable((List<Task>) SerializationHelper.readSerializableTask(this.localFilepath));
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+        }
 	}
 
 	private void getTaskFromDb() {

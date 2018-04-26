@@ -25,7 +25,7 @@ public class LoginDialog extends JDialog implements ActionListener {
     private JPasswordField pfPasswordField = null;
     private JButton btnLogin = null;
     private JButton btnCancel = null;
-    private boolean logedIn=false;
+    private boolean logedIn = false;
 
     public LoginDialog(MainFrame owner, String title, boolean modal) {
         super(owner, title, modal);
@@ -69,27 +69,26 @@ public class LoginDialog extends JDialog implements ActionListener {
         if (e.getSource().equals(this.btnLogin)) {
             this.setVisible(false);
             this.dispose();
-            this.logedIn=true;
+            this.logedIn = true;
         } else if (e.getSource().equals(this.btnCancel)) {
-        	this.lUsername.setText("");
+            this.lUsername.setText("");
             this.setVisible(false);
             this.dispose();
         }
 
     }
 
-	public String getUsername() {
-		return tfUsername.getText();
-	}
+    public String getUsername() {
+        return tfUsername.getText();
+    }
 
-	public String getPassword() {
-		return String.valueOf(pfPasswordField.getPassword());
-	}
+    public String getPassword() {
+        return String.valueOf(pfPasswordField.getPassword());
+    }
 
-	public boolean isLogedIn() {
-		return logedIn;
-	}
+    public boolean isLogedIn() {
+        return logedIn;
+    }
 
-    
 
 }

@@ -1,11 +1,11 @@
 package dal;
 
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import bll.Task;
+
+import java.io.*;
+import java.util.Date;
+import java.util.List;
 
 
 public class SerializationHelper {
@@ -19,7 +19,7 @@ public class SerializationHelper {
         }
     }
 
-    public static Object readSerializableTask( String filename) throws IOException, ClassNotFoundException{
+    public static Object readSerializableTask(String filename) throws IOException, ClassNotFoundException{
         Object obj ;
         try( FileInputStream fis = new FileInputStream( filename )){
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -27,5 +27,10 @@ public class SerializationHelper {
 
         }
         return obj;
+    }
+
+    public static Date getTimestampFile(String filepath) {
+        File file = new File(filepath);
+        return new Date(file.lastModified());
     }
 }

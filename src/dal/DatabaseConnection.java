@@ -77,10 +77,7 @@ public class DatabaseConnection {
             stmtInsert.setString(4, task.getDescription());
             stmtInsert.setDate(5, this.convertDate(task.getFrom()));
             stmtInsert.setDate(6, this.convertDate(task.getUntil()));
-
-
             stmtInsert.execute();
-            con.commit();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } finally {
@@ -101,7 +98,6 @@ public class DatabaseConnection {
             stmtDelete.setString(2, task.getSubject().toString());
             stmtDelete.setDate(3, this.convertDate(task.getFrom()));
             stmtDelete.execute();
-            con.commit();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } finally {
@@ -129,6 +125,22 @@ public class DatabaseConnection {
             stmtUpdate.setDate(9, this.convertDate(oldTask.getFrom()));
             stmtUpdate.execute();
             con.close();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void commitChanges() {
+        Connection con = null;
+        try {
+            con = this.createConnection();
+            con.commit();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } finally {
