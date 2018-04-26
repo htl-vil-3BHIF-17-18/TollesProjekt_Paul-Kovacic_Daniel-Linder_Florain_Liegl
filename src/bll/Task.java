@@ -1,8 +1,9 @@
 package bll;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Task {
+public class Task  implements Serializable{
     private boolean done;
     private Categories category;
     private Subjects subject;
@@ -10,7 +11,7 @@ public class Task {
     private Date from;
     private Date until;
 
-    public Task(boolean done, Categories category, Subjects subject, String description, Date from, Date until) {
+    public Task(boolean done, Categories category, Subjects subject, String description, Date from, Date until)  {
         this.done = done;
         this.category = category;
         this.subject = subject;
