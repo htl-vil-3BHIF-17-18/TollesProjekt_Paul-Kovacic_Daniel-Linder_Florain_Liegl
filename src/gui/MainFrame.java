@@ -129,15 +129,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		if (e.getSource().equals(this.newTask)) {
 			TaskDialog td = new TaskDialog(this, "New Task", true);
 			this.taskTable.insertValueIntoTable(td.getTask());
-		} else if (e.getSource().equals(this.saveAs)) {
-
-			try {
-
-				SerializationHelper.writeSerializedTask(this.taskTable.getAllTasks(),"Tasks.txt");
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-
 		} else if (e.getSource().equals(this.exit)) {
 
 		} else if (e.getSource().equals(this.sync)) {
@@ -208,7 +199,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 	private void chooseMethod() {
 		Date dbDate = this.db.getTimestampDB();
-		Date localDate = SerializationHelper.getTimestampFile(this.localFilepath)
+		Date localDate = SerializationHelper.getTimestampFile(this.localFilepath);
 		if(dbDate.after(localDate)) {
 			this.getTaskFromDb();
 			this.taskTable.insertValuesIntoTable(this.tl);
@@ -220,6 +211,15 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			}
         }
 	}
+
+	private void syncAll() {
+        try {
+            SerializationHelper.writeSerializedTask(this.taskTable.getAllTasks(),this.localFilepath);
+            this.db.commitChanges();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 	private void getTaskFromDb() {
 		if (this.db != null) {
