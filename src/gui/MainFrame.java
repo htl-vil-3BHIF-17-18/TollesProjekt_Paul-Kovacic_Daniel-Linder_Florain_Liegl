@@ -145,7 +145,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		} else if (e.getSource().equals(this.fromFile)) {
 
 			try {
-				System.out.println(SerializationHelper.readSerializableTask(chooseFile().toString()));
+				System.out.println(SerializationHelper.readSerializableTask("Tasks.bat"));
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			} catch (ClassNotFoundException e1) {
@@ -159,7 +159,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		} else if (e.getSource().equals(this.saveAs)) {
 
 			try {
-				SerializationHelper.writeSerializedTask(this.tl,chooseFile().toString());
+				SerializationHelper.writeSerializedTask(this.tl,"Tasks.bat");
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
