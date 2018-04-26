@@ -93,11 +93,11 @@ public class TaskTable extends JPanel{
 	public void insertValuesIntoTable(List<Task> tl) {
 		int i=0;
 		
-		MyTableModel model =  (MyTableModel) this.jTable.getModel();
+		DefaultTableModel model =  (DefaultTableModel) this.jTable.getModel();
 		
 
 		for(Task t : tl) {
-			model.addRow(new Object[] {t.isDone(),t.getCategorie(),t.getSubject(),t.getDescription(),t.getFrom(),t.getUntil()},i);
+			model.addRow(new Object[] {t.isDone(),t.getCategorie(),t.getSubject(),t.getDescription(),t.getFrom(),t.getUntil()});
 			System.out.println(this.jTable.getRowCount());
 //			this.jTable.setValueAt(t.isDone(), i, 0);
 //			this.jTable.setValueAt(t.getCategorie(), i, 1);
