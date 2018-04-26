@@ -121,6 +121,7 @@ public class TaskTable extends JPanel {
 		this.jTable.setValueAt(t.getFrom(), i, 4);
 		this.jTable.setValueAt(t.getUntil(), i, 5);
 		this.tl.set(getSelected(), t);
+		
 	}
 	
 	public int getSelected() {
