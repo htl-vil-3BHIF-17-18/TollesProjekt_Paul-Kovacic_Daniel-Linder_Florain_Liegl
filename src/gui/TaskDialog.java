@@ -35,7 +35,8 @@ public class TaskDialog extends JDialog implements ActionListener {
 	private Task task = null;
 	JDatePickerImpl datePicker;
 	JDatePickerImpl datePickerTo;
-
+	UtilDateModel modelFrom;
+	UtilDateModel modelTo;
 	JDatePanelImpl datePanelFrom;
 	JDatePanelImpl datePanelTo;
 	private JPanel panel = null;
@@ -43,6 +44,16 @@ public class TaskDialog extends JDialog implements ActionListener {
 	public TaskDialog(Frame owner, String title, boolean modal) {
 		super(owner, title, modal);
 		this.initializeControls();
+		this.pack();
+		this.setVisible(true);
+	}
+
+	public TaskDialog(Frame owner, String title, boolean modal,Task task) {
+		super(owner, title, modal);
+		this.task=task;
+
+		this.initializeControls();
+		this.fillControls();
 		this.pack();
 		this.setVisible(true);
 	}
@@ -74,9 +85,9 @@ public class TaskDialog extends JDialog implements ActionListener {
 		this.btnCancel = new JButton("Cancel");
 		this.btnCancel.addActionListener(this);
 
-		UtilDateModel modelFrom = new UtilDateModel();
-		modelFrom.setValue(java.util.Calendar.getInstance().getTime());
-		modelFrom.setSelected(true);
+		this.modelFrom = new UtilDateModel();
+		this.modelFrom.setValue(java.util.Calendar.getInstance().getTime());
+		this.modelFrom.setSelected(true);
 		Properties p = new Properties();
 		p.put("text.today", "Today");
 		p.put("text.month", "Month");
@@ -84,9 +95,9 @@ public class TaskDialog extends JDialog implements ActionListener {
 		datePanelFrom = new JDatePanelImpl(modelFrom, p);
 		datePicker = new JDatePickerImpl(datePanelFrom, new DateLabelFormatter());
 
-		UtilDateModel modelTo = new UtilDateModel();
-		modelTo.setValue(java.util.Calendar.getInstance().getTime());
-		modelFrom.setSelected(true);
+		this.modelTo = new UtilDateModel();
+		this.modelTo.setValue(java.util.Calendar.getInstance().getTime());
+		this.modelFrom.setSelected(true);
 		datePanelTo = new JDatePanelImpl(modelTo, p);
 		datePickerTo = new JDatePickerImpl(datePanelTo, new DateLabelFormatter());
 
@@ -118,6 +129,20 @@ public class TaskDialog extends JDialog implements ActionListener {
 			this.setVisible(false);
 			this.dispose();
 		}
+
+	}
+
+	public  void fillControls(){
+		this.JCategory.setSelectedIndex(Categories.valueOf(this.task.getCategorie().toString()).ordinal());
+		this.JCategory.setSelectedIndex(Subjects.valueOf(this.task.getSubject().toString()).ordinal());
+		this.tfDescription.setText(task.getDescription());
+		this.modelTo.setValue(this.task.getUntil());
+		this.modelTo.setSelected(true);
+
+		this.modelFrom.setValue(this.task.getFrom());
+		this.modelFrom.setSelected(true);
+
+
 
 	}
 
