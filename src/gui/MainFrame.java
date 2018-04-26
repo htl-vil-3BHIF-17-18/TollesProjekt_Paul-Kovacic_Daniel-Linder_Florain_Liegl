@@ -154,7 +154,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 		} else if (e.getSource().equals(this.newTask)) {
 			TaskDialog td = new TaskDialog(this, "New Task", true);
-			this.tl.add(td.getTask());
 			this.taskTable.insertValueIntoTable(td.getTask());
 		} else if (e.getSource().equals(this.saveAs)) {
 
@@ -162,16 +161,16 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 		} else if (e.getSource().equals(this.sync)) {
 			this.openConnection();
-			for (Task t : this.tl) {
+			for (Task t : this.taskTable.getAllTasks()) {
 				this.db.addEntry(t);
 			}
 
 		} else if (e.getSource().equals(this.edit)) {
 			TaskDialog td = new TaskDialog(this, "New Task", true, this.taskTable.getTask());
-			this.tl.set(this.taskTable.getSelected(), td.getTask());
 			this.taskTable.insertTask(td.getTask());
 
 		} else if (e.getSource().equals(this.delete)) {
+			
 
 		} else if (e.getSource().equals(this.settings)) {
 
