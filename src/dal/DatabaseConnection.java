@@ -1,7 +1,6 @@
 package dal;
 
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
 import bll.*;
@@ -73,7 +72,7 @@ public class DatabaseConnection {
             con = this.createConnection();
             PreparedStatement stmtInsert = con.prepareStatement("INSERT INTO task (done, category, subject, description, von, until) VALUES (?,?,?,?,?,?);");
             stmtInsert.setString(1, task.isDone() ? "Y" : "N");
-            stmtInsert.setString(2, task.getCategorie().toString());
+            stmtInsert.setString(2, task.getCategory().toString());
             stmtInsert.setString(3, task.getSubject().toString());
             stmtInsert.setString(4, task.getDescription());
             stmtInsert.setDate(5, this.convertDate(task.getFrom()));
@@ -95,7 +94,7 @@ public class DatabaseConnection {
         try {
             con = this.createConnection();
             PreparedStatement stmtDelete = con.prepareStatement("DELETE FROM task WHERE category LIKE ? AND subject LIKE ? AND von = ?;");
-            stmtDelete.setString(1, task.getCategorie().toString());
+            stmtDelete.setString(1, task.getCategory().toString());
             stmtDelete.setString(2, task.getSubject().toString());
             stmtDelete.setDate(3, this.convertDate(task.getFrom()));
             con.close();
@@ -116,12 +115,12 @@ public class DatabaseConnection {
             con = this.createConnection();
             PreparedStatement stmtDelete = con.prepareStatement("UPDATE task SET done LIKE ?, category LIKE ?, subject LIKE ?, description LIKE ?, von = ?, until = ? WHERE category LIKE ? AND subject LIKE ? AND von = ?;");
             stmtDelete.setString(1, newTask.isDone() ? "Y" : "N");
-            stmtDelete.setString(2, newTask.getCategorie().toString());
+            stmtDelete.setString(2, newTask.getCategory().toString());
             stmtDelete.setString(3, newTask.getSubject().toString());
             stmtDelete.setString(4, newTask.getDescription());
             stmtDelete.setDate(5, this.convertDate(newTask.getFrom()));
             stmtDelete.setDate(6, this.convertDate(newTask.getUntil()));
-            stmtDelete.setString(7, oldTask.getCategorie().toString());
+            stmtDelete.setString(7, oldTask.getCategory().toString());
             stmtDelete.setString(8, oldTask.getSubject().toString());
             stmtDelete.setDate(9, this.convertDate(oldTask.getFrom()));
             con.close();

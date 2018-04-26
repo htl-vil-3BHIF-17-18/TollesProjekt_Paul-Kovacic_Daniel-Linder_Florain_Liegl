@@ -23,7 +23,7 @@ public class Task {
         return done;
     }
 
-    public Categories getCategorie() {
+    public Categories getCategory() {
         return category;
     }
 
