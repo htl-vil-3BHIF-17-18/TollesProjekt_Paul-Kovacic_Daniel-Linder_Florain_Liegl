@@ -77,6 +77,8 @@ public class DatabaseConnection {
             stmtInsert.setString(4, task.getDescription());
             stmtInsert.setDate(5, this.convertDate(task.getFrom()));
             stmtInsert.setDate(6, this.convertDate(task.getUntil()));
+
+
             stmtInsert.execute();
             con.commit();
         } catch (ClassNotFoundException | SQLException e) {
@@ -122,9 +124,6 @@ public class DatabaseConnection {
             stmtUpdate.setString(4, newTask.getDescription());
             stmtUpdate.setDate(5, this.convertDate(newTask.getFrom()));
             stmtUpdate.setDate(6, this.convertDate(newTask.getUntil()));
-            stmtUpdate.setString(7, oldTask.getCategory().toString());
-            stmtUpdate.setString(8, oldTask.getSubject().toString());
-            stmtUpdate.setDate(9, this.convertDate(oldTask.getFrom()));
             stmtUpdate.execute();
             con.close();
         } catch (ClassNotFoundException | SQLException e) {

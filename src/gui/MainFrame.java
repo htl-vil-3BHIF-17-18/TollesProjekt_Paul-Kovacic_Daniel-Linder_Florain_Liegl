@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import bll.Task;
 import dal.DatabaseConnection;
 import dal.SerializationHelper;
 
-public class MainFrame extends JFrame implements ActionListener, ListSelectionListener {
+public class MainFrame extends JFrame implements ActionListener, ListSelectionListener,Serializable {
 
 	/**
 	 * 
@@ -145,7 +146,9 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		} else if (e.getSource().equals(this.fromFile)) {
 
 			try {
-				System.out.println(SerializationHelper.readSerializableTask("Tasks.bat"));
+				this.taskTable.insertValuesIntoTable((List<Task>) SerializationHelper.readSerializableTask("Tasks.txt"));
+
+
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			} catch (ClassNotFoundException e1) {
@@ -158,7 +161,8 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		} else if (e.getSource().equals(this.saveAs)) {
 
 			try {
-				SerializationHelper.writeSerializedTask(this.tl,"Tasks.bat");
+
+				SerializationHelper.writeSerializedTask(this.taskTable.getAllTasks(),"Tasks.txt");
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
