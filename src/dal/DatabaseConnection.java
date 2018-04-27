@@ -51,6 +51,20 @@ public class DatabaseConnection {
         return tasks;
     }
 
+    public List<Task> getTasksFiltered(String done, String ) {
+        List<Task> tasks = new ArrayList<>();
+        Connection con = null;
+        //TODO fertig machen
+        try {
+            con = this.createConnection();
+            Statement stmtSelect = con.createStatement();
+            String fltdStmt = "SELECT * FROM task WHERE " + (done.equals("") ? "" : done + " AND ") + ()
+            ResultSet rs = stmtSelect.executeQuery();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<Task> getUndoneTasks() {
         List<Task> tasks = new ArrayList<>();
         Connection con = null;
@@ -86,6 +100,7 @@ public class DatabaseConnection {
             stmtInsert.setDate(5, this.convertDate(task.getFrom()));
             stmtInsert.setDate(6, this.convertDate(task.getUntil()));
             stmtInsert.execute();
+            con.commit();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } finally {
@@ -106,6 +121,7 @@ public class DatabaseConnection {
             stmtDelete.setString(2, task.getSubject().toString());
             stmtDelete.setDate(3, this.convertDate(task.getFrom()));
             stmtDelete.execute();
+            con.commit();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } finally {
@@ -132,22 +148,6 @@ public class DatabaseConnection {
             stmtUpdate.setString(8, oldTask.getSubject().toString());
             stmtUpdate.setDate(9, this.convertDate(oldTask.getFrom()));
             stmtUpdate.execute();
-            con.close();
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                con.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void commitChanges() {
-        Connection con = null;
-        try {
-            con = this.createConnection();
             con.commit();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();

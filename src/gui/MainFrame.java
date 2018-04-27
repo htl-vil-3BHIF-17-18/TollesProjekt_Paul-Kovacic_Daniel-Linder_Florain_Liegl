@@ -195,7 +195,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			if (!dbConnection.checkConnection()) {
                 dialog.setVisible(false);
                 dialog.dispose();
-				JOptionPane.showMessageDialog(null, "Wrong credentials!!", "Warning", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Wrong credentials!", "Warning", JOptionPane.INFORMATION_MESSAGE);
 				this.dbConnection = null;
                 this.openConnection();
 			} else {
@@ -214,6 +214,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		} else {
 			try {
 				this.taskTable.insertValuesIntoTable((List<Task>) SerializationHelper.readSerializableTask(this.localFilepath));
+				this.taskTable.getAllTasks().forEach(t -> this.dbConnection.addEntry(t));
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -223,7 +224,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	private void syncAll() {
         try {
             SerializationHelper.writeSerializedTask(this.taskTable.getAllTasks(),this.localFilepath);
-            this.dbConnection.commitChanges();
         } catch (IOException e) {
             e.printStackTrace();
         }
