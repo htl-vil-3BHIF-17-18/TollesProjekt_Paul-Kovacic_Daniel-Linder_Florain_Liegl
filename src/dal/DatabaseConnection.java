@@ -51,18 +51,19 @@ public class DatabaseConnection {
         return tasks;
     }
 
-    public List<Task> getTasksFiltered(String done, String ) {
+    public List<Task> getTasksFiltered(String done) {
         List<Task> tasks = new ArrayList<>();
         Connection con = null;
         //TODO fertig machen
         try {
             con = this.createConnection();
             Statement stmtSelect = con.createStatement();
-            String fltdStmt = "SELECT * FROM task WHERE " + (done.equals("") ? "" : done + " AND ") + ()
-            ResultSet rs = stmtSelect.executeQuery();
+            String fltdStmt = "SELECT * FROM task WHERE " + (done.equals("") ? "" : done + " AND ") + ("");
+            ResultSet rs = stmtSelect.executeQuery(fltdStmt);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
+        return tasks;
     }
 
     public List<Task> getUndoneTasks() {
