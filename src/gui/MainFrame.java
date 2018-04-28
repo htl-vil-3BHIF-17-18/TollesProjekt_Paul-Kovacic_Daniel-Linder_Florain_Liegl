@@ -63,6 +63,8 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.pack();
 		this.setLocationRelativeTo(null);
 		new LoginDialog(this,"Please enter your credentials to access your tasks", true);
+		this.taskList=this.dbConnection.getAllTasks();
+		this.taskTable.insertValuesIntoTable(this.taskList);
 	}
 
 	private void initializeControls() {
