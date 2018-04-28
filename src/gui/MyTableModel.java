@@ -1,30 +1,20 @@
 package gui;
 
+import javax.swing.table.DefaultTableModel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 
 public class MyTableModel extends DefaultTableModel {
-
-    /**
-     *
-     */
     private static final long serialVersionUID = -2412407473703651652L;
     private String[] columnNames = {"DONE", "Category", "Subject", "Description", "From", "Until"};
-    SimpleDateFormat f = new SimpleDateFormat("dd.MM.yyyy");
-    Date d = new Date();
-
-
-//	private Object[][] data= {{null,null,null,null,null,null}};
-
+    private SimpleDateFormat f = new SimpleDateFormat("dd.MM.yyyy");
+    private Date d = new Date();
 
     @Override
     public int getColumnCount() {
         // TODO Auto-generated method stub
         return columnNames.length;
     }
-
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
@@ -35,7 +25,6 @@ public class MyTableModel extends DefaultTableModel {
 
     }
 
-
     @Override
     public void setValueAt(Object aValue, int row, int column) {
         // TODO Auto-generated method stub
@@ -45,7 +34,6 @@ public class MyTableModel extends DefaultTableModel {
         super.setValueAt(aValue, row, column);
     }
 
-
     @Override
     public void addRow(Object[] rowData) {
         // TODO Auto-generated method stub
@@ -53,7 +41,6 @@ public class MyTableModel extends DefaultTableModel {
         rowData[5] = f.format(rowData[5]);
         super.addRow(rowData);
     }
-
 
     @Override
     public boolean isCellEditable(int row, int col) {
@@ -63,6 +50,4 @@ public class MyTableModel extends DefaultTableModel {
     public String getColumnName(int col) {
         return columnNames[col];
     }
-
-
 }

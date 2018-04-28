@@ -2,12 +2,10 @@ package gui;
 
 import dal.DatabaseConnection;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.*;
 
 public class LoginDialog extends JDialog implements ActionListener {
     private static final long serialVersionUID = 6158225161645311129L;
@@ -18,7 +16,7 @@ public class LoginDialog extends JDialog implements ActionListener {
     private JButton btnLogin = null;
     private JButton btnCancel = null;
     private boolean loggedIn = false;
-    private MainFrame parent = null;
+    private MainFrame parent;
 
     public LoginDialog(MainFrame owner, String title, boolean modal) {
         super(owner, title, modal);
@@ -61,6 +59,7 @@ public class LoginDialog extends JDialog implements ActionListener {
         if (e.getSource().equals(this.btnLogin)) {
             this.setVisible(false);
             //TODO: implement Progress Bar
+            new LoadingDialog(this, "Connecting to database...", true);
             if (this.logIn()) {
                 this.loggedIn = true;
                 this.dispose();

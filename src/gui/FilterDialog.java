@@ -1,9 +1,9 @@
 package gui;
 
 import bll.Categories;
+import bll.DateLabelFormatter;
 import bll.Subjects;
 import bll.Task;
-import bll.DateLabelFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;

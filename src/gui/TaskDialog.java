@@ -1,22 +1,21 @@
 package gui;
 
 import bll.Categories;
+import bll.DateLabelFormatter;
 import bll.Subjects;
 import bll.Task;
-import bll.DateLabelFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
-import java.awt.GridLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.Frame;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
-import javax.swing.*;
 
 public class TaskDialog extends JDialog implements ActionListener {
 

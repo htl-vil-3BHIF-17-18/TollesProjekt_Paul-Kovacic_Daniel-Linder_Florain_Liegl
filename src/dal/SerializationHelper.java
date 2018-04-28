@@ -1,12 +1,8 @@
 package dal;
 
 import bll.Settings;
-import bll.Task;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 
 public class SerializationHelper {
