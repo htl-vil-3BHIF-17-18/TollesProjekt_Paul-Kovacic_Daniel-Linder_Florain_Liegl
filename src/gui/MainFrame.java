@@ -61,7 +61,9 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.initializeControls();
 		this.pack();
 		this.setLocationRelativeTo(null);
-		new LoginDialog(this,"Please enter your credentials to access your tasks", true);
+		new LoginDialog(this, "Please enter your credentials to access your tasks", true);
+		this.taskList = this.dbConnection.getAllTasks();
+		this.taskTable.insertValuesIntoTable(this.taskList);
 	}
 
 	private void initializeControls() {
@@ -126,22 +128,23 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			this.taskTable.insertValueIntoTable(td.getTask());
 			this.dbConnection.addEntry(td.getTask());
 		} else if (e.getSource().equals(this.exit)) {
-            System.exit(NORMAL);
+			System.exit(NORMAL);
 		} else if (e.getSource().equals(this.edit)) {
-			Task t=this.taskTable.getTask();
+			Task t = this.taskTable.getTask();
 			TaskDialog td = new TaskDialog(this, "New Task", true, this.taskTable.getTask());
 			this.taskTable.insertTask(td.getTask());
 			this.dbConnection.updateEntry(t, td.getTask());
 		} else if (e.getSource().equals(this.delete)) {
 			this.dbConnection.removeEntry(this.taskTable.getTask());
-			this.taskTable.deleteTask();		
+			this.taskTable.deleteTask();
 		} else if (e.getSource().equals(this.settings)) {
-            try {
-                new SettingsDialog(this, "Settings", true, SerializationHelper.readSettings("settings_" + this.loggedInUser));
-            } catch (IOException | ClassNotFoundException e1) {
-                e1.printStackTrace();
-            }
-        } else if (e.getSource().equals(this.github)) {
+			try {
+				new SettingsDialog(this, "Settings", true,
+						SerializationHelper.readSettings("settings_" + this.loggedInUser));
+			} catch (IOException | ClassNotFoundException e1) {
+				e1.printStackTrace();
+			}
+		} else if (e.getSource().equals(this.github)) {
 			if (Desktop.isDesktopSupported()) {
 				Desktop desktop = Desktop.getDesktop();
 				try {
@@ -176,11 +179,11 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 	}
 
-    public void setDbConnection(DatabaseConnection dbConnection) {
-        this.dbConnection = dbConnection;
-    }
+	public void setDbConnection(DatabaseConnection dbConnection) {
+		this.dbConnection = dbConnection;
+	}
 
-    public void setLoggedInUser(String loggedInUser) {
-        this.loggedInUser = loggedInUser;
-    }
+	public void setLoggedInUser(String loggedInUser) {
+		this.loggedInUser = loggedInUser;
+	}
 }

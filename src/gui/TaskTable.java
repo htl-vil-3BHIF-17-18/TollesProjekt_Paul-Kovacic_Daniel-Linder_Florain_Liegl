@@ -109,7 +109,7 @@ public class TaskTable extends JPanel implements TableModelListener {
 			model.addRow(new Object[] { t.isDone(), t.getCategory(), t.getSubject(), t.getDescription(), t.getFrom(),
 					t.getUntil() });
 			i++;
-			l.add(t);
+			this.taskList.add(t);
 		}
 	}
 
