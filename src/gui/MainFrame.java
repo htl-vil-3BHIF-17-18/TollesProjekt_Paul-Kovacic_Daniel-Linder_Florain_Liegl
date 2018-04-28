@@ -125,19 +125,20 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		if (e.getSource().equals(this.newTask)) {
 			TaskDialog td = new TaskDialog(this, "New Task", true);
 			this.taskTable.insertValueIntoTable(td.getTask());
+			this.dbConnection.addEntry(td.getTask());
 		} else if (e.getSource().equals(this.exit)) {
             System.exit(NORMAL);
 		} else if (e.getSource().equals(this.edit)) {
+			Task t=this.taskTable.getTask();
 			TaskDialog td = new TaskDialog(this, "New Task", true, this.taskTable.getTask());
 			this.taskTable.insertTask(td.getTask());
-
+			this.dbConnection.updateEntry(t, td.getTask());
 		} else if (e.getSource().equals(this.delete)) {
-			this.taskTable.deleteTask();
-
+			this.dbConnection.removeEntry(this.taskTable.getTask());
+			this.taskTable.deleteTask();		
 		} else if (e.getSource().equals(this.settings)) {
             new SettingsDialog(this, "Settings", true);
 		} else if (e.getSource().equals(this.github)) {
-
 			if (Desktop.isDesktopSupported()) {
 				Desktop desktop = Desktop.getDesktop();
 				try {
