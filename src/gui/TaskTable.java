@@ -158,7 +158,6 @@ public class TaskTable extends JPanel implements TableModelListener {
 
 	@Override
 	public void tableChanged(TableModelEvent e) {
-		// TODO Auto-generated method stub
 		int row = e.getFirstRow();
 		int column = e.getColumn();
 		DefaultTableModel dtm = (DefaultTableModel) this.jTable.getModel();
