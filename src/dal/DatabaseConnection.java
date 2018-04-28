@@ -15,7 +15,7 @@ public class DatabaseConnection {
     }
 
     private Connection createConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("oracle.jdbc.driver.OracleDriver");
+        Class.forName("oracle.jdbc.OracleDriver");
         Connection con;
         try {
             con = DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@192.168.128.152:1521:ora11g");
