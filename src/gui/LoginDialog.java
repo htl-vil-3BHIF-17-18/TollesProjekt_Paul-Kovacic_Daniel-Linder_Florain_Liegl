@@ -59,13 +59,15 @@ public class LoginDialog extends JDialog implements ActionListener {
         if (e.getSource().equals(this.btnLogin)) {
             this.setVisible(false);
             //TODO: implement Progress Bar
-            new LoadingDialog(this, "Connecting to database...", true);
+            LoadingDialog loadingDialog = new LoadingDialog(this, "Connecting to database...", true);
             if (this.logIn()) {
                 this.loggedIn = true;
                 this.dispose();
             } else {
                 this.setVisible(true);
             }
+            loadingDialog.setVisible(false);
+            loadingDialog.dispose();
         } else if (e.getSource().equals(this.btnCancel)) {
             this.lUsername.setText("");
             this.setVisible(false);

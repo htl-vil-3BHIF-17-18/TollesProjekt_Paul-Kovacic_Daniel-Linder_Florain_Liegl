@@ -17,7 +17,9 @@ public class LoadingDialog extends JDialog {
         this.setLayout(new GridLayout(1, 1));
         this.jpb = new JProgressBar();
         this.add(jpb);
-        jpb.setIndeterminate(true);
+        this.jpb.setIndeterminate(true);
+        this.jpb.setSize(new Dimension(250, 20));
+        this.setMinimumSize(new Dimension(300, 60));
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
