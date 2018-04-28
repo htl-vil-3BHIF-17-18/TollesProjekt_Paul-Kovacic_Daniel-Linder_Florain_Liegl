@@ -2,8 +2,6 @@ package dal;
 
 import java.sql.*;
 import java.util.*;
-import java.util.Date;
-
 import bll.*;
 
 public class DatabaseConnection {
@@ -24,7 +22,7 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             con = DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@212.152.179.117:1521:ora11g");
         }
-
+        System.out.println("hi");
         return con;
     }
 
@@ -43,7 +41,9 @@ public class DatabaseConnection {
             e.printStackTrace();
         } finally {
             try {
-                con.close();
+                if (con != null) {
+                    con.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -81,7 +81,9 @@ public class DatabaseConnection {
             e.printStackTrace();
         } finally {
             try {
-                con.close();
+                if (con != null) {
+                    con.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -106,7 +108,9 @@ public class DatabaseConnection {
             e.printStackTrace();
         } finally {
             try {
-                con.close();
+                if (con != null) {
+                    con.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -127,7 +131,9 @@ public class DatabaseConnection {
             e.printStackTrace();
         } finally {
             try {
-                con.close();
+                if (con != null) {
+                    con.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -154,7 +160,9 @@ public class DatabaseConnection {
             e.printStackTrace();
         } finally {
             try {
-                con.close();
+                if (con != null) {
+                    con.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -174,7 +182,6 @@ public class DatabaseConnection {
                 if (con != null) {
                     con.close();
                 }
-                //return connected;
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -188,7 +195,7 @@ public class DatabaseConnection {
         try {
             con = this.createConnection();
             Statement stmtTimestamp = con.createStatement();
-            ResultSet rs = stmtTimestamp.executeQuery("SELECT SCN_TO_TIMESTAMP(MAX(ora_rowscn)) from task");
+            ResultSet rs = stmtTimestamp.executeQuery("SELECT SCN_TO_TIMESTAMP(MAX(ora_rowscn)) FROM task");
             rs.next();
             timestamp = rs.getDate(1);
         } catch (ClassNotFoundException e) {
@@ -197,7 +204,9 @@ public class DatabaseConnection {
             timestamp = new java.sql.Date(0);
         } finally {
             try {
-                con.close();
+                if (con != null) {
+                    con.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }

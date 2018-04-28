@@ -33,7 +33,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	private JMenuBar menuBar;
 	private JMenu file;
 	private JMenuItem changeUser;
-	private JMenuItem sync;
 	private JMenuItem exit;
 
 	private JMenu task;
@@ -62,9 +61,9 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.initializeControls();
 		this.pack();
 		this.setLocationRelativeTo(null);
+        if (this.openConnection())
+            this.chooseMethod();
 		this.setVisible(true);
-		if (this.openConnection())
-			this.chooseMethod();
 	}
 
 	private void initializeControls() {
@@ -75,7 +74,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 		this.file = new JMenu("File");
 		this.changeUser = new JMenuItem("Change User");
-		this.sync = new JMenuItem("Sync");
 		this.exit = new JMenuItem("Exit");
 
 		this.task = new JMenu("Task");
@@ -90,7 +88,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 		// add to ActionListener
 		this.exit.addActionListener(this);
-		this.sync.addActionListener(this);
 		this.changeUser.addActionListener(this);
 		this.newTask.addActionListener(this);
 		this.edit.addActionListener(this);
@@ -108,7 +105,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 		this.menuBar.add(this.file);
 		this.file.add(new JSeparator());
-		this.file.add(this.sync);
 		this.file.add(new JSeparator());
 		this.file.add(this.exit);
 
@@ -133,11 +129,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			TaskDialog td = new TaskDialog(this, "New Task", true);
 			this.taskTable.insertValueIntoTable(td.getTask());
 		} else if (e.getSource().equals(this.exit)) {
-
-		} else if (e.getSource().equals(this.sync)) {
-			this.taskTable.getAllTasks().forEach(t -> this.dbConnection.addEntry(t));
-			this.syncAll();
-
+            //TODO
 		} else if (e.getSource().equals(this.edit)) {
 			TaskDialog td = new TaskDialog(this, "New Task", true, this.taskTable.getTask());
 			this.taskTable.insertTask(td.getTask());
@@ -146,7 +138,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			this.taskTable.deleteTask();
 
 		} else if (e.getSource().equals(this.settings)) {
-
+            //TODO
 		} else if (e.getSource().equals(this.github)) {
 
 			if (Desktop.isDesktopSupported()) {
@@ -174,7 +166,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		// TODO Auto-generated method stub
 		if (this.taskTable.getSelected() >= 0) {
 			this.edit.setEnabled(true);
 			this.delete.setEnabled(true);
@@ -186,7 +177,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	}
 
 	private boolean openConnection() {
-		// TODO Auto-generated method stub
 		if (this.dbConnection == null) {
 			LoginDialog dialog = new LoginDialog(this, "Login", true);
 			if (dialog.isLoggedIn()) {
@@ -220,19 +210,11 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		} else {
 			try {
 				this.taskTable.insertValuesIntoTable(
-						(List<Task>) SerializationHelper.readSerializableTask(this.localFilepath));
+                        SerializationHelper.readSerializableTask(this.localFilepath));
 				this.taskTable.getAllTasks().forEach(t -> this.dbConnection.addEntry(t));
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-		}
-	}
-
-	private void syncAll() {
-		try {
-			SerializationHelper.writeSerializedTask(this.taskTable.getAllTasks(), this.localFilepath);
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 

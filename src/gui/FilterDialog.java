@@ -32,12 +32,12 @@ public class FilterDialog  extends JDialog implements ActionListener {
     private JButton btnOk = null;
     private JButton btnCancel = null;
     private Task task = null;
-    JDatePickerImpl datePicker;
-    JDatePickerImpl datePickerTo;
-    UtilDateModel modelFrom;
-    UtilDateModel modelTo;
-    JDatePanelImpl datePanelFrom;
-    JDatePanelImpl datePanelTo;
+    private JDatePickerImpl datePicker;
+    private JDatePickerImpl datePickerTo;
+    private UtilDateModel modelFrom;
+    private UtilDateModel modelTo;
+    private JDatePanelImpl datePanelFrom;
+    private JDatePanelImpl datePanelTo;
     private JPanel panel = null;
 
     public FilterDialog(Frame owner, String title, boolean modal) {
