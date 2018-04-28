@@ -58,7 +58,11 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
         new LoginDialog(this, "Log in", true);
         while(dbConnection==null)
         {
-//        	System.out.println("");
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         this.taskList = this.dbConnection.getAllTasks();
         this.taskTable.insertValuesIntoTable(this.taskList);

@@ -147,7 +147,7 @@ public class DatabaseConnection {
         Connection con = null;
         try {
             con = this.createConnection();
-            PreparedStatement stmtUpdate = con.prepareStatement("UPDATE task SET done LIKE ?, category LIKE ?, subject LIKE ?, description LIKE ?, von = ?, until = ? WHERE category LIKE ? AND subject LIKE ? AND von = ?");
+            PreparedStatement stmtUpdate = con.prepareStatement("UPDATE task SET done LIKE ?, category LIKE ?, subject LIKE ?, description LIKE ?, von = ?, until = ? WHERE category LIKE ? AND subject LIKE ? AND bis = ?");
             stmtUpdate.setString(1, newTask.isDone() ? "Y" : "N");
             stmtUpdate.setString(2, newTask.getCategory().toString());
             stmtUpdate.setString(3, newTask.getSubject().toString());
@@ -156,7 +156,7 @@ public class DatabaseConnection {
             stmtUpdate.setDate(6, this.convertDate(newTask.getUntil()));
             stmtUpdate.setString(7, oldTask.getCategory().toString());
             stmtUpdate.setString(8, oldTask.getSubject().toString());
-            stmtUpdate.setDate(9, this.convertDate(oldTask.getFrom()));
+            stmtUpdate.setDate(9, this.convertDate(oldTask.getUntil()));
             stmtUpdate.execute();
             con.commit();
         } catch (ClassNotFoundException | SQLException e) {
@@ -192,11 +192,11 @@ public class DatabaseConnection {
         return connected;
     }
 
-    private java.sql.Date convertDate(java.util.Date utilDate) {
-        return new java.sql.Date(utilDate.getTime());
+    private Date convertDate(java.util.Date utilDate) {
+        return new Date(utilDate.getTime());
     }
 
-    private java.util.Date convertDate(java.sql.Date sqlDate) {
+    private java.util.Date convertDate(Date sqlDate) {
         return new java.util.Date(sqlDate.getTime());
     }
 }
