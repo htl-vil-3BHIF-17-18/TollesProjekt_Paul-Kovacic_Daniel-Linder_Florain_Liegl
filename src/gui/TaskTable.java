@@ -146,6 +146,12 @@ public class TaskTable extends JPanel implements TableModelListener {
 		// doTo: delete from table
 	}
 
+	public void clearTable() {
+		DefaultTableModel dtm = (DefaultTableModel) this.jTable.getModel();
+		while(dtm.getRowCount() > 0)
+			dtm.removeRow(0);
+	}
+
 	public boolean isShowDone() {
 		return showDone;
 	}

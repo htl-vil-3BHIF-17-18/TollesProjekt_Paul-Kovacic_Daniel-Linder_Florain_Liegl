@@ -1,15 +1,13 @@
 package gui;
 
+import dal.DatabaseConnection;
+
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 public class LoginDialog extends JDialog implements ActionListener {
     private static final long serialVersionUID = 6158225161645311129L;
@@ -20,9 +18,11 @@ public class LoginDialog extends JDialog implements ActionListener {
     private JButton btnLogin = null;
     private JButton btnCancel = null;
     private boolean loggedIn = false;
+    private MainFrame parent = null;
 
     public LoginDialog(MainFrame owner, String title, boolean modal) {
         super(owner, title, modal);
+        this.parent = owner;
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setMinimumSize(new Dimension(300, 130));
         this.setResizable(false);
@@ -58,11 +58,16 @@ public class LoginDialog extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
         if (e.getSource().equals(this.btnLogin)) {
-            this.loggedIn = true;
+            this.setVisible(false);
+            //TODO: implement Progress Bar
+            if(this.logIn()) {
+                this.loggedIn = true;
+                this.dispose();
+            } else {
+                this.setVisible(true);
+            }
         } else if (e.getSource().equals(this.btnCancel)) {
-            this.loggedIn = false;
             this.lUsername.setText("");
             this.setVisible(false);
             this.dispose();
@@ -70,17 +75,26 @@ public class LoginDialog extends JDialog implements ActionListener {
 
     }
 
-    public String getUsername() {
+    private String getUsername() {
         return tfUsername.getText();
     }
 
-    public String getPassword() {
+    private String getPassword() {
         return String.valueOf(pfPasswordField.getPassword());
     }
 
-    public boolean isLoggedIn() {
-        return loggedIn;
+    private boolean logIn() {
+        boolean successful;
+        if(new DatabaseConnection(this.getUsername(), this.getPassword()).checkConnection()) {
+            this.parent.setDbConnection(new DatabaseConnection(this.getUsername(), this.getPassword()));
+            this.parent.setLocalFilepath("tasks_" + this.getUsername() + ".txt");
+            this.parent.setVisible(true);
+            successful = true;
+        } else {
+            JOptionPane.showMessageDialog(null, "Username or password incorrect!", "Warning", JOptionPane.INFORMATION_MESSAGE);
+            successful = false;
+        }
+
+        return successful;
     }
-
-
 }

@@ -61,10 +61,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.initializeControls();
 		this.pack();
 		this.setLocationRelativeTo(null);
-        if (this.logIn()) {
-            this.chooseMethod();
-            this.setVisible(true);
-        }
+		new LoginDialog(this,"Please enter your credentials to access your tasks", true);
 	}
 
 	private void initializeControls() {
@@ -128,7 +125,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			TaskDialog td = new TaskDialog(this, "New Task", true);
 			this.taskTable.insertValueIntoTable(td.getTask());
 		} else if (e.getSource().equals(this.exit)) {
-            //TODO
+            System.exit(NORMAL);
 		} else if (e.getSource().equals(this.edit)) {
 			TaskDialog td = new TaskDialog(this, "New Task", true, this.taskTable.getTask());
 			this.taskTable.insertTask(td.getTask());
@@ -158,8 +155,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 				}
 			}
 		} else if (e.getSource().equals(this.changeUser)) {
-			this.openConnection();
-			this.chooseMethod();
+			new LoginDialog(this, "Please enter your credentials to access your tasks", true);
 		}
 	}
 
@@ -174,50 +170,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		}
 
 	}
-
-	private boolean openConnection() {
-		if (this.dbConnection == null) {
-			LoginDialog dialog = new LoginDialog(this, "Login", true);
-			if (dialog.isLoggedIn()) {
-				this.dbConnection = new DatabaseConnection(dialog.getUsername(), dialog.getPassword());
-				this.localFilepath = "tasks_" + dialog.getUsername() + ".txt";
-
-				if (!dbConnection.checkConnection()) {
-					dialog.setVisible(false);
-					dialog.dispose();
-					JOptionPane.showMessageDialog(null, "Wrong credentials!", "Warning",
-							JOptionPane.INFORMATION_MESSAGE);
-					this.dbConnection = null;
-					this.openConnection();
-				} else {
-					dialog.setVisible(false);
-					dialog.dispose();
-				}
-				return true;
-			}
-			return false;
-		}
-		return true;
-	}
-
-	private boolean logIn() {
-	    boolean successful;
-	    LoginDialog loginDialog = new LoginDialog(this, "Please Log In To Access Your Tasks", true);
-	    if(loginDialog.isLoggedIn()) {
-	        System.out.println(loginDialog.getUsername());
-            if(new DatabaseConnection(loginDialog.getUsername(), loginDialog.getPassword()).checkConnection()) {
-                this.dbConnection = new DatabaseConnection(loginDialog.getUsername(), loginDialog.getPassword());
-                this.localFilepath = "tasks_" + loginDialog.getUsername() + ".txt";
-                successful = true;
-            } else {
-                JOptionPane.showMessageDialog(null, "Username or password incorrect!", "Warning", JOptionPane.INFORMATION_MESSAGE);
-                successful = false;
-            }
-        } else {
-            successful = false;
-        }
-        return successful;
-    }
 
 	private void chooseMethod() {
 		Date dbDate = this.dbConnection.getTimestampDB();
@@ -241,4 +193,13 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		}
         this.taskTable.insertValuesIntoTable(this.taskList);
 	}
+
+
+    public void setDbConnection(DatabaseConnection dbConnection) {
+        this.dbConnection = dbConnection;
+    }
+
+    public void setLocalFilepath(String localFilepath) {
+	    this.localFilepath = localFilepath;
+    }
 }
