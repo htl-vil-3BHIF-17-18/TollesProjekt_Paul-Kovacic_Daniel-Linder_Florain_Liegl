@@ -1,5 +1,6 @@
 package dal;
 
+import bll.Settings;
 import bll.Task;
 
 import java.io.*;
@@ -9,29 +10,31 @@ import java.util.List;
 
 
 public class SerializationHelper {
+    private static Settings defaultSettings = new Settings();
 
-    public static void writeSerializedTask(List<Task> tasks, String filename) throws IOException {
+    public static void writeSettings(Settings settings, String filename) throws IOException {
 
         try (FileOutputStream fileOutputStream = new FileOutputStream(filename)) {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(new ArrayList<>(tasks));
+            objectOutputStream.writeObject(settings);
             objectOutputStream.flush();
         }
     }
 
-    public static List<Task> readSerializableTask(String filename) throws IOException, ClassNotFoundException {
-        List<Task> tasks;
+    public static Settings readSettings(String filename) throws IOException, ClassNotFoundException {
+        Settings settings;
         File file = new File(filename);
 
         if (!file.exists()) {
             file.createNewFile();
+            writeSettings(defaultSettings, file.toString());
         }
 
         try (FileInputStream fis = new FileInputStream(filename)) {
             ObjectInputStream ois = new ObjectInputStream(fis);
-            tasks = (List<Task>) ois.readObject();
+            settings = (Settings) ois.readObject();
         }
 
-        return tasks;
+        return settings;
     }
 }

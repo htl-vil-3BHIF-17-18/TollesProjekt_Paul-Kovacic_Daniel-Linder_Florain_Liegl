@@ -190,31 +190,6 @@ public class DatabaseConnection {
         return connected;
     }
 
-    public java.util.Date getTimestampDB() {
-        Connection con = null;
-        java.sql.Date timestamp = null;
-        try {
-            con = this.createConnection();
-            Statement stmtTimestamp = con.createStatement();
-            ResultSet rs = stmtTimestamp.executeQuery("SELECT SCN_TO_TIMESTAMP(MAX(ora_rowscn)) FROM task");
-            rs.next();
-            timestamp = rs.getDate(1);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            timestamp = new java.sql.Date(0);
-        } finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return timestamp;
-    }
-
     private java.sql.Date convertDate(java.util.Date utilDate) {
         return new java.sql.Date(utilDate.getTime());
     }

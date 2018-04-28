@@ -47,8 +47,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 	private List<Task> taskList;
 	private DatabaseConnection dbConnection;
-
-	private String localFilepath;
+	private String loggedInUser = "";
 
 	public MainFrame(String identifier) throws HeadlessException {
 		super(identifier);
@@ -139,8 +138,12 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			this.dbConnection.removeEntry(this.taskTable.getTask());
 			this.taskTable.deleteTask();		
 		} else if (e.getSource().equals(this.settings)) {
-            new SettingsDialog(this, "Settings", true);
-		} else if (e.getSource().equals(this.github)) {
+            try {
+                new SettingsDialog(this, "Settings", true, SerializationHelper.readSettings("settings_" + this.loggedInUser));
+            } catch (IOException | ClassNotFoundException e1) {
+                e1.printStackTrace();
+            }
+        } else if (e.getSource().equals(this.github)) {
 			if (Desktop.isDesktopSupported()) {
 				Desktop desktop = Desktop.getDesktop();
 				try {
@@ -179,7 +182,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
         this.dbConnection = dbConnection;
     }
 
-    public void setLocalFilepath(String localFilepath) {
-	    this.localFilepath = localFilepath;
+    public void setLoggedInUser(String loggedInUser) {
+        this.loggedInUser = loggedInUser;
     }
 }
