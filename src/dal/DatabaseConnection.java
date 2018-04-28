@@ -1,9 +1,12 @@
 package dal;
 
-import java.sql.*;
-import java.util.*;
+import bll.Categories;
+import bll.Subjects;
+import bll.Task;
 
-import bll.*;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseConnection {
     private String username;
