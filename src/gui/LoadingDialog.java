@@ -14,6 +14,6 @@ public class LoadingDialog extends JDialog {
     }
 
     private void initializeControls() {
-        this.setLayout(new GridLayout(1,1));
+        this.setLayout(new GridLayout(1, 1));
     }
 }

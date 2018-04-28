@@ -61,7 +61,7 @@ public class LoginDialog extends JDialog implements ActionListener {
         if (e.getSource().equals(this.btnLogin)) {
             this.setVisible(false);
             //TODO: implement Progress Bar
-            if(this.logIn()) {
+            if (this.logIn()) {
                 this.loggedIn = true;
                 this.dispose();
             } else {
@@ -85,7 +85,7 @@ public class LoginDialog extends JDialog implements ActionListener {
 
     private boolean logIn() {
         boolean successful;
-        if(new DatabaseConnection(this.getUsername(), this.getPassword()).checkConnection()) {
+        if (new DatabaseConnection(this.getUsername(), this.getPassword()).checkConnection()) {
             this.parent.setDbConnection(new DatabaseConnection(this.getUsername(), this.getPassword()));
             this.parent.setLocalFilepath("tasks_" + this.getUsername() + ".txt");
             this.parent.setVisible(true);

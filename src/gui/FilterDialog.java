@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-public class FilterDialog  extends JDialog implements ActionListener {
+public class FilterDialog extends JDialog implements ActionListener {
 
     private JLabel lbCategory = null;
     private JComboBox JCategory = null;
@@ -121,7 +121,7 @@ public class FilterDialog  extends JDialog implements ActionListener {
 
     }
 
-    public  void fillControls(){
+    public void fillControls() {
         this.JCategory.setSelectedIndex(Categories.valueOf(this.task.getCategory().toString()).ordinal());
         this.JCategory.setSelectedIndex(Subjects.valueOf(this.task.getSubject().toString()).ordinal());
         this.tfDescription.setText(task.getDescription());
@@ -132,7 +132,6 @@ public class FilterDialog  extends JDialog implements ActionListener {
         this.modelFrom.setSelected(true);
 
 
-
     }
 
     private boolean writeValuesToMenu() {
@@ -140,15 +139,12 @@ public class FilterDialog  extends JDialog implements ActionListener {
         SimpleDateFormat time = new SimpleDateFormat("dd.MM.yyyy");
 
 
-
-
-
         try {
-            Date d1=time.parse(this.datePicker.getJFormattedTextField().getText());
-            Date d2=time.parse(this.datePickerTo.getJFormattedTextField().getText());
+            Date d1 = time.parse(this.datePicker.getJFormattedTextField().getText());
+            Date d2 = time.parse(this.datePickerTo.getJFormattedTextField().getText());
             if (!this.tfDescription.getText().trim().isEmpty()
                     && !this.datePicker.getJFormattedTextField().getText().trim().isEmpty()
-                    && !this.datePickerTo.getJFormattedTextField().getText().trim().isEmpty()&& d2.compareTo(d1)>=0) {
+                    && !this.datePickerTo.getJFormattedTextField().getText().trim().isEmpty() && d2.compareTo(d1) >= 0) {
 
 
                 isValid = true;
