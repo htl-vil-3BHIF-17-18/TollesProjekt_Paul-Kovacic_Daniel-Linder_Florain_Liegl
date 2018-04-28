@@ -87,7 +87,7 @@ public class LoginDialog extends JDialog implements ActionListener {
         boolean successful;
         if (new DatabaseConnection(this.getUsername(), this.getPassword()).checkConnection()) {
             this.parent.setDbConnection(new DatabaseConnection(this.getUsername(), this.getPassword()));
-            this.parent.setLocalFilepath("tasks_" + this.getUsername() + ".txt");
+            this.parent.setLoggedInUser(this.getUsername());
             this.parent.setVisible(true);
             successful = true;
         } else {
