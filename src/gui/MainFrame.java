@@ -55,7 +55,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
         this.initializeControls();
         this.pack();
         this.setLocationRelativeTo(null);
-        new LoginDialog(this, "Please enter your credentials to access your tasks", true);
+        new LoginDialog(this, "Log in", true);
         this.taskList = this.dbConnection.getAllTasks();
         this.taskTable.insertValuesIntoTable(this.taskList);
     }
@@ -157,7 +157,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
                 }
             }
         } else if (e.getSource().equals(this.changeUser)) {
-            new LoginDialog(this, "Please enter your credentials to access your tasks", true);
+            new LoginDialog(this, "Change user", true);
         }
     }
 

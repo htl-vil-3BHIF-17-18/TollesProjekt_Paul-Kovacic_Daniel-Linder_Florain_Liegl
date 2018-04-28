@@ -58,8 +58,7 @@ public class LoginDialog extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(this.btnLogin)) {
             this.setVisible(false);
-            //TODO: implement Progress Bar
-            LoadingDialog loadingDialog = new LoadingDialog(this, "Connecting to database...", true);
+            LoadingDialog loadingDialog = new LoadingDialog(this, "Connecting to database...");
             if (this.logIn()) {
                 this.loggedIn = true;
                 this.dispose();
@@ -76,14 +75,6 @@ public class LoginDialog extends JDialog implements ActionListener {
 
     }
 
-    private String getUsername() {
-        return tfUsername.getText();
-    }
-
-    private String getPassword() {
-        return String.valueOf(pfPasswordField.getPassword());
-    }
-
     private boolean logIn() {
         boolean successful;
         if (new DatabaseConnection(this.getUsername(), this.getPassword()).checkConnection()) {
@@ -98,4 +89,14 @@ public class LoginDialog extends JDialog implements ActionListener {
 
         return successful;
     }
+
+    private String getUsername() {
+        return tfUsername.getText();
+    }
+
+    private String getPassword() {
+        return String.valueOf(pfPasswordField.getPassword());
+    }
+
+    boolean isLoggedIn() { return this.loggedIn; }
 }

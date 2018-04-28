@@ -6,8 +6,8 @@ import java.awt.*;
 class LoadingDialog extends JDialog {
 
 
-    LoadingDialog(Dialog owner, String title, boolean modal) {
-        super(owner, title, modal);
+    LoadingDialog(Dialog owner, String title) {
+        super(owner, title);
         initializeControls();
     }
 
@@ -16,7 +16,6 @@ class LoadingDialog extends JDialog {
         JProgressBar jpb = new JProgressBar();
         this.add(jpb);
         jpb.setIndeterminate(true);
-        jpb.setSize(new Dimension(250, 20));
         this.setMinimumSize(new Dimension(300, 60));
         this.setResizable(false);
         this.setLocationRelativeTo(null);
