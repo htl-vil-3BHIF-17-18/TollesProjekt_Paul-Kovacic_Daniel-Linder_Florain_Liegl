@@ -21,9 +21,10 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import bll.Categories;
 import bll.Task;
 
-public class TaskTable extends JPanel {
+public class TaskTable extends JPanel implements TableModelListener {
 
 	/**
 	 * 
@@ -56,9 +57,10 @@ public class TaskTable extends JPanel {
 		this.taskList = new ArrayList<Task>();
 		this.jTable = new JTable(new MyTableModel());
 		this.jTable.getSelectionModel().addListSelectionListener(this.mf);
-		this.jTable.getModel().addTableModelListener(new CheckBoxModelListener());
+		this.jTable.getModel().addTableModelListener(this);
 		this.setHeaderWidth();
 		this.jTable.getTableHeader().setReorderingAllowed(false);
+		this.jTable.setAutoCreateRowSorter(true);
 
 		// image in table header(s)
 		Border headerBorder = UIManager.getBorder("TableHeader.cellBorder");
@@ -127,35 +129,11 @@ public class TaskTable extends JPanel {
 		this.jTable.setValueAt(t.getDescription(), i, 3);
 		this.jTable.setValueAt(t.getFrom(), i, 4);
 		this.jTable.setValueAt(t.getUntil(), i, 5);
-		this.taskList.set(getSelected(), t);
+		this.taskList.set(i, t);
 	}
 
 	public int getSelected() {
 		return this.jTable.getSelectedRow();
-	}
-
-	public void addToDoneList() {
-
-	}
-
-	public class CheckBoxModelListener implements TableModelListener {
-
-		@Override
-		public void tableChanged(TableModelEvent e) {
-			int row = e.getFirstRow();
-			int column = e.getColumn();
-			System.out.println(e.getClass());
-			if (column == BOOLEAN_COLUMN) {
-				TableModel model = (TableModel) e.getSource();
-				String columnName = model.getColumnName(column);
-				Boolean checked = (Boolean) model.getValueAt(row, column);
-				if (checked) {
-
-				} else {
-					System.out.println(columnName + ": " + false);
-				}
-			}
-		}
 	}
 
 	public void deleteTask() {
@@ -174,5 +152,24 @@ public class TaskTable extends JPanel {
 
 	public void setShowDone(boolean showDone) {
 		this.showDone = showDone;
+	}
+
+	@Override
+	public void tableChanged(TableModelEvent e) {
+		// TODO Auto-generated method stub
+		int row = e.getFirstRow();
+		int column = e.getColumn();
+		DefaultTableModel dtm = (DefaultTableModel) this.jTable.getModel();
+		if (column == BOOLEAN_COLUMN) {
+			TableModel model = (TableModel) e.getSource();
+			String columnName = model.getColumnName(column);
+			Boolean checked = (Boolean) model.getValueAt(row, column);
+			if (checked) {
+				this.taskList.get(row).setDone(true);
+			} else {
+				this.taskList.get(row).setDone(false);
+			}
+		}
+
 	}
 }
