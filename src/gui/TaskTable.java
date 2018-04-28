@@ -60,6 +60,7 @@ public class TaskTable extends JPanel implements TableModelListener {
 		this.jTable.getModel().addTableModelListener(this);
 		this.setHeaderWidth();
 		this.jTable.getTableHeader().setReorderingAllowed(false);
+		this.jTable.setAutoCreateRowSorter(true);
 
 		// image in table header(s)
 		Border headerBorder = UIManager.getBorder("TableHeader.cellBorder");
