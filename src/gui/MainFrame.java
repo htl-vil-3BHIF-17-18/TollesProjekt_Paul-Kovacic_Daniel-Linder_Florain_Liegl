@@ -56,6 +56,10 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
         this.pack();
         this.setLocationRelativeTo(null);
         new LoginDialog(this, "Log in", true);
+        while(dbConnection==null)
+        {
+//        	System.out.println("");
+        }
         this.taskList = this.dbConnection.getAllTasks();
         this.taskTable.insertValuesIntoTable(this.taskList);
     }
@@ -110,6 +114,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
         this.menuBar.add(this.help);
         this.help.add(this.github);
+        Toolkit.getDefaultToolkit().beep();
 
         // add TaskTable
         this.add(this.taskTable);

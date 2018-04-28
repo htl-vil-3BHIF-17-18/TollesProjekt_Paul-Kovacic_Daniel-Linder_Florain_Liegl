@@ -15,6 +15,7 @@ public class LoginDialog extends JDialog implements ActionListener {
     private JButton btnLogin = null;
     private JButton btnCancel = null;
     private MainFrame parent;
+    private LoadingDialog loadingDialog;
 
     LoginDialog(MainFrame owner, String title, boolean modal) {
         super(owner, title, modal);
@@ -56,14 +57,13 @@ public class LoginDialog extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(this.btnLogin)) {
             this.setVisible(false);
-            LoadingDialog loadingDialog = new LoadingDialog(this, "Connecting to database...");
+//            this.setModal(false);        
             if (this.logIn()) {
                 this.dispose();
             } else {
                 this.setVisible(true);
             }
-            loadingDialog.setVisible(false);
-            loadingDialog.dispose();
+            
         } else if (e.getSource().equals(this.btnCancel)) {
             this.lUsername.setText("");
             this.setVisible(false);
@@ -73,16 +73,24 @@ public class LoginDialog extends JDialog implements ActionListener {
     }
 
     private boolean logIn() {
-        boolean successful;
-        if (new DatabaseConnection(this.getUsername(), this.getPassword()).checkConnection()) {
-            this.parent.setDbConnection(new DatabaseConnection(this.getUsername(), this.getPassword()));
-            this.parent.setLoggedInUser(this.getUsername());
-            this.parent.setVisible(true);
-            successful = true;
-        } else {
-            JOptionPane.showMessageDialog(null, "Username or password incorrect!", "Warning", JOptionPane.INFORMATION_MESSAGE);
-            successful = false;
-        }
+        boolean successful = false;
+        DatabaseConnection db=new DatabaseConnection(this.getUsername(), this.getPassword());
+        
+        this.loadingDialog = new LoadingDialog(db,this, "Connecting to database...",true);
+        try {
+			if (loadingDialog.isCon()) {
+			    this.parent.setDbConnection(db);
+			    this.parent.setLoggedInUser(this.getUsername());
+			    this.parent.setVisible(true);
+			    successful = true;
+			} else {
+			    JOptionPane.showMessageDialog(null, "Username or password incorrect!", "Warning", JOptionPane.INFORMATION_MESSAGE);
+			    successful = false;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
         return successful;
     }

@@ -177,7 +177,6 @@ public class DatabaseConnection {
         boolean connected = true;
         try {
             con = this.createConnection();
-
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             connected = false;

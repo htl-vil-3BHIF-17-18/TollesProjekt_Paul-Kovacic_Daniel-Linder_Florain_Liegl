@@ -1,12 +1,24 @@
 package gui;
 
 import javax.swing.*;
+
+import dal.DatabaseConnection;
+
 import java.awt.*;
 
 class LoadingDialog extends JDialog {
-
-    LoadingDialog(Dialog owner, String title) {
-        super(owner, title);
+    
+	
+	private DatabaseConnection db;
+	private boolean con;
+	private InBackground ib;
+	
+    LoadingDialog(DatabaseConnection db,LoginDialog owner, String title,boolean modal) {
+        super(owner, title,modal);
+        this.db=db;
+        this.ib=new InBackground(db,this);
+        this.ib.execute();
+        
         initializeControls();
     }
 
@@ -20,5 +32,14 @@ class LoadingDialog extends JDialog {
         this.setLocationRelativeTo(null);
         this.pack();
         this.setVisible(true);
+        this.setCon(this.ib.isCon());
     }
+
+	public boolean isCon() {
+		return con;
+	}
+
+	public void setCon(boolean con) {
+		this.con = con;
+	}
 }
