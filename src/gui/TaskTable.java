@@ -113,7 +113,7 @@ public class TaskTable extends JPanel implements TableModelListener {
 		}
 	}
 
-    public Task getTask() {
+	public Task getTask() {
 		return taskList.get(getSelected());
 	}
 
@@ -144,7 +144,7 @@ public class TaskTable extends JPanel implements TableModelListener {
 
 	public void clearTable() {
 		DefaultTableModel dtm = (DefaultTableModel) this.jTable.getModel();
-		while(dtm.getRowCount() > 0)
+		while (dtm.getRowCount() > 0)
 			dtm.removeRow(0);
 	}
 
@@ -168,7 +168,6 @@ public class TaskTable extends JPanel implements TableModelListener {
 			Boolean checked = (Boolean) model.getValueAt(row, column);
 			if (checked) {
 				this.taskList.get(row).setDone(true);
-				
 			} else {
 				this.taskList.get(row).setDone(false);
 			}
