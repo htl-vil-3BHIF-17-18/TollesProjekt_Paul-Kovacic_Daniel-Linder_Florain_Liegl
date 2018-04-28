@@ -22,7 +22,6 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             con = DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@212.152.179.117:1521:ora11g");
         }
-        System.out.println("hi");
         return con;
     }
 

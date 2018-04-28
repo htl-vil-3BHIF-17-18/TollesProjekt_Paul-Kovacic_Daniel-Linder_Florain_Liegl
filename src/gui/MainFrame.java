@@ -61,13 +61,13 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.initializeControls();
 		this.pack();
 		this.setLocationRelativeTo(null);
-        if (this.openConnection())
+        if (this.logIn()) {
             this.chooseMethod();
-		this.setVisible(true);
+            this.setVisible(true);
+        }
 	}
 
 	private void initializeControls() {
-		// TODO Auto-generated method stub
 		this.setLayout(new GridLayout(0, 1));
 		// create MenuBar
 		this.menuBar = new JMenuBar();
@@ -104,7 +104,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.setJMenuBar(this.menuBar);
 
 		this.menuBar.add(this.file);
-		this.file.add(new JSeparator());
+		this.file.add(this.changeUser);
 		this.file.add(new JSeparator());
 		this.file.add(this.exit);
 
@@ -124,7 +124,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		if (e.getSource().equals(this.newTask)) {
 			TaskDialog td = new TaskDialog(this, "New Task", true);
 			this.taskTable.insertValueIntoTable(td.getTask());
@@ -138,7 +137,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			this.taskTable.deleteTask();
 
 		} else if (e.getSource().equals(this.settings)) {
-            //TODO
+            new SettingsDialog(this, "Settings", true);
 		} else if (e.getSource().equals(this.github)) {
 
 			if (Desktop.isDesktopSupported()) {
@@ -201,26 +200,45 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		return true;
 	}
 
+	private boolean logIn() {
+	    boolean successful;
+	    LoginDialog loginDialog = new LoginDialog(this, "Please Log In To Access Your Tasks", true);
+	    if(loginDialog.isLoggedIn()) {
+	        System.out.println(loginDialog.getUsername());
+            if(new DatabaseConnection(loginDialog.getUsername(), loginDialog.getPassword()).checkConnection()) {
+                this.dbConnection = new DatabaseConnection(loginDialog.getUsername(), loginDialog.getPassword());
+                this.localFilepath = "tasks_" + loginDialog.getUsername() + ".txt";
+                successful = true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Username or password incorrect!", "Warning", JOptionPane.INFORMATION_MESSAGE);
+                successful = false;
+            }
+        } else {
+            successful = false;
+        }
+        return successful;
+    }
+
 	private void chooseMethod() {
 		Date dbDate = this.dbConnection.getTimestampDB();
 		Date localDate = SerializationHelper.getTimestampFile(this.localFilepath);
-		if (dbDate.after(localDate)) {
-			this.getTaskFromDB();
-			this.taskTable.insertValuesIntoTable(this.taskList);
-		} else {
-			try {
-				this.taskTable.insertValuesIntoTable(
-                        SerializationHelper.readSerializableTask(this.localFilepath));
-				this.taskTable.getAllTasks().forEach(t -> this.dbConnection.addEntry(t));
-			} catch (IOException | ClassNotFoundException e) {
-				e.printStackTrace();
-			}
+		System.out.println(dbDate);
+        System.out.println(localDate);
+		if (dbDate.getTime() >= localDate.getTime()) {
+            this.taskList = dbConnection.getAllTasks();
+            try {
+                SerializationHelper.writeSerializedTask(this.taskList, this.localFilepath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                this.taskList = SerializationHelper.readSerializableTask(this.localFilepath);
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            this.taskList.forEach(t -> this.dbConnection.addEntry(t));
 		}
-	}
-
-	private void getTaskFromDB() {
-		if (this.dbConnection != null) {
-			this.taskList = dbConnection.getAllTasks();
-		}
+        this.taskTable.insertValuesIntoTable(this.taskList);
 	}
 }
