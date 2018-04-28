@@ -54,7 +54,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		super(identifier);
 		this.taskList = new ArrayList<>();
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setMinimumSize(new Dimension(600, 400));
 		this.setPreferredSize(new Dimension(1080, 720));
 		this.setResizable(true);
@@ -171,30 +171,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		}
 
 	}
-
-	private void chooseMethod() {
-		Date dbDate = this.dbConnection.getTimestampDB();
-		Date localDate = SerializationHelper.getTimestampFile(this.localFilepath);
-		System.out.println(dbDate);
-        System.out.println(localDate);
-		if (dbDate.getTime() >= localDate.getTime()) {
-            this.taskList = dbConnection.getAllTasks();
-            try {
-                SerializationHelper.writeSerializedTask(this.taskList, this.localFilepath);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                this.taskList = SerializationHelper.readSerializableTask(this.localFilepath);
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            this.taskList.forEach(t -> this.dbConnection.addEntry(t));
-		}
-        this.taskTable.insertValuesIntoTable(this.taskList);
-	}
-
 
     public void setDbConnection(DatabaseConnection dbConnection) {
         this.dbConnection = dbConnection;
