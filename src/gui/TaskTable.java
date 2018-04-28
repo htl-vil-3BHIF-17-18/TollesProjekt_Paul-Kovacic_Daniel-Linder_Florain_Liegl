@@ -113,11 +113,7 @@ public class TaskTable extends JPanel implements TableModelListener {
 		}
 	}
 
-	public List<Task> getAllTasks() {
-		return taskList;
-	}
-
-	public Task getTask() {
+    public Task getTask() {
 		return taskList.get(getSelected());
 	}
 
