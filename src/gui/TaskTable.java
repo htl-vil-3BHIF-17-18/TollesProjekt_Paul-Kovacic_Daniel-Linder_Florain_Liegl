@@ -172,6 +172,7 @@ public class TaskTable extends JPanel implements TableModelListener {
 			Boolean checked = (Boolean) model.getValueAt(row, column);
 			if (checked) {
 				this.taskList.get(row).setDone(true);
+				
 			} else {
 				this.taskList.get(row).setDone(false);
 			}

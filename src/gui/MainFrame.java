@@ -54,6 +54,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		super(identifier);
 		this.taskList = new ArrayList<>();
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setMinimumSize(new Dimension(600, 400));
 		this.setPreferredSize(new Dimension(1080, 720));
 		this.setResizable(true);
