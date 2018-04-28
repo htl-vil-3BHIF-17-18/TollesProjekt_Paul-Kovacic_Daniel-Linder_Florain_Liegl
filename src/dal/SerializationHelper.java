@@ -34,12 +34,4 @@ public class SerializationHelper {
 
         return tasks;
     }
-
-    public static Date getTimestampFile(String filepath) {
-        File file = new File(filepath);
-        if (file.exists())
-            return new Date(file.lastModified());
-        else
-            return new Date(0);
-    }
 }
