@@ -18,6 +18,7 @@ class LoadingDialog extends JDialog {
         jpb.setIndeterminate(true);
         jpb.setSize(new Dimension(250, 20));
         this.setMinimumSize(new Dimension(300, 60));
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
