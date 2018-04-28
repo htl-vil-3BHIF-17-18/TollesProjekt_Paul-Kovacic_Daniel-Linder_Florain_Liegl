@@ -23,7 +23,7 @@ import bll.Task;
 import dal.DatabaseConnection;
 import dal.SerializationHelper;
 
-public class MainFrame extends JFrame implements ActionListener, ListSelectionListener,Serializable {
+public class MainFrame extends JFrame implements ActionListener, ListSelectionListener, Serializable {
 
 	/**
 	 * 
@@ -63,8 +63,8 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.pack();
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
-		this.openConnection();
-		this.chooseMethod();
+		if (this.openConnection())
+			this.chooseMethod();
 	}
 
 	private void initializeControls() {
@@ -135,8 +135,8 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		} else if (e.getSource().equals(this.exit)) {
 
 		} else if (e.getSource().equals(this.sync)) {
-		    this.taskTable.getAllTasks().forEach(t -> this.dbConnection.addEntry(t));
-            this.syncAll();
+			this.taskTable.getAllTasks().forEach(t -> this.dbConnection.addEntry(t));
+			this.syncAll();
 
 		} else if (e.getSource().equals(this.edit)) {
 			TaskDialog td = new TaskDialog(this, "New Task", true, this.taskTable.getTask());
@@ -167,67 +167,74 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 				}
 			}
 		} else if (e.getSource().equals(this.changeUser)) {
-		    this.openConnection();
-		    this.chooseMethod();
-        }
+			this.openConnection();
+			this.chooseMethod();
+		}
 	}
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		// TODO Auto-generated method stub
-		if (this.taskTable.getSelected()>=0) {
+		if (this.taskTable.getSelected() >= 0) {
 			this.edit.setEnabled(true);
 			this.delete.setEnabled(true);
-		}else {
+		} else {
 			this.edit.setEnabled(false);
 			this.delete.setEnabled(false);
 		}
+
 	}
 
-	private void openConnection() {
+	private boolean openConnection() {
 		// TODO Auto-generated method stub
 		if (this.dbConnection == null) {
 			LoginDialog dialog = new LoginDialog(this, "Login", true);
 			if (dialog.isLoggedIn()) {
 				this.dbConnection = new DatabaseConnection(dialog.getUsername(), dialog.getPassword());
 				this.localFilepath = "tasks_" + dialog.getUsername() + ".txt";
+
+				if (!dbConnection.checkConnection()) {
+					dialog.setVisible(false);
+					dialog.dispose();
+					JOptionPane.showMessageDialog(null, "Wrong credentials!", "Warning",
+							JOptionPane.INFORMATION_MESSAGE);
+					this.dbConnection = null;
+					this.openConnection();
+				} else {
+					dialog.setVisible(false);
+					dialog.dispose();
+				}
+				return true;
 			}
-			if (!dbConnection.checkConnection()) {
-                dialog.setVisible(false);
-                dialog.dispose();
-				JOptionPane.showMessageDialog(null, "Wrong credentials!", "Warning", JOptionPane.INFORMATION_MESSAGE);
-				this.dbConnection = null;
-                this.openConnection();
-			} else {
-                dialog.setVisible(false);
-                dialog.dispose();
-            }
+			return false;
 		}
+		return true;
 	}
 
 	private void chooseMethod() {
 		Date dbDate = this.dbConnection.getTimestampDB();
 		Date localDate = SerializationHelper.getTimestampFile(this.localFilepath);
-		if(dbDate.after(localDate)) {
+		if (dbDate.after(localDate)) {
 			this.getTaskFromDB();
 			this.taskTable.insertValuesIntoTable(this.taskList);
 		} else {
 			try {
-				this.taskTable.insertValuesIntoTable((List<Task>) SerializationHelper.readSerializableTask(this.localFilepath));
+				this.taskTable.insertValuesIntoTable(
+						(List<Task>) SerializationHelper.readSerializableTask(this.localFilepath));
 				this.taskTable.getAllTasks().forEach(t -> this.dbConnection.addEntry(t));
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-        }
+		}
 	}
 
 	private void syncAll() {
-        try {
-            SerializationHelper.writeSerializedTask(this.taskTable.getAllTasks(),this.localFilepath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+		try {
+			SerializationHelper.writeSerializedTask(this.taskTable.getAllTasks(), this.localFilepath);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private void getTaskFromDB() {
 		if (this.dbConnection != null) {

@@ -13,10 +13,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 import bll.Task;
 
@@ -26,6 +29,7 @@ public class TaskTable extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -3013523607123464946L;
+	private static final int BOOLEAN_COLUMN = 0;
 	private MainFrame mf;
 	private JScrollPane scrollpane = null;
 	private int width;
@@ -33,7 +37,8 @@ public class TaskTable extends JPanel {
 	private JTable jTable;
 	private String separator = File.separator;
 	private ImageIcon ii = new ImageIcon("images" + separator + "check_24.png");
-	private List<Task> tl;
+	private List<Task> taskList;
+	private boolean showDone = false;
 
 	public TaskTable(Dimension d, MainFrame mf) {
 		super();
@@ -48,9 +53,10 @@ public class TaskTable extends JPanel {
 	private void initializeControls() {
 		// TODO Auto-generated method stub
 		this.setLayout(new GridLayout(0, 1));
-		this.tl=new ArrayList<Task>();
+		this.taskList = new ArrayList<Task>();
 		this.jTable = new JTable(new MyTableModel());
 		this.jTable.getSelectionModel().addListSelectionListener(this.mf);
+		this.jTable.getModel().addTableModelListener(new CheckBoxModelListener());
 		this.setHeaderWidth();
 		this.jTable.getTableHeader().setReorderingAllowed(false);
 
@@ -89,12 +95,12 @@ public class TaskTable extends JPanel {
 		DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
 		model.addRow(new Object[] { t.isDone(), t.getCategory(), t.getSubject(), t.getDescription(), t.getFrom(),
 				t.getUntil() });
-		tl.add(t);
+		taskList.add(t);
 	}
 
 	public void insertValuesIntoTable(List<Task> l) {
 		int i = 0;
-		this.tl=new ArrayList<>();
+		this.taskList = new ArrayList<>();
 		DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
 		model.setRowCount(0);
 		for (Task t : l) {
@@ -105,37 +111,68 @@ public class TaskTable extends JPanel {
 		}
 	}
 
-	 public List<Task> getAllTasks(){
-		 return tl;
-	 }
+	public List<Task> getAllTasks() {
+		return taskList;
+	}
 
 	public Task getTask() {
-		return tl.get(getSelected());
+		return taskList.get(getSelected());
 	}
-	
+
 	public void insertTask(Task t) {
-		int i=getSelected();
+		int i = getSelected();
 		this.jTable.setValueAt(t.isDone(), i, 0);
 		this.jTable.setValueAt(t.getCategory(), i, 1);
 		this.jTable.setValueAt(t.getSubject(), i, 2);
 		this.jTable.setValueAt(t.getDescription(), i, 3);
 		this.jTable.setValueAt(t.getFrom(), i, 4);
 		this.jTable.setValueAt(t.getUntil(), i, 5);
-		this.tl.set(getSelected(), t);
+		this.taskList.set(getSelected(), t);
 	}
-	
+
 	public int getSelected() {
 		return this.jTable.getSelectedRow();
 	}
-	
-	
+
+	public void addToDoneList() {
+
+	}
+
+	public class CheckBoxModelListener implements TableModelListener {
+
+		@Override
+		public void tableChanged(TableModelEvent e) {
+			int row = e.getFirstRow();
+			int column = e.getColumn();
+			System.out.println(e.getClass());
+			if (column == BOOLEAN_COLUMN) {
+				TableModel model = (TableModel) e.getSource();
+				String columnName = model.getColumnName(column);
+				Boolean checked = (Boolean) model.getValueAt(row, column);
+				if (checked) {
+
+				} else {
+					System.out.println(columnName + ": " + false);
+				}
+			}
+		}
+	}
+
 	public void deleteTask() {
-		if(getSelected()>=0) {
-			tl.remove(getSelected());
+		if (getSelected() >= 0) {
+			taskList.remove(getSelected());
 			DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
 			model.removeRow(getSelected());
 		}
-		
-		//doTo: delete from table
+
+		// doTo: delete from table
+	}
+
+	public boolean isShowDone() {
+		return showDone;
+	}
+
+	public void setShowDone(boolean showDone) {
+		this.showDone = showDone;
 	}
 }

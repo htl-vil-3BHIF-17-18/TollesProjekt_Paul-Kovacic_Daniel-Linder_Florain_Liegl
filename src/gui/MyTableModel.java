@@ -38,6 +38,11 @@ public class MyTableModel extends DefaultTableModel {
 	}
 	
 	
+	public void testo() {
+		
+	}
+	
+	
 	
 	@Override
 	public void setValueAt(Object aValue, int row, int column) {
