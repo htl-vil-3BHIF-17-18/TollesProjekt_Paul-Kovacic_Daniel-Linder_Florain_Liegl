@@ -55,6 +55,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
             public void windowClosing(WindowEvent we)
             {
                 String ObjButtons[] = {"Yes","No"};
+
                 int PromptResult = JOptionPane.showOptionDialog(null,"Are you sure you want to exit?","Taskplaner",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
                 if(PromptResult==JOptionPane.YES_OPTION)
                 {
