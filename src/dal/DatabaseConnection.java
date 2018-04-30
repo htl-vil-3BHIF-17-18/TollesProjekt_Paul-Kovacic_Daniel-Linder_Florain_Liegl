@@ -124,7 +124,7 @@ public class DatabaseConnection {
         Connection con = null;
         try {
             con = this.createConnection();
-            PreparedStatement stmtDelete = con.prepareStatement("DELETE FROM task WHERE category LIKE ? AND subject LIKE ? AND von = ?");
+            PreparedStatement stmtDelete = con.prepareStatement("DELETE FROM task WHERE cat LIKE ? AND subject LIKE ? AND von = ?");
             stmtDelete.setString(1, task.getCategory().toString());
             stmtDelete.setString(2, task.getSubject().toString());
             stmtDelete.setDate(3, this.convertDate(task.getFrom()));
@@ -143,11 +143,12 @@ public class DatabaseConnection {
         }
     }
 
+
     public void updateEntry(Task oldTask, Task newTask) {
         Connection con = null;
         try {
             con = this.createConnection();
-            PreparedStatement stmtUpdate = con.prepareStatement("UPDATE task SET done LIKE ?, category LIKE ?, subject LIKE ?, description LIKE ?, von = ?, until = ? WHERE category LIKE ? AND subject LIKE ? AND bis = ?");
+            PreparedStatement stmtUpdate = con.prepareStatement("UPDATE task SET done LIKE ?, cat LIKE ?, subject LIKE ?, description LIKE ?, von = ?, until = ? WHERE cat LIKE ? AND subject LIKE ? AND bis = ?");
             stmtUpdate.setString(1, newTask.isDone() ? "Y" : "N");
             stmtUpdate.setString(2, newTask.getCategory().toString());
             stmtUpdate.setString(3, newTask.getSubject().toString());
