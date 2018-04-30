@@ -199,4 +199,8 @@ public class DatabaseConnection {
     private java.util.Date convertDate(Date sqlDate) {
         return new java.util.Date(sqlDate.getTime());
     }
+
+    public String getUsername() {
+        return username;
+    }
 }

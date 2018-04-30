@@ -19,11 +19,9 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainFrame extends JFrame implements ActionListener, ListSelectionListener, Serializable {
+import static java.awt.BorderLayout.PAGE_END;
 
-    /**
-     *
-     */
+public class MainFrame extends JFrame implements ActionListener, ListSelectionListener, Serializable {
     private static final long serialVersionUID = -8026416994513756565L;
     private TaskTable taskTable;
     private JMenuBar menuBar;
@@ -44,6 +42,8 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
     private List<Task> taskList;
     private DatabaseConnection dbConnection;
     private String loggedInUser = "";
+
+    private JLabel statusBar = null;
 
     public MainFrame(String identifier) throws HeadlessException {
         super(identifier);
@@ -84,12 +84,14 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
                 e.printStackTrace();
             }
         }
+        this.setStatusBar("Getting tasks from database...");
         this.taskList = this.dbConnection.getAllTasks();
         this.taskTable.insertValuesIntoTable(this.taskList);
+        this.setStatusBar("Logged in as " + dbConnection.getUsername());
     }
 
     private void initializeControls() {
-        this.setLayout(new GridLayout(0, 1));
+        this.setLayout(new BorderLayout());
         // create MenuBar
         this.menuBar = new JMenuBar();
 
@@ -106,6 +108,8 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
         this.help = new JMenu("Help");
         this.github = new JMenuItem("Report a Bug");
+
+        this.statusBar = new JLabel();
 
         // add to ActionListener
         this.exit.addActionListener(this);
@@ -142,6 +146,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
         // add TaskTable
         this.add(this.taskTable);
+        this.add(this.statusBar, PAGE_END);
     }
 
     @Override
@@ -209,4 +214,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
     void setLoggedInUser(String loggedInUser) {
         this.loggedInUser = loggedInUser;
     }
+
+    private void setStatusBar(String status) { this.statusBar.setText(status); }
 }
