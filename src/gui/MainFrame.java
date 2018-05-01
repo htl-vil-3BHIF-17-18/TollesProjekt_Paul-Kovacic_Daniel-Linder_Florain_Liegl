@@ -216,6 +216,11 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			}
 		}
 	}
+	
+	public void updateCheck(Task oldT,Task newT) {
+		new LoadingDialog(this.dbConnection, this, "Connecting to database...", true);
+		this.dbConnection.updateEntry(oldT,newT);
+	}
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
