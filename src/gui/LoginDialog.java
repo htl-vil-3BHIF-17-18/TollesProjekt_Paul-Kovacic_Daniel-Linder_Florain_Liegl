@@ -57,7 +57,7 @@ public class LoginDialog extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(this.btnLogin)) {
             this.setVisible(false);
-//            this.setModal(false);        
+
             if (this.logIn()) {
                 this.dispose();
             } else {
@@ -85,10 +85,8 @@ public class LoginDialog extends JDialog implements ActionListener {
                 successful = true;
             } else {
                 JOptionPane.showMessageDialog(null, "Username or password incorrect!", "Warning", JOptionPane.INFORMATION_MESSAGE);
-                successful = false;
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
