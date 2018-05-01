@@ -23,8 +23,6 @@ public class FilterDialog extends JDialog implements ActionListener {
     private JComboBox JCategory = null;
     private JLabel lbSubject = null;
     private JComboBox JSubject = null;
-    private JLabel lbDescription = null;
-    private JTextField tfDescription = null;
     private JLabel lbDateFrom = null;
     private JFormattedTextField tfFrom = null;
     private JLabel lbto = null;
@@ -58,9 +56,6 @@ public class FilterDialog extends JDialog implements ActionListener {
         this.JSubject = new JComboBox(Subjectvalues);
         this.lbSubject = new JLabel("Subject:");
 
-        this.lbDescription = new JLabel("Description:");
-        this.tfDescription = new JTextField();
-
         this.lbDateFrom = new JLabel("From:");
         SimpleDateFormat time = new SimpleDateFormat("dd.mm.yyyy");
         this.tfFrom = new JFormattedTextField(time);
@@ -68,14 +63,13 @@ public class FilterDialog extends JDialog implements ActionListener {
         this.lbto = new JLabel("To:");
         this.tfto = new JFormattedTextField(time);
 
-        this.btnOk = new JButton("OK");
+        this.btnOk = new JButton("Filter");
         this.btnOk.addActionListener(this);
 
         this.btnCancel = new JButton("Cancel");
         this.btnCancel.addActionListener(this);
 
         this.modelFrom = new UtilDateModel();
-        this.modelFrom.setValue(java.util.Calendar.getInstance().getTime());
         this.modelFrom.setSelected(true);
         Properties p = new Properties();
         p.put("text.today", "Today");
@@ -85,7 +79,6 @@ public class FilterDialog extends JDialog implements ActionListener {
         datePicker = new JDatePickerImpl(datePanelFrom, new DateLabelFormatter());
 
         this.modelTo = new UtilDateModel();
-        this.modelTo.setValue(java.util.Calendar.getInstance().getTime());
         this.modelFrom.setSelected(true);
         datePanelTo = new JDatePanelImpl(modelTo, p);
         datePickerTo = new JDatePickerImpl(datePanelTo, new DateLabelFormatter());
@@ -94,8 +87,6 @@ public class FilterDialog extends JDialog implements ActionListener {
         this.add(this.JCategory);
         this.add(this.lbSubject);
         this.add(this.JSubject);
-        this.add(this.lbDescription);
-        this.add(this.tfDescription);
         this.add(this.lbDateFrom);
         this.add(this.datePicker);
         this.add(this.lbto);
@@ -121,18 +112,6 @@ public class FilterDialog extends JDialog implements ActionListener {
 
     }
 
-    public void fillControls() {
-        this.JCategory.setSelectedIndex(Categories.valueOf(this.task.getCategory().toString()).ordinal());
-        this.JCategory.setSelectedIndex(Subjects.valueOf(this.task.getSubject().toString()).ordinal());
-        this.tfDescription.setText(task.getDescription());
-        this.modelTo.setValue(this.task.getUntil());
-        this.modelTo.setSelected(true);
-
-        this.modelFrom.setValue(this.task.getFrom());
-        this.modelFrom.setSelected(true);
-
-
-    }
 
     private boolean writeValuesToMenu() {
         boolean isValid = false;
@@ -142,17 +121,12 @@ public class FilterDialog extends JDialog implements ActionListener {
         try {
             Date d1 = time.parse(this.datePicker.getJFormattedTextField().getText());
             Date d2 = time.parse(this.datePickerTo.getJFormattedTextField().getText());
-            if (!this.tfDescription.getText().trim().isEmpty()
-                    && !this.datePicker.getJFormattedTextField().getText().trim().isEmpty()
+            if (
+                    !this.datePicker.getJFormattedTextField().getText().trim().isEmpty()
                     && !this.datePickerTo.getJFormattedTextField().getText().trim().isEmpty() && d2.compareTo(d1) >= 0) {
 
 
                 isValid = true;
-
-                this.task = new Task(false, Categories.values()[this.JCategory.getSelectedIndex()],
-                        Subjects.values()[this.JSubject.getSelectedIndex()], this.tfDescription.getText(),
-                        time.parse(this.datePicker.getJFormattedTextField().getText()),
-                        time.parse(this.datePickerTo.getJFormattedTextField().getText()));
             }
 
         } catch (ParseException e) {
