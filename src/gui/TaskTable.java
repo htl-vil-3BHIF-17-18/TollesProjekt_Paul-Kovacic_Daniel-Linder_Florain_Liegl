@@ -129,6 +129,7 @@ public class TaskTable extends JPanel implements TableModelListener {
 
 	public void insertTask(Task t) {
 		int i = getSelected();
+
 		this.jTable.setValueAt(t.isDone(), i, 0);
 		this.jTable.setValueAt(t.getCategory(), i, 1);
 		this.jTable.setValueAt(t.getSubject(), i, 2);
@@ -136,6 +137,9 @@ public class TaskTable extends JPanel implements TableModelListener {
 		this.jTable.setValueAt(t.getFrom(), i, 4);
 		this.jTable.setValueAt(t.getUntil(), i, 5);
 		this.taskList.set(i, t);
+
+
+
 	}
 
 	public int getSelected() {

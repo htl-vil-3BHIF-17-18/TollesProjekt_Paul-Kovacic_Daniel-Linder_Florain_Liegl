@@ -148,7 +148,7 @@ public class DatabaseConnection {
         Connection con = null;
         try {
             con = this.createConnection();
-            PreparedStatement stmtUpdate = con.prepareStatement("UPDATE task SET done LIKE ?, cat LIKE ?, subject LIKE ?, description LIKE ?, von = ?, until = ? WHERE cat LIKE ? AND subject LIKE ? AND bis = ?");
+            PreparedStatement stmtUpdate = con.prepareStatement("UPDATE task SET done = ?, cat = ?, subject = ?, description = ?, von = ?, bis = ? WHERE cat LIKE ? AND subject LIKE ? AND bis = ?");
             stmtUpdate.setString(1, newTask.isDone() ? "Y" : "N");
             stmtUpdate.setString(2, newTask.getCategory().toString());
             stmtUpdate.setString(3, newTask.getSubject().toString());
