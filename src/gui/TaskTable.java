@@ -90,7 +90,6 @@ public class TaskTable extends JPanel implements TableModelListener {
 
 		model.addRow(new Object[] { t.isDone(), t.getCategory(), t.getSubject(), t.getDescription(), t.getFrom(),
 				t.getUntil() });
-		System.out.println(model.getRowCount() - 1);
 		this.updateColor(model.getRowCount() - 1, t);
 		taskList.add(t);
 	}
@@ -133,13 +132,14 @@ public class TaskTable extends JPanel implements TableModelListener {
 	private void updateColor(int i, Task t) {
 		MyTableModel mtm = (MyTableModel) this.jTable.getModel();
 		Date d = new Date();
-		// String date = f.format(d);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		System.out.println(sdf.format(d).equals(sdf.format(t.getUntil())));
+		int days = Integer.parseInt(sdf.format(t.getUntil())) - Integer.parseInt(sdf.format(d));
 		if (sdf.format(d).equals(sdf.format(t.getUntil()))) {
 			mtm.setRowColour(i, Color.RED);
+		} else if (days <= 2) {
+			mtm.setRowColour(i, Color.YELLOW);
 		} else {
-			mtm.setRowColour(i, javax.swing.UIManager.getColor("Table.dropCellForeground"));
+			mtm.setRowColour(i, Color.GREEN);
 		}
 	}
 
