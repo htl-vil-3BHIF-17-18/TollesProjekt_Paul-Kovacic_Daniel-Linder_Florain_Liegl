@@ -68,6 +68,7 @@ public class LoginDialog extends JDialog implements ActionListener {
             this.lUsername.setText("");
             this.setVisible(false);
             this.dispose();
+            System.exit(0);
         }
 
     }
