@@ -1,5 +1,6 @@
 package gui;
 
+import bll.Settings;
 import bll.Task;
 import dal.DatabaseConnection;
 import dal.SerializationHelper;
@@ -16,38 +17,30 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static java.awt.BorderLayout.PAGE_END;
 
 public class MainFrame extends JFrame implements ActionListener, ListSelectionListener, Serializable {
     private static final long serialVersionUID = -8026416994513756565L;
     private TaskTable taskTable;
-    private JMenuBar menuBar;
-    private JMenu file;
     private JMenuItem changeUser;
     private JMenuItem exit;
 
-    private JMenu task;
     private JMenuItem newTask;
     private JMenuItem edit;
     private JMenuItem delete;
 
-    private JMenu settings;
+    private JMenuItem settingsItem;
 
-    private JMenu help;
     private JMenuItem github;
 
-    private List<Task> taskList;
     private DatabaseConnection dbConnection;
-    private String loggedInUser = "";
+    private Settings userSettings = null;
 
     private JLabel statusBar = null;
 
     public MainFrame(String identifier) throws HeadlessException {
         super(identifier);
-        this.taskList = new ArrayList<>();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
@@ -64,10 +57,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
             }
         });
 
-
-
-
-
         this.setMinimumSize(new Dimension(600, 400));
         this.setPreferredSize(new Dimension(1080, 720));
         this.setResizable(true);
@@ -76,6 +65,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
         this.pack();
         this.setLocationRelativeTo(null);
         new LoginDialog(this, "Log in", true);
+
         while(dbConnection==null)
         {
             try {
@@ -84,31 +74,39 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
                 e.printStackTrace();
             }
         }
+        try {
+            this.userSettings = SerializationHelper.readSettings("settings/" + this.dbConnection.getUsername() + ".txt");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         this.setStatusBar("Getting tasks from database...");
-        
-//        new LoadingDialog(this.dbConnection,this, "Connecting to database...",true);
-        this.taskList = this.dbConnection.getAllTasks();
-        this.taskTable.insertValuesIntoTable(this.taskList);
-        this.setStatusBar("Logged in as " + dbConnection.getUsername());
+        this.taskTable.insertValuesIntoTable(this.dbConnection.getAllTasks());
+        //prevent adding tasks until data was loaded from database
+        this.newTask.setEnabled(true);
+        this.setStatusBar("Logged in as " + (this.userSettings.getAliasName().equals("") ? this.dbConnection.getUsername(): this.userSettings.getAliasName()));
     }
 
     private void initializeControls() {
         this.setLayout(new BorderLayout());
         // create MenuBar
-        this.menuBar = new JMenuBar();
+        JMenuBar menuBar = new JMenuBar();
 
-        this.file = new JMenu("File");
+        JMenu file = new JMenu("File");
         this.changeUser = new JMenuItem("Change User");
         this.exit = new JMenuItem("Exit");
 
-        this.task = new JMenu("Task");
+        JMenu task = new JMenu("Task");
         this.newTask = new JMenuItem("New");
+        this.newTask.setEnabled(false);
         this.edit = new JMenuItem("Edit");
+        this.edit.setEnabled(false);
         this.delete = new JMenuItem("Delete");
+        this.delete.setEnabled(false);
 
-        this.settings = new JMenu("Settings");
+        JMenu settings = new JMenu("Settings");
+        this.settingsItem = new JMenuItem("Settings");
 
-        this.help = new JMenu("Help");
+        JMenu help = new JMenu("Help");
         this.github = new JMenuItem("Report a Bug");
 
         this.statusBar = new JLabel();
@@ -119,34 +117,31 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
         this.newTask.addActionListener(this);
         this.edit.addActionListener(this);
         this.delete.addActionListener(this);
-        this.settings.addActionListener(this);
+        this.settingsItem.addActionListener(this);
         this.github.addActionListener(this);
 
-        //
-        this.edit.setEnabled(false);
-        this.delete.setEnabled(false);
+        //Build menu
+        this.setJMenuBar(menuBar);
+        menuBar.setEnabled(false);
 
-        // add to Frame
+        menuBar.add(file);
+        file.add(this.changeUser);
+        file.add(new JSeparator());
+        file.add(this.exit);
 
-        this.setJMenuBar(this.menuBar);
+        menuBar.add(task);
+        task.add(this.newTask);
+        task.add(this.edit);
+        task.add(this.delete);
 
-        this.menuBar.add(this.file);
-        this.file.add(this.changeUser);
-        this.file.add(new JSeparator());
-        this.file.add(this.exit);
+        menuBar.add(settings);
+        settings.add(this.settingsItem);
 
-        this.menuBar.add(this.task);
-        this.task.add(this.newTask);
-        this.task.add(this.edit);
-        this.task.add(this.delete);
-
-        this.menuBar.add(this.settings);
-
-        this.menuBar.add(this.help);
-        this.help.add(this.github);
+        menuBar.add(help);
+        help.add(this.github);
         Toolkit.getDefaultToolkit().beep();
 
-        // add TaskTable
+        //Build frame
         this.add(this.taskTable);
         this.add(this.statusBar, PAGE_END);
     }
@@ -154,7 +149,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(this.newTask)) {
-            TaskDialog td = new TaskDialog(this, "New Task", true); 
+            TaskDialog td = new TaskDialog(this, "New Task", true);
             new LoadingDialog(this.dbConnection,this, "Connecting to database...",true);
             this.dbConnection.addEntry(td.getTask());
             this.taskTable.insertValueIntoTable(td.getTask());
@@ -170,13 +165,8 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
         	new LoadingDialog(this.dbConnection,this, "Connecting to database...",true);
             this.dbConnection.removeEntry(this.taskTable.getTask());
             this.taskTable.deleteTask();
-        } else if (e.getSource().equals(this.settings)) {
-            try {
-                new SettingsDialog(this, "Settings", true,
-                        SerializationHelper.readSettings("settings/" + this.loggedInUser + ".txt"));
-            } catch (IOException | ClassNotFoundException e1) {
-                e1.printStackTrace();
-            }
+        } else if (e.getSource().equals(this.settingsItem)) {
+            new SettingsDialog(this, "Settings", true, this.userSettings);
         } else if (e.getSource().equals(this.github)) {
             if (Desktop.isDesktopSupported()) {
                 Desktop desktop = Desktop.getDesktop();
@@ -214,10 +204,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
     void setDbConnection(DatabaseConnection dbConnection) {
         this.dbConnection = dbConnection;
-    }
-
-    void setLoggedInUser(String loggedInUser) {
-        this.loggedInUser = loggedInUser;
     }
 
     private void setStatusBar(String status) { this.statusBar.setText(status); }
