@@ -19,42 +19,42 @@ public class DatabaseConnection {
         this.password = password;
     }
 
-    private Connection createConnection() throws SQLException, ClassNotFoundException  {
-    	Connection con = null;
-        
-			Class.forName("oracle.jdbc.OracleDriver");
-			try {
+    private Connection createConnection() throws SQLException, ClassNotFoundException {
+        Connection con = null;
+
+        Class.forName("oracle.jdbc.OracleDriver");
+        try {
             con = DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@192.168.128.152:1521:ora11g");
-			}catch(Exception e) {
-				con = DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@212.152.179.117:1521:ora11g");
-			}
+        } catch (Exception e) {
+            con = DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@212.152.179.117:1521:ora11g");
+        }
         return con;
     }
 
     public List<Task> getAllTasks() {
         List<Task> tasks = new ArrayList<>();
 //        Connection con = null;
-        
+
 //            con = this.createConnection();
-        try{
+        try {
             Statement stmtSelect = this.con.createStatement();
             ResultSet rs = stmtSelect.executeQuery("SELECT * FROM task");
 
             while (rs.next()) {
                 tasks.add(new Task(rs.getString(1).equals("Y"), Categories.valueOf(rs.getString(2)), Subjects.valueOf(rs.getString(3)), rs.getString(4), rs.getDate(5), rs.getDate(6)));
             }
-        }catch(Exception e) {
-        	
-        }finally {
+        } catch (Exception e) {
+
+        } finally {
             try {
                 if (this.con != null) {
-                	this.con.close();
+                    this.con.close();
                 }
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
         }
-        
+
         return tasks;
     }
 
@@ -116,7 +116,7 @@ public class DatabaseConnection {
         } finally {
             try {
                 if (this.con != null) {
-                	this.con.close();
+                    this.con.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -139,7 +139,7 @@ public class DatabaseConnection {
         } finally {
             try {
                 if (this.con != null) {
-                	this.con.close();
+                    this.con.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -181,7 +181,7 @@ public class DatabaseConnection {
         boolean connected = true;
         try {
             this.con = this.createConnection();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             connected = false;

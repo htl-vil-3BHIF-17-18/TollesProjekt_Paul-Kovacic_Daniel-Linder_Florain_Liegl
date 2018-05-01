@@ -1,33 +1,32 @@
 package gui;
 
-import javax.swing.*;
-
 import dal.DatabaseConnection;
 
+import javax.swing.*;
 import java.awt.*;
 
 class LoadingDialog extends JDialog {
-    
-	
-	private DatabaseConnection db;
-	private boolean con;
-	private InBackground ib;
-	
-    LoadingDialog(DatabaseConnection db,LoginDialog owner, String title,boolean modal) {
-        super(owner, title,modal);
-        this.db=db;
-        this.ib=new InBackground(db,this);
+
+
+    private DatabaseConnection db;
+    private boolean con;
+    private InBackground ib;
+
+    LoadingDialog(DatabaseConnection db, LoginDialog owner, String title, boolean modal) {
+        super(owner, title, modal);
+        this.db = db;
+        this.ib = new InBackground(db, this);
         this.ib.execute();
-        
+
         initializeControls();
     }
-    
-    LoadingDialog(DatabaseConnection db,MainFrame owner, String title,boolean modal) {
-        super(owner, title,modal);
-        this.db=db;
-        this.ib=new InBackground(db,this);
+
+    LoadingDialog(DatabaseConnection db, MainFrame owner, String title, boolean modal) {
+        super(owner, title, modal);
+        this.db = db;
+        this.ib = new InBackground(db, this);
         this.ib.execute();
-        
+
         initializeControls();
     }
 
@@ -44,11 +43,11 @@ class LoadingDialog extends JDialog {
         this.setCon(this.ib.isCon());
     }
 
-	public boolean isCon() {
-		return con;
-	}
+    public boolean isCon() {
+        return con;
+    }
 
-	public void setCon(boolean con) {
-		this.con = con;
-	}
+    public void setCon(boolean con) {
+        this.con = con;
+    }
 }

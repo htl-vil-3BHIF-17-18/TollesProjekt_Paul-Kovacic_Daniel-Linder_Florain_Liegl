@@ -1,19 +1,16 @@
 package gui;
 
 import javax.swing.table.DefaultTableModel;
-
-import java.awt.Color;
-import java.awt.List;
+import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 public class MyTableModel extends DefaultTableModel {
     private static final long serialVersionUID = -2412407473703651652L;
     private String[] columnNames = {"DONE", "Category", "Subject", "Description", "From", "Until"};
     private SimpleDateFormat f = new SimpleDateFormat("dd.MM.yyyy");
-    private ArrayList<Color> rowColours= new ArrayList<>();
+    private ArrayList<Color> rowColours = new ArrayList<>();
 
     @Override
     public int getColumnCount() {
@@ -38,18 +35,17 @@ public class MyTableModel extends DefaultTableModel {
         }
         super.setValueAt(aValue, row, column);
     }
-    
+
     public void setRowColour(int row, Color c) {
-    	if(rowColours.size()==row) {
-    		rowColours.add(c);
-    	}else {
-    		rowColours.set(row, c);  
-    	}
-            
+        if (rowColours.size() == row) {
+            rowColours.add(c);
+        } else {
+            rowColours.set(row, c);
+        }
+
         fireTableRowsUpdated(row, row);
     }
-    
-    
+
 
     public Color getRowColour(int row) {
         return rowColours.get(row);

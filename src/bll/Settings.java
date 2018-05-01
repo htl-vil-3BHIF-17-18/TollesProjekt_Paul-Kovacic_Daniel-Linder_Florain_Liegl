@@ -1,17 +1,18 @@
 package bll;
 
-import java.awt.*;
 import java.io.Serializable;
 
 public class Settings implements Serializable {
 
     private static final long serialVersionUID = 8367156940742286833L;
     private String aliasName;
-    private boolean onlyUndone;
+    private boolean onlyTodo;
+    private boolean showProgressbar;
 
-    public Settings(String aliasName, boolean onlyUndone) {
+    public Settings(String aliasName, boolean onlyTodo, boolean showProgressbar) {
         this.aliasName = aliasName;
-        this.onlyUndone = onlyUndone;
+        this.onlyTodo = onlyTodo;
+        this.showProgressbar = showProgressbar;
     }
 
     public String getAliasName() {
@@ -22,11 +23,19 @@ public class Settings implements Serializable {
         this.aliasName = aliasName;
     }
 
-    public boolean isOnlyUndone() {
-        return onlyUndone;
+    public boolean isOnlyTodo() {
+        return onlyTodo;
     }
 
-    public void setOnlyUndone(boolean onlyUndone) {
-        this.onlyUndone = onlyUndone;
+    public void setOnlyTodo(boolean onlyTodo) {
+        this.onlyTodo = onlyTodo;
+    }
+
+    public boolean isShowProgressbar() {
+        return showProgressbar;
+    }
+
+    public void setShowProgressbar(boolean showProgressbar) {
+        this.showProgressbar = showProgressbar;
     }
 }

@@ -13,4 +13,6 @@ public class SettingsDialog extends JDialog {
         super(owner, title, modal);
         this.settings = settings;
     }
+
+
 }

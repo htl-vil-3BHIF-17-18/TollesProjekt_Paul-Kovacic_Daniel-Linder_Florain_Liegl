@@ -2,12 +2,11 @@ package dal;
 
 import bll.Settings;
 
-import java.awt.*;
 import java.io.*;
 
 
 public class SerializationHelper {
-    private static Settings defaultSettings = new Settings("", false);
+    private static Settings defaultSettings = new Settings("", true, false);
 
     public static void writeSettings(Settings settings, String filename) throws IOException {
         File file = new File(filename);

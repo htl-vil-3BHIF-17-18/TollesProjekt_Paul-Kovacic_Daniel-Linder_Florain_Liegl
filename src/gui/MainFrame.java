@@ -45,13 +45,11 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent we)
-            {
-                String ObjButtons[] = {"Yes","No"};
+            public void windowClosing(WindowEvent we) {
+                String ObjButtons[] = {"Yes", "No"};
 
-                int PromptResult = JOptionPane.showOptionDialog(null,"Are you sure you want to exit?","Taskplaner",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
-                if(PromptResult==JOptionPane.YES_OPTION)
-                {
+                int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Taskplaner", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons, ObjButtons[1]);
+                if (PromptResult == JOptionPane.YES_OPTION) {
                     System.exit(0);
                 }
             }
@@ -66,8 +64,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
         this.setLocationRelativeTo(null);
         new LoginDialog(this, "Log in", true);
 
-        while(dbConnection==null)
-        {
+        while (dbConnection == null) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -83,7 +80,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
         this.taskTable.insertValuesIntoTable(this.dbConnection.getAllTasks());
         //prevent adding tasks until data was loaded from database
         this.newTask.setEnabled(true);
-        this.setStatusBar("Logged in as " + (this.userSettings.getAliasName().equals("") ? this.dbConnection.getUsername(): this.userSettings.getAliasName()));
+        this.setStatusBar("Logged in as " + (this.userSettings.getAliasName().equals("") ? this.dbConnection.getUsername() : this.userSettings.getAliasName()));
     }
 
     private void initializeControls() {
@@ -150,7 +147,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(this.newTask)) {
             TaskDialog td = new TaskDialog(this, "New Task", true);
-            new LoadingDialog(this.dbConnection,this, "Connecting to database...",true);
+            new LoadingDialog(this.dbConnection, this, "Connecting to database...", true);
             this.dbConnection.addEntry(td.getTask());
             this.taskTable.insertValueIntoTable(td.getTask());
         } else if (e.getSource().equals(this.exit)) {
@@ -159,10 +156,10 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
             Task t = this.taskTable.getTask();
             TaskDialog td = new TaskDialog(this, "New Task", true, this.taskTable.getTask());
             this.taskTable.insertTask(td.getTask());
-            new LoadingDialog(this.dbConnection,this, "Connecting to database...",true);
+            new LoadingDialog(this.dbConnection, this, "Connecting to database...", true);
             this.dbConnection.updateEntry(t, td.getTask());
         } else if (e.getSource().equals(this.delete)) {
-        	new LoadingDialog(this.dbConnection,this, "Connecting to database...",true);
+            new LoadingDialog(this.dbConnection, this, "Connecting to database...", true);
             this.dbConnection.removeEntry(this.taskTable.getTask());
             this.taskTable.deleteTask();
         } else if (e.getSource().equals(this.settingsItem)) {
@@ -199,12 +196,13 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
             this.edit.setEnabled(false);
             this.delete.setEnabled(false);
         }
-
     }
 
     void setDbConnection(DatabaseConnection dbConnection) {
         this.dbConnection = dbConnection;
     }
 
-    private void setStatusBar(String status) { this.statusBar.setText(status); }
+    private void setStatusBar(String status) {
+        this.statusBar.setText(status);
+    }
 }

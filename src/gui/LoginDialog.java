@@ -30,7 +30,7 @@ public class LoginDialog extends JDialog implements ActionListener {
     }
 
     private void initializeControls() {
-        GridLayout grid = new GridLayout(3,2);
+        GridLayout grid = new GridLayout(3, 2);
         this.setLayout(grid);
 
         this.lUsername = new JLabel("Username: ");
@@ -63,7 +63,7 @@ public class LoginDialog extends JDialog implements ActionListener {
             } else {
                 this.setVisible(true);
             }
-            
+
         } else if (e.getSource().equals(this.btnCancel)) {
             this.lUsername.setText("");
             this.setVisible(false);
@@ -75,21 +75,21 @@ public class LoginDialog extends JDialog implements ActionListener {
     private boolean logIn() {
         boolean successful = false;
         DatabaseConnection db = new DatabaseConnection(this.getUsername(), this.getPassword());
-        
-        this.loadingDialog = new LoadingDialog(db,this, "Connecting to database...",true);
+
+        this.loadingDialog = new LoadingDialog(db, this, "Connecting to database...", true);
         try {
-			if (loadingDialog.isCon()) {
-			    this.parent.setDbConnection(db);
-			    this.parent.setVisible(true);
-			    successful = true;
-			} else {
-			    JOptionPane.showMessageDialog(null, "Username or password incorrect!", "Warning", JOptionPane.INFORMATION_MESSAGE);
-			    successful = false;
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            if (loadingDialog.isCon()) {
+                this.parent.setDbConnection(db);
+                this.parent.setVisible(true);
+                successful = true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Username or password incorrect!", "Warning", JOptionPane.INFORMATION_MESSAGE);
+                successful = false;
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         return successful;
     }
