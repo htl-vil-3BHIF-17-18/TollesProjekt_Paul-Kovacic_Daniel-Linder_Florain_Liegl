@@ -160,6 +160,7 @@ public class DatabaseConnection {
             stmtUpdate.setDate(9, this.convertDate(oldTask.getUntil()));
             stmtUpdate.execute();
             con.commit();
+
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } finally {
