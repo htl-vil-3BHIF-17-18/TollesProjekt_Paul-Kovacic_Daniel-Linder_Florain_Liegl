@@ -19,7 +19,6 @@ import java.util.Properties;
 
 public class FilterDialog extends JDialog implements ActionListener {
 
-
 	private JLabel lbDateFrom = null;
 	private JFormattedTextField tfFrom = null;
 	private JLabel lbto = null;
@@ -32,6 +31,8 @@ public class FilterDialog extends JDialog implements ActionListener {
 	private UtilDateModel modelTo;
 	private JDatePanelImpl datePanelFrom;
 	private JDatePanelImpl datePanelTo;
+	private Date from = null;
+	private Date until = null;
 
 	public FilterDialog(Frame owner, String title, boolean modal) {
 		super(owner, title, modal);
@@ -39,7 +40,7 @@ public class FilterDialog extends JDialog implements ActionListener {
 		this.setResizable(false);
 		this.pack();
 		this.setLocationRelativeTo(null);
-		this.setVisible(true);	
+		this.setVisible(true);
 	}
 
 	private void initializeControls() {
@@ -109,6 +110,8 @@ public class FilterDialog extends JDialog implements ActionListener {
 					&& !this.datePickerTo.getJFormattedTextField().getText().trim().isEmpty()
 					&& d2.compareTo(d1) >= 0) {
 
+				this.from = time.parse(this.datePicker.getJFormattedTextField().getText());
+				this.until = time.parse(this.datePickerTo.getJFormattedTextField().getText());
 				isValid = true;
 			}
 
@@ -119,28 +122,13 @@ public class FilterDialog extends JDialog implements ActionListener {
 		return isValid;
 
 	}
-	
+
 	public Date getFrom() {
-		SimpleDateFormat time = new SimpleDateFormat("dd.MM.yyyy");
-		try {
-			return time.parse(this.datePicker.getJFormattedTextField().getText());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-        
+		return from;
 	}
-	
+
 	public Date getUntil() {
-		SimpleDateFormat time = new SimpleDateFormat("dd.MM.yyyy");
-		try {
-			return time.parse(this.datePickerTo.getJFormattedTextField().getText());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		return until;
 	}
 
 }

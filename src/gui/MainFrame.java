@@ -201,7 +201,9 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			new LoginDialog(this, "Change user", true);
 		} else if (e.getSource().equals(this.filter)) {
 			FilterDialog fd = new FilterDialog(this, "Filter Tasks", true);
-			this.taskTable.filter(fd.getFrom(),fd.getUntil());
+			if (fd.getFrom() != null) {
+				this.taskTable.filter(fd.getFrom(), fd.getUntil());
+			}
 		}
 	}
 

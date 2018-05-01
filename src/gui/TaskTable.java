@@ -14,6 +14,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +33,8 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 	private String separator = File.separator;
 	private ImageIcon ii = new ImageIcon("images" + separator + "check_24.png");
 	private List<Task> taskList;
+	private List<Task> removedList;
+	private List<Task> goodList;
 	private boolean showDone = false;
 	private SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -48,6 +51,8 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 	private void initializeControls() {
 		this.setLayout(new GridLayout(0, 1));
 		this.taskList = new ArrayList<Task>();
+		this.removedList = new ArrayList<Task>();
+		this.goodList = new ArrayList<Task>();
 		this.jTable = new JTable(new MyTableModel());
 		this.jTable.getSelectionModel().addListSelectionListener(this.mf);
 		this.jTable.getModel().addTableModelListener(this);
@@ -131,16 +136,33 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 		this.updateColor(i, t);
 
 	}
-	
+
 	public void filter(Date from, Date until) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		for(Task t: this.taskList) {
+		if (this.removedList.size() != 0) {
+			this.taskList = new ArrayList<Task>(this.goodList);
+			this.taskList.removeAll(this.removedList);
+			this.taskList.addAll(this.removedList);
+			this.removedList = new ArrayList<Task>();
+			this.goodList = new ArrayList<Task>();
+			// Collections.sort(this.taskList);
+		}
+		for (Task t : this.taskList) {
 			int daysFrom = Integer.parseInt(sdf.format(t.getUntil())) - Integer.parseInt(sdf.format(from));
 			int daysUntil = Integer.parseInt(sdf.format(t.getUntil())) - Integer.parseInt(sdf.format(until));
-			if(daysFrom<0||daysUntil>0) {
-				System.out.println("weg"+t.getDescription());
+			if (daysFrom < 0 || daysUntil > 0) {
+				this.removedList.add(t);
+			} else {
+				this.goodList.add(t);
 			}
 		}
+		this.taskList = new ArrayList<Task>(this.goodList);
+		if (this.removedList.size() == 0) {
+			this.goodList = new ArrayList<Task>();
+		}
+		this.clearTable();
+		this.insertValuesIntoTable(this.taskList);
+
 	}
 
 	private void updateColor(int i, Task t) {
@@ -207,6 +229,7 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 			Boolean checked = (Boolean) model.getValueAt(row, column);
 			if (checked) {
 				this.taskList.get(row).setDone(true);
+				System.out.println(this.taskList.get(row));
 			} else {
 				this.taskList.get(row).setDone(false);
 			}
