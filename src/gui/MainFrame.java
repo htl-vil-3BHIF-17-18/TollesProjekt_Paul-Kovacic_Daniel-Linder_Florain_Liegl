@@ -240,4 +240,10 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	private void setStatusBar(String status) {
 		this.statusBar.setText(status);
 	}
+
+	Settings getUserSettings() {
+		return userSettings;
+	}
+	
+	
 }
