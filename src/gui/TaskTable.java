@@ -109,10 +109,8 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 		DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
 		model.setRowCount(0);
 		for (Task t : l) {
-			System.out.println("----1");
 			model.addRow(new Object[] { t.isDone(), t.getCategory(), t.getSubject(), t.getDescription(), t.getFrom(),
 					t.getUntil() });
-			System.out.println("----2");
 			this.taskList.add(t);
 			i++;
 		}
@@ -143,7 +141,7 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 	public void filter(Date from, Date until) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		if (this.removedList.size() != 0) {
-//			this.taskList = new ArrayList<Task>(this.goodList);
+			// this.taskList = new ArrayList<Task>(this.goodList);
 			this.taskList.removeAll(this.removedList);
 			this.taskList.addAll(this.removedList);
 			this.removedList = new ArrayList<Task>();
@@ -160,13 +158,9 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 			}
 		}
 		this.taskList = new ArrayList<Task>(this.goodList);
-//		System.out.println(this.taskList.size());
-//		System.out.println(this.goodList.size());
 		if (this.removedList.size() == 0) {
 			this.goodList = new ArrayList<Task>();
 		}
-		DefaultTableModel dtm = (DefaultTableModel) this.jTable.getModel();
-		System.out.println(this.jTable.getRowCount());
 		this.insertValuesIntoTable(this.taskList);
 
 	}
@@ -190,7 +184,7 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 		int i = 0;
 		for (int j = 0; j < this.taskList.size(); j++) {
 			i = this.jTable.getRowSorter().convertRowIndexToModel(j);
-//			System.out.println(this.jTable.getRowCount());
+			// System.out.println(this.jTable.getRowCount());
 			this.updateColor(j, this.taskList.get(i));
 		}
 	}
@@ -247,8 +241,7 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 	@Override
 	public void sorterChanged(RowSorterEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println(e.getClass());
-		if(this.jTable.getRowCount()>0)
-		this.updateAllColors();
+		if (this.jTable.getRowCount() > 0)
+			this.updateAllColors();
 	}
 }
