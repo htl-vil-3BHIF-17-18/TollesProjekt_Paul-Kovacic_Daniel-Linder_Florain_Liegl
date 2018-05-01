@@ -132,12 +132,12 @@ public class TaskDialog extends JDialog implements ActionListener {
     }
 
     public void fillControls() {
+
         this.JCategory.setSelectedIndex(Categories.valueOf(this.task.getCategory().toString()).ordinal());
-        this.JCategory.setSelectedIndex(Subjects.valueOf(this.task.getSubject().toString()).ordinal());
+        this.JSubject.setSelectedIndex(Subjects.valueOf(this.task.getSubject().toString()).ordinal());
         this.tfDescription.setText(task.getDescription());
         this.modelTo.setValue(this.task.getUntil());
         this.modelTo.setSelected(true);
-
         this.modelFrom.setValue(this.task.getFrom());
         this.modelFrom.setSelected(true);
 
