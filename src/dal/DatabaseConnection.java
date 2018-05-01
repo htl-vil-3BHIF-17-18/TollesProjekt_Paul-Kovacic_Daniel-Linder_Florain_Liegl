@@ -11,6 +11,7 @@ import java.util.List;
 public class DatabaseConnection {
     private String username;
     private String password;
+    private Connection con;
 
     public DatabaseConnection(String username, String password) {
         super();
@@ -18,52 +19,55 @@ public class DatabaseConnection {
         this.password = password;
     }
 
-    private Connection createConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("oracle.jdbc.OracleDriver");
-        Connection con;
-        try {
+    private Connection createConnection() throws SQLException, ClassNotFoundException  {
+    	Connection con = null;
+        
+			Class.forName("oracle.jdbc.OracleDriver");
+			try {
             con = DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@192.168.128.152:1521:ora11g");
-        } catch (SQLException e) {
-            con = DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@212.152.179.117:1521:ora11g");
-        }
+			}catch(Exception e) {
+				con = DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@212.152.179.117:1521:ora11g");
+			}
         return con;
     }
 
     public List<Task> getAllTasks() {
         List<Task> tasks = new ArrayList<>();
-        Connection con = null;
-        try {
-            con = this.createConnection();
-            Statement stmtSelect = con.createStatement();
+//        Connection con = null;
+        
+//            con = this.createConnection();
+        try{
+            Statement stmtSelect = this.con.createStatement();
             ResultSet rs = stmtSelect.executeQuery("SELECT * FROM task");
 
             while (rs.next()) {
                 tasks.add(new Task(rs.getString(1).equals("Y"), Categories.valueOf(rs.getString(2)), Subjects.valueOf(rs.getString(3)), rs.getString(4), rs.getDate(5), rs.getDate(6)));
             }
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        } finally {
+        }catch(Exception e) {
+        	
+        }finally {
             try {
-                if (con != null) {
-                    con.close();
+                if (this.con != null) {
+                	this.con.close();
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
             }
         }
+        
         return tasks;
     }
 
     public List<Task> getTasksFiltered(String done) {
         List<Task> tasks = new ArrayList<>();
-        Connection con = null;
+//        Connection con = null;
         //TODO fertig machen
         try {
-            con = this.createConnection();
+//            con = this.createConnection();
             Statement stmtSelect = con.createStatement();
             String fltdStmt = "SELECT * FROM task WHERE " + (done.equals("") ? "" : done + " AND ") + ("");
             ResultSet rs = stmtSelect.executeQuery(fltdStmt);
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return tasks;
@@ -71,16 +75,16 @@ public class DatabaseConnection {
 
     public List<Task> getUndoneTasks() {
         List<Task> tasks = new ArrayList<>();
-        Connection con = null;
+//        Connection con = null;
         try {
-            con = this.createConnection();
+//            con = this.createConnection();
             Statement stmtSelect = con.createStatement();
             ResultSet rs = stmtSelect.executeQuery("SELECT * FROM task WHERE done LIKE 'N'");
 
             while (rs.next()) {
                 tasks.add(new Task(rs.getString(1).equals("Y"), Categories.valueOf(rs.getString(2)), Subjects.valueOf(rs.getString(3)), rs.getString(4), this.convertDate(rs.getDate(5)), this.convertDate(rs.getDate(6))));
             }
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
@@ -95,10 +99,10 @@ public class DatabaseConnection {
     }
 
     public void addEntry(Task task) {
-        Connection con = null;
+//        Connection con = null;
         try {
-            con = this.createConnection();
-            PreparedStatement stmtInsert = con.prepareStatement("INSERT INTO task (done, cat, subject, description, von, bis) VALUES (?,?,?,?,?,?)");
+//            con = this.createConnection();
+            PreparedStatement stmtInsert = this.con.prepareStatement("INSERT INTO task (done, cat, subject, description, von, bis) VALUES (?,?,?,?,?,?)");
             stmtInsert.setString(1, task.isDone() ? "Y" : "N");
             stmtInsert.setString(2, task.getCategory().toString());
             stmtInsert.setString(3, task.getSubject().toString());
@@ -106,13 +110,13 @@ public class DatabaseConnection {
             stmtInsert.setDate(5, this.convertDate(task.getFrom()));
             stmtInsert.setDate(6, this.convertDate(task.getUntil()));
             stmtInsert.execute();
-            con.commit();
-        } catch (ClassNotFoundException | SQLException e) {
+            this.con.commit();
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
-                if (con != null) {
-                    con.close();
+                if (this.con != null) {
+                	this.con.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -121,21 +125,21 @@ public class DatabaseConnection {
     }
 
     public void removeEntry(Task task) {
-        Connection con = null;
+//        Connection con = null;
         try {
-            con = this.createConnection();
-            PreparedStatement stmtDelete = con.prepareStatement("DELETE FROM task WHERE category LIKE ? AND subject LIKE ? AND von = ?");
+//            con = this.createConnection();
+            PreparedStatement stmtDelete = this.con.prepareStatement("DELETE FROM task WHERE category LIKE ? AND subject LIKE ? AND von = ?");
             stmtDelete.setString(1, task.getCategory().toString());
             stmtDelete.setString(2, task.getSubject().toString());
             stmtDelete.setDate(3, this.convertDate(task.getFrom()));
             stmtDelete.execute();
-            con.commit();
-        } catch (ClassNotFoundException | SQLException e) {
+            this.con.commit();
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
-                if (con != null) {
-                    con.close();
+                if (this.con != null) {
+                	this.con.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -144,9 +148,9 @@ public class DatabaseConnection {
     }
 
     public void updateEntry(Task oldTask, Task newTask) {
-        Connection con = null;
+//        Connection con = null;
         try {
-            con = this.createConnection();
+//            con = this.createConnection();
             PreparedStatement stmtUpdate = con.prepareStatement("UPDATE task SET done LIKE ?, category LIKE ?, subject LIKE ?, description LIKE ?, von = ?, until = ? WHERE category LIKE ? AND subject LIKE ? AND bis = ?");
             stmtUpdate.setString(1, newTask.isDone() ? "Y" : "N");
             stmtUpdate.setString(2, newTask.getCategory().toString());
@@ -159,7 +163,7 @@ public class DatabaseConnection {
             stmtUpdate.setDate(9, this.convertDate(oldTask.getUntil()));
             stmtUpdate.execute();
             con.commit();
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
@@ -173,21 +177,23 @@ public class DatabaseConnection {
     }
 
     public boolean checkConnection() {
-        Connection con = null;
+
         boolean connected = true;
         try {
-            con = this.createConnection();
-        } catch (ClassNotFoundException | SQLException e) {
+            this.con = this.createConnection();
+            
+        } catch (Exception e) {
             e.printStackTrace();
             connected = false;
         } finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                if (this.con != null) {
+//                	System.out.println("close");
+//                    this.con.close();
+//                }
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
         }
         return connected;
     }

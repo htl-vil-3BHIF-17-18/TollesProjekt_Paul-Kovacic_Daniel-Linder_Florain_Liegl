@@ -85,6 +85,8 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
             }
         }
         this.setStatusBar("Getting tasks from database...");
+        
+//        new LoadingDialog(this.dbConnection,this, "Connecting to database...",true);
         this.taskList = this.dbConnection.getAllTasks();
         this.taskTable.insertValuesIntoTable(this.taskList);
         this.setStatusBar("Logged in as " + dbConnection.getUsername());
@@ -152,17 +154,20 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(this.newTask)) {
-            TaskDialog td = new TaskDialog(this, "New Task", true);
-            this.taskTable.insertValueIntoTable(td.getTask());
+            TaskDialog td = new TaskDialog(this, "New Task", true); 
+            new LoadingDialog(this.dbConnection,this, "Connecting to database...",true);
             this.dbConnection.addEntry(td.getTask());
+            this.taskTable.insertValueIntoTable(td.getTask());
         } else if (e.getSource().equals(this.exit)) {
             System.exit(NORMAL);
         } else if (e.getSource().equals(this.edit)) {
             Task t = this.taskTable.getTask();
             TaskDialog td = new TaskDialog(this, "New Task", true, this.taskTable.getTask());
             this.taskTable.insertTask(td.getTask());
+            new LoadingDialog(this.dbConnection,this, "Connecting to database...",true);
             this.dbConnection.updateEntry(t, td.getTask());
         } else if (e.getSource().equals(this.delete)) {
+        	new LoadingDialog(this.dbConnection,this, "Connecting to database...",true);
             this.dbConnection.removeEntry(this.taskTable.getTask());
             this.taskTable.deleteTask();
         } else if (e.getSource().equals(this.settings)) {

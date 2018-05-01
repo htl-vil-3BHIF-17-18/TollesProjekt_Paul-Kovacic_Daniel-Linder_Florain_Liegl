@@ -21,6 +21,15 @@ class LoadingDialog extends JDialog {
         
         initializeControls();
     }
+    
+    LoadingDialog(DatabaseConnection db,MainFrame owner, String title,boolean modal) {
+        super(owner, title,modal);
+        this.db=db;
+        this.ib=new InBackground(db,this);
+        this.ib.execute();
+        
+        initializeControls();
+    }
 
     private void initializeControls() {
         this.setLayout(new GridLayout(1, 1));
