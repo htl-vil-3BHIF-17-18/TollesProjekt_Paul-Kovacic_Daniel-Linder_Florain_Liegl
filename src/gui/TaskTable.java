@@ -4,6 +4,8 @@ import bll.Task;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.RowSorterEvent;
+import javax.swing.event.RowSorterListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.*;
@@ -15,7 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class TaskTable extends JPanel implements TableModelListener {
+public class TaskTable extends JPanel implements TableModelListener, RowSorterListener {
 
 	/**
 	 *
@@ -53,6 +55,7 @@ public class TaskTable extends JPanel implements TableModelListener {
 		this.jTable.getTableHeader().setReorderingAllowed(false);
 		this.jTable.setAutoCreateRowSorter(true);
 		this.jTable.setDefaultRenderer(Object.class, new MyTableCellRenderer());
+		this.jTable.getRowSorter().addRowSorterListener(this);
 
 		// image in table header(s)
 		Border headerBorder = UIManager.getBorder("TableHeader.cellBorder");
@@ -115,8 +118,8 @@ public class TaskTable extends JPanel implements TableModelListener {
 	}
 
 	public void insertTask(Task t) {
-		int i = getSelected();
 
+		int i = getSelected();
 		this.jTable.setValueAt(t.isDone(), i, 0);
 		this.jTable.setValueAt(t.getCategory(), i, 1);
 		this.jTable.setValueAt(t.getSubject(), i, 2);
@@ -130,6 +133,7 @@ public class TaskTable extends JPanel implements TableModelListener {
 	}
 
 	private void updateColor(int i, Task t) {
+
 		MyTableModel mtm = (MyTableModel) this.jTable.getModel();
 		Date d = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -145,9 +149,9 @@ public class TaskTable extends JPanel implements TableModelListener {
 
 	private void updateAllColors() {
 		int i = 0;
-		for (Task t : this.taskList) {
-			this.updateColor(i, t);
-			i++;
+		for (int j = 0; j < this.taskList.size(); j++) {
+			i = this.jTable.getRowSorter().convertRowIndexToModel(j);
+			this.updateColor(j, this.taskList.get(i));
 		}
 	}
 
@@ -184,8 +188,9 @@ public class TaskTable extends JPanel implements TableModelListener {
 	public void tableChanged(TableModelEvent e) {
 		int row = e.getFirstRow();
 		int column = e.getColumn();
-		DefaultTableModel dtm = (DefaultTableModel) this.jTable.getModel();
+
 		if (column == BOOLEAN_COLUMN) {
+			DefaultTableModel dtm = (DefaultTableModel) this.jTable.getModel();
 			TableModel model = (TableModel) e.getSource();
 			String columnName = model.getColumnName(column);
 			Boolean checked = (Boolean) model.getValueAt(row, column);
@@ -195,5 +200,11 @@ public class TaskTable extends JPanel implements TableModelListener {
 				this.taskList.get(row).setDone(false);
 			}
 		}
+	}
+
+	@Override
+	public void sorterChanged(RowSorterEvent e) {
+		// TODO Auto-generated method stub
+		this.updateAllColors();
 	}
 }
