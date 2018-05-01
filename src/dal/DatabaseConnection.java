@@ -20,7 +20,7 @@ public class DatabaseConnection {
     }
 
     private Connection createConnection() throws SQLException, ClassNotFoundException {
-        Connection con = null;
+        Connection con;
 
         Class.forName("oracle.jdbc.OracleDriver");
         try {
@@ -38,13 +38,18 @@ public class DatabaseConnection {
 //            con = this.createConnection();
         try {
             Statement stmtSelect = this.con.createStatement();
-            ResultSet rs = stmtSelect.executeQuery("SELECT * FROM task");
+            ResultSet rs = null;
+            try {
+                rs = stmtSelect.executeQuery("SELECT * FROM task");
+            } catch (SQLException e) {
+                this.createTable();
+            }
 
-            while (rs.next()) {
+            while (rs != null && rs.next()) {
                 tasks.add(new Task(rs.getString(1).equals("Y"), Categories.valueOf(rs.getString(2)), Subjects.valueOf(rs.getString(3)), rs.getString(4), rs.getDate(5), rs.getDate(6)));
             }
-        } catch (Exception e) {
-
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             try {
                 if (this.con != null) {
@@ -58,30 +63,19 @@ public class DatabaseConnection {
         return tasks;
     }
 
-    public List<Task> getTasksFiltered(String done) {
-        List<Task> tasks = new ArrayList<>();
-//        Connection con = null;
-        //TODO fertig machen
-        try {
-//            con = this.createConnection();
-            Statement stmtSelect = con.createStatement();
-            String fltdStmt = "SELECT * FROM task WHERE " + (done.equals("") ? "" : done + " AND ") + ("");
-            ResultSet rs = stmtSelect.executeQuery(fltdStmt);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return tasks;
-    }
-
     public List<Task> getUndoneTasks() {
         List<Task> tasks = new ArrayList<>();
 //        Connection con = null;
         try {
 //            con = this.createConnection();
             Statement stmtSelect = con.createStatement();
-            ResultSet rs = stmtSelect.executeQuery("SELECT * FROM task WHERE done LIKE 'N'");
-
-            while (rs.next()) {
+            ResultSet rs = null;
+            try {
+                rs = stmtSelect.executeQuery("SELECT * FROM task WHERE done LIKE 'N'");
+            } catch (SQLException e) {
+                this.createTable();
+            }
+            while (rs != null && rs.next()) {
                 tasks.add(new Task(rs.getString(1).equals("Y"), Categories.valueOf(rs.getString(2)), Subjects.valueOf(rs.getString(3)), rs.getString(4), this.convertDate(rs.getDate(5)), this.convertDate(rs.getDate(6))));
             }
         } catch (SQLException e) {
@@ -185,17 +179,27 @@ public class DatabaseConnection {
         } catch (Exception e) {
             e.printStackTrace();
             connected = false;
-        } finally {
-//            try {
-//                if (this.con != null) {
-//                	System.out.println("close");
-//                    this.con.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
         }
         return connected;
+    }
+
+    private void createTable() {
+        try {
+            Statement stmtCreate = con.createStatement();
+            stmtCreate.execute("CREATE TABLE task (\n" +
+                    "    done VARCHAR2(1),\n" +
+                    "    cat VARCHAR2(20),\n" +
+                    "    subject VARCHAR2(20),\n" +
+                    "    description VARCHAR2(50),\n" +
+                    "    von DATE,\n" +
+                    "    bis DATE,\n" +
+                    "    CONSTRAINT pkTask PRIMARY KEY (cat, subject, bis),\n" +
+                    "    CONSTRAINT ckDatum CHECK (von <= bis),\n" +
+                    "    CONSTRAINT ckErledigt CHECK (upper(done) LIKE 'Y' OR upper(done) LIKE 'N')\n" +
+                    ")");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private Date convertDate(java.util.Date utilDate) {

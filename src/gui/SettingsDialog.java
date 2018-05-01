@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class SettingsDialog extends JDialog implements ActionListener {
+    //TODO: Pauli fertig machen lassen
     private static final long serialVersionUID = 4755471415460680864L;
     private Settings settings;
 
