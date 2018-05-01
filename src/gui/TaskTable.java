@@ -131,6 +131,17 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 		this.updateColor(i, t);
 
 	}
+	
+	public void filter(Date from, Date until) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		for(Task t: this.taskList) {
+			int daysFrom = Integer.parseInt(sdf.format(t.getUntil())) - Integer.parseInt(sdf.format(from));
+			int daysUntil = Integer.parseInt(sdf.format(t.getUntil())) - Integer.parseInt(sdf.format(until));
+			if(daysFrom<0||daysUntil>0) {
+				System.out.println("weg"+t.getDescription());
+			}
+		}
+	}
 
 	private void updateColor(int i, Task t) {
 

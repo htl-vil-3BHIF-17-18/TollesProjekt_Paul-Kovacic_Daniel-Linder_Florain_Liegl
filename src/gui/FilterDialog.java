@@ -19,24 +19,19 @@ import java.util.Properties;
 
 public class FilterDialog extends JDialog implements ActionListener {
 
-	private JLabel lbCategory = null;
-	private JComboBox JCategory = null;
-	private JLabel lbSubject = null;
-	private JComboBox JSubject = null;
+
 	private JLabel lbDateFrom = null;
 	private JFormattedTextField tfFrom = null;
 	private JLabel lbto = null;
 	private JFormattedTextField tfto = null;
 	private JButton btnOk = null;
 	private JButton btnCancel = null;
-	private Task task = null;
 	private JDatePickerImpl datePicker;
 	private JDatePickerImpl datePickerTo;
 	private UtilDateModel modelFrom;
 	private UtilDateModel modelTo;
 	private JDatePanelImpl datePanelFrom;
 	private JDatePanelImpl datePanelTo;
-	private JPanel panel = null;
 
 	public FilterDialog(Frame owner, String title, boolean modal) {
 		super(owner, title, modal);
@@ -124,9 +119,28 @@ public class FilterDialog extends JDialog implements ActionListener {
 		return isValid;
 
 	}
-
-	public Task getTask() {
-		return task;
+	
+	public Date getFrom() {
+		SimpleDateFormat time = new SimpleDateFormat("dd.MM.yyyy");
+		try {
+			return time.parse(this.datePicker.getJFormattedTextField().getText());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+        
+	}
+	
+	public Date getUntil() {
+		SimpleDateFormat time = new SimpleDateFormat("dd.MM.yyyy");
+		try {
+			return time.parse(this.datePickerTo.getJFormattedTextField().getText());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
