@@ -111,7 +111,7 @@ public class TaskTable extends JPanel implements TableModelListener {
 					t.getUntil() });
 
 			this.taskList.add(t);
-			this.updateColor(i,t);
+			this.updateColor(i, t);
 			i++;
 		}
 	}
@@ -145,11 +145,11 @@ public class TaskTable extends JPanel implements TableModelListener {
 			mtm.setRowColour(i, javax.swing.UIManager.getColor("Table.dropCellForeground"));
 		}
 	}
-	
+
 	private void updateAllColors() {
-		int i=0;
-		for(Task t:this.taskList) {
-			this.updateColor(i,t);
+		int i = 0;
+		for (Task t : this.taskList) {
+			this.updateColor(i, t);
 			i++;
 		}
 	}

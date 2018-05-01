@@ -13,8 +13,7 @@ public class MyTableModel extends DefaultTableModel {
     private static final long serialVersionUID = -2412407473703651652L;
     private String[] columnNames = {"DONE", "Category", "Subject", "Description", "From", "Until"};
     private SimpleDateFormat f = new SimpleDateFormat("dd.MM.yyyy");
-    private Date d = new Date();
-    private ArrayList<Color> rowColours=new ArrayList<Color>();
+    private ArrayList<Color> rowColours= new ArrayList<>();
 
     @Override
     public int getColumnCount() {
