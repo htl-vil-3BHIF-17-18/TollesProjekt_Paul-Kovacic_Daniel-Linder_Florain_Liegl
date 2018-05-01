@@ -44,6 +44,7 @@ public class TaskDialog extends JDialog implements ActionListener {
         super(owner, title, modal);
         this.initializeControls();
         this.pack();
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
@@ -54,6 +55,7 @@ public class TaskDialog extends JDialog implements ActionListener {
         this.initializeControls();
         this.fillControls();
         this.pack();
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
@@ -61,7 +63,6 @@ public class TaskDialog extends JDialog implements ActionListener {
         GridLayout grid = new GridLayout(6, 2);
         this.setLayout(grid);
         this.setResizable(false);
-		this.setLocationRelativeTo(null);
         
         Categories[] Categoryvalues = Categories.values();
         this.JCategory = new JComboBox(Categoryvalues);

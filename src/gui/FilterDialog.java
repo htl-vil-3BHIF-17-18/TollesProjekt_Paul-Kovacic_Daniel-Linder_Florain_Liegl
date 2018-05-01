@@ -42,8 +42,8 @@ public class FilterDialog extends JDialog implements ActionListener {
 		super(owner, title, modal);
 		this.initializeControls();
 		this.setResizable(false);
-		this.setLocationRelativeTo(null);
 		this.pack();
+		this.setLocationRelativeTo(null);
 		this.setVisible(true);	
 	}
 
