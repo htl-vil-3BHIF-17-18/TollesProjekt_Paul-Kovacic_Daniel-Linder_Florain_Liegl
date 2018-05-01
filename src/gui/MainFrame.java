@@ -202,7 +202,5 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
         this.dbConnection = dbConnection;
     }
 
-    private void setStatusBar(String status) {
-        this.statusBar.setText(status);
-    }
+    private void setStatusBar(String status) { this.statusBar.setText(status); }
 }

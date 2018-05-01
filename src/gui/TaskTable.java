@@ -100,28 +100,22 @@ public class TaskTable extends JPanel implements TableModelListener {
         taskList.add(t);
     }
 
-    public void insertValuesIntoTable(List<Task> l) {
-        int i = 0;
-        this.taskList = new ArrayList<>();
-        Date d = new Date();
-        String date = f.format(d);
-        DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
-        MyTableModel mtm = (MyTableModel) this.jTable.getModel();
-        model.setRowCount(0);
-        for (Task t : l) {
+	public void insertValuesIntoTable(List<Task> l) {
+		int i = 0;
+		this.taskList = new ArrayList<>();
+
+		DefaultTableModel model = (DefaultTableModel)  this.jTable.getModel();
+		model.setRowCount(0);
+		for (Task t : l) {
 
             model.addRow(new Object[]{t.isDone(), t.getCategory(), t.getSubject(), t.getDescription(), t.getFrom(),
                     t.getUntil()});
 
-            this.taskList.add(t);
-            if (t.getUntil().toString().equals(date)) {
-                mtm.setRowColour(i, Color.RED);
-            } else {
-                mtm.setRowColour(i, javax.swing.UIManager.getColor("Table.dropCellForeground"));
-            }
-            i++;
-        }
-    }
+			this.taskList.add(t);
+			this.updateColor(i, t);
+			i++;
+		}
+	}
 
     public Task getTask() {
         return taskList.get(getSelected());
@@ -130,25 +124,36 @@ public class TaskTable extends JPanel implements TableModelListener {
     public void insertTask(Task t) {
         int i = getSelected();
 
-        MyTableModel mtm = (MyTableModel) this.jTable.getModel();
-        Date d = new Date();
-        String date = f.format(d);
-        this.jTable.setValueAt(t.isDone(), i, 0);
-        this.jTable.setValueAt(t.getCategory(), i, 1);
-        this.jTable.setValueAt(t.getSubject(), i, 2);
-        this.jTable.setValueAt(t.getDescription(), i, 3);
-        this.jTable.setValueAt(t.getFrom(), i, 4);
-        this.jTable.setValueAt(t.getUntil(), i, 5);
-        this.taskList.set(i, t);
 
-        if (t.getUntil().toString().equals(date)) {
-            mtm.setRowColour(i, Color.RED);
-        } else {
-            mtm.setRowColour(i, javax.swing.UIManager.getColor("Table.dropCellForeground"));
-        }
+		this.jTable.setValueAt(t.isDone(), i, 0);
+		this.jTable.setValueAt(t.getCategory(), i, 1);
+		this.jTable.setValueAt(t.getSubject(), i, 2);
+		this.jTable.setValueAt(t.getDescription(), i, 3);
+		this.jTable.setValueAt(t.getFrom(), i, 4);
+		this.jTable.setValueAt(t.getUntil(), i, 5);
+		this.taskList.set(i, t);
+
+		this.updateColor(i, t);
+
+	}
+
+	private void updateColor(int i, Task t) {
+		MyTableModel mtm = (MyTableModel) this.jTable.getModel();
+		Date d = new Date();
+		String date = f.format(d);if (t.getUntil().toString().equals(date)) {
+			mtm.setRowColour(i, Color.RED);
+		} else {
+			mtm.setRowColour(i, javax.swing.UIManager.getColor("Table.dropCellForeground"));
+		}
+}
 
 
-    }
+	private void updateAllColors() {
+		int i = 0;
+		for (Task t : this.taskList) {
+			this.updateColor(i, t);
+			i++;
+		}}
 
     public int getSelected() {
         return this.jTable.getSelectedRow();
@@ -159,7 +164,7 @@ public class TaskTable extends JPanel implements TableModelListener {
             taskList.remove(getSelected());
             DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
             model.removeRow(getSelected());
-
+			updateAllColors();
         }
 
         // doTo: delete from table
