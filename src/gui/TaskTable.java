@@ -108,6 +108,7 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 		this.taskList = new ArrayList<>();
 		DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
 		model.setRowCount(0);
+
 		for (Task t : l) {
 			model.addRow(new Object[] { t.isDone(), t.getCategory(), t.getSubject(), t.getDescription(), t.getFrom(),
 					t.getUntil() });
