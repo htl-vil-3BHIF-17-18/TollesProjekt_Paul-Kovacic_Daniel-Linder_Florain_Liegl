@@ -134,6 +134,7 @@ public class DatabaseConnection {
             stmtDelete.setDate(3, this.convertDate(task.getFrom()));
             stmtDelete.execute();
             this.con.commit();
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
