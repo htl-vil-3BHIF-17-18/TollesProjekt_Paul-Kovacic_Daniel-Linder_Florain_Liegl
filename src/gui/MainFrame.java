@@ -140,6 +140,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 		menuBar.add(settings);
 		settings.add(this.settingsItem);
+		settings.add(this.filter);
 
 		menuBar.add(help);
 		help.add(this.github);
@@ -199,7 +200,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		} else if (e.getSource().equals(this.changeUser)) {
 			new LoginDialog(this, "Change user", true);
 		} else if (e.getSource().equals(this.filter)) {
-
+			FilterDialog fd = new FilterDialog(this, "Filter Tasks", true);
 		}
 	}
 

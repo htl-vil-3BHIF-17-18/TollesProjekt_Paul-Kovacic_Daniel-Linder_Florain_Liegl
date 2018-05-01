@@ -41,12 +41,14 @@ public class FilterDialog extends JDialog implements ActionListener {
 	public FilterDialog(Frame owner, String title, boolean modal) {
 		super(owner, title, modal);
 		this.initializeControls();
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
 		this.pack();
-		this.setVisible(true);
+		this.setVisible(true);	
 	}
 
 	private void initializeControls() {
-		GridLayout grid = new GridLayout(4, 2);
+		GridLayout grid = new GridLayout(3, 2);
 		this.setLayout(grid);
 
 		this.lbDateFrom = new JLabel("From:");
@@ -76,10 +78,6 @@ public class FilterDialog extends JDialog implements ActionListener {
 		datePanelTo = new JDatePanelImpl(modelTo, p);
 		datePickerTo = new JDatePickerImpl(datePanelTo, new DateLabelFormatter());
 
-		this.add(this.lbCategory);
-		this.add(this.JCategory);
-		this.add(this.lbSubject);
-		this.add(this.JSubject);
 		this.add(this.lbDateFrom);
 		this.add(this.datePicker);
 		this.add(this.lbto);
