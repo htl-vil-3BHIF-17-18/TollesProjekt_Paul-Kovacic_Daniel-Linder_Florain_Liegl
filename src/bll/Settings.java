@@ -1,5 +1,6 @@
 package bll;
 
+import javax.swing.*;
 import java.io.Serializable;
 
 public class Settings implements Serializable {
@@ -7,12 +8,10 @@ public class Settings implements Serializable {
     private static final long serialVersionUID = 8367156940742286833L;
     private String aliasName;
     private boolean onlyTodo;
-    private boolean showProgressbar;
 
-    public Settings(String aliasName, boolean onlyTodo, boolean showProgressbar) {
+    public Settings(String aliasName, boolean onlyTodo) {
         this.aliasName = aliasName;
         this.onlyTodo = onlyTodo;
-        this.showProgressbar = showProgressbar;
     }
 
     public String getAliasName() {
@@ -29,13 +28,5 @@ public class Settings implements Serializable {
 
     public void setOnlyTodo(boolean onlyTodo) {
         this.onlyTodo = onlyTodo;
-    }
-
-    public boolean isShowProgressbar() {
-        return showProgressbar;
-    }
-
-    public void setShowProgressbar(boolean showProgressbar) {
-        this.showProgressbar = showProgressbar;
     }
 }

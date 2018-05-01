@@ -80,7 +80,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			e.printStackTrace();
 		}
 		this.setStatusBar("Getting tasks from database...");
-		this.taskTable.insertValuesIntoTable(this.dbConnection.getAllTasks());
+		this.taskTable.insertValuesIntoTable(this.userSettings.isOnlyTodo() ? this.dbConnection.getUndoneTasks() : this.dbConnection.getAllTasks());
 		// prevent adding tasks until data was loaded from database
 		this.newTask.setEnabled(true);
 		this.setStatusBar(
@@ -199,6 +199,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			}
 		} else if (e.getSource().equals(this.changeUser)) {
 			new LoginDialog(this, "Change user", true);
+            this.taskTable.insertValuesIntoTable(this.userSettings.isOnlyTodo() ? this.dbConnection.getUndoneTasks() : this.dbConnection.getAllTasks());
 		} else if (e.getSource().equals(this.filter)) {
 			FilterDialog fd = new FilterDialog(this, "Filter Tasks", true);
 			if (fd.getFrom() != null) {
