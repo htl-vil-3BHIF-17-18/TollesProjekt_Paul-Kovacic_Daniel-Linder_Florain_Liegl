@@ -130,6 +130,9 @@ public class TaskTable extends JPanel implements TableModelListener {
 	public void insertTask(Task t) {
 		int i = getSelected();
 
+		MyTableModel mtm = (MyTableModel) this.jTable.getModel();
+		Date d = new Date();
+		String date=f.format(d);
 		this.jTable.setValueAt(t.isDone(), i, 0);
 		this.jTable.setValueAt(t.getCategory(), i, 1);
 		this.jTable.setValueAt(t.getSubject(), i, 2);
@@ -137,6 +140,12 @@ public class TaskTable extends JPanel implements TableModelListener {
 		this.jTable.setValueAt(t.getFrom(), i, 4);
 		this.jTable.setValueAt(t.getUntil(), i, 5);
 		this.taskList.set(i, t);
+
+		if (t.getUntil().toString().equals(date)) {
+			mtm.setRowColour(i, Color.RED);
+		} else {
+			mtm.setRowColour(i, javax.swing.UIManager.getColor("Table.dropCellForeground"));
+		}
 
 
 
@@ -151,6 +160,7 @@ public class TaskTable extends JPanel implements TableModelListener {
 			taskList.remove(getSelected());
 			DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
 			model.removeRow(getSelected());
+
 		}
 
 		// doTo: delete from table
