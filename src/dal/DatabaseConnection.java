@@ -178,7 +178,6 @@ public class DatabaseConnection {
     }
 
     public boolean checkConnection() {
-
         boolean connected = true;
         try {
             this.con = this.createConnection();
