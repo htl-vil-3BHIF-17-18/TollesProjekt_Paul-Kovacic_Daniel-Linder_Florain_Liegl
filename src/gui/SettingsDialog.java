@@ -27,7 +27,7 @@ class SettingsDialog extends JDialog implements ActionListener {
         this.setLayout(new BorderLayout(10, 10));
 
         this.lblAliasName = new JLabel("Full Name: ");
-        this.lblAliasName.setSize(new Dimension(200, 30));
+        this.lblAliasName.setSize(new Dimension(150, 30));
         this.tfAliasName = new JTextField(this.settings.getAliasName());
         this.tfAliasName.setSize(new Dimension(150, 30));
         this.ckOnlyToDo = new JCheckBox("Show only tasks to do");

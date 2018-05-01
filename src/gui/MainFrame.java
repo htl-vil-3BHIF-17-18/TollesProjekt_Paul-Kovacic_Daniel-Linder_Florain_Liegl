@@ -199,7 +199,16 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			}
 		} else if (e.getSource().equals(this.changeUser)) {
 			new LoginDialog(this, "Change user", true);
+            this.setStatusBar("Getting tasks from database...");
+            try {
+                this.userSettings = SerializationHelper
+                        .readSettings("settings/" + this.dbConnection.getUsername() + ".txt");
+            } catch (IOException | ClassNotFoundException e1) {
+                e1.printStackTrace();
+            }
             this.taskTable.insertValuesIntoTable(this.userSettings.isOnlyTodo() ? this.dbConnection.getUndoneTasks() : this.dbConnection.getAllTasks());
+            this.setStatusBar("Logged in as " + (this.userSettings.getAliasName().equals("") ? this.dbConnection.getUsername()
+                    : this.userSettings.getAliasName()));
 		} else if (e.getSource().equals(this.filter)) {
 			FilterDialog fd = new FilterDialog(this, "Filter Tasks", true);
 			if (fd.getFrom() != null) {
