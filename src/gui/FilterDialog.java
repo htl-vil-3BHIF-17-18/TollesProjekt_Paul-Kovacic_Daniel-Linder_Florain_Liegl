@@ -46,15 +46,8 @@ public class FilterDialog extends JDialog implements ActionListener {
 	}
 
 	private void initializeControls() {
-		GridLayout grid = new GridLayout(6, 2);
+		GridLayout grid = new GridLayout(4, 2);
 		this.setLayout(grid);
-		Categories[] Categoryvalues = Categories.values();
-		this.JCategory = new JComboBox(Categoryvalues);
-		this.lbCategory = new JLabel("Category:");
-
-		Subjects[] Subjectvalues = Subjects.values();
-		this.JSubject = new JComboBox(Subjectvalues);
-		this.lbSubject = new JLabel("Subject:");
 
 		this.lbDateFrom = new JLabel("From:");
 		SimpleDateFormat time = new SimpleDateFormat("dd.mm.yyyy");

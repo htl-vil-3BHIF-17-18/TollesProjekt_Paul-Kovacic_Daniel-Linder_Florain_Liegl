@@ -31,6 +31,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
     private JMenuItem delete;
 
     private JMenuItem settingsItem;
+    private JMenuItem filter;
 
     private JMenuItem github;
 
@@ -102,6 +103,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
         JMenu settings = new JMenu("Settings");
         this.settingsItem = new JMenuItem("Settings");
+        this.filter = new JMenuItem("Filter");
 
         JMenu help = new JMenu("Help");
         this.github = new JMenuItem("Report a Bug");
