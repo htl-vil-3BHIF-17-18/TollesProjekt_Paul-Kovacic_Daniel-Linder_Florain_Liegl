@@ -231,10 +231,18 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 			TableModel model = (TableModel) e.getSource();
 			String columnName = model.getColumnName(column);
 			Boolean checked = (Boolean) model.getValueAt(row, column);
+			Task old = this.taskList.get(row);
 			if (checked) {
 				this.taskList.get(row).setDone(true);
+				mf.updateCheck(old, this.taskList.get(row));
+				if (mf.getUserSettings().isOnlyTodo()) {
+					this.taskList.remove(row);
+				}
+				this.insertValuesIntoTable(this.taskList);
+
 			} else {
 				this.taskList.get(row).setDone(false);
+				mf.updateCheck(old, this.taskList.get(row));
 			}
 		}
 	}
