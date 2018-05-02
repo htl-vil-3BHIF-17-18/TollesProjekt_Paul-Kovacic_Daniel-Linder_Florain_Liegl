@@ -173,9 +173,11 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		int days = Integer.parseInt(sdf.format(t.getUntil())) - Integer.parseInt(sdf.format(d));
 		if (sdf.format(d).equals(sdf.format(t.getUntil()))) {
-			mtm.setRowColour(i, Color.RED);
-		} else if (days <= 2) {
+			mtm.setRowColour(i, Color.ORANGE);
+		} else if (days <= 2 && days > 0) {
 			mtm.setRowColour(i, Color.YELLOW);
+		} else if (days < 0) {
+			mtm.setRowColour(i, Color.RED);
 		} else {
 			mtm.setRowColour(i, Color.GREEN);
 		}

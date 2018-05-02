@@ -5,6 +5,7 @@ import bll.Task;
 import dal.DatabaseConnection;
 import dal.SerializationHelper;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -13,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
@@ -60,6 +62,12 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.setMinimumSize(new Dimension(600, 400));
 		this.setPreferredSize(new Dimension(1080, 720));
 		this.setResizable(true);
+		try {
+			this.setIconImage(ImageIO.read(new File("images" + File.separator + "task.png")));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		this.taskTable = new TaskTable(Toolkit.getDefaultToolkit().getScreenSize(), this);
 		this.initializeControls();
 		this.pack();
