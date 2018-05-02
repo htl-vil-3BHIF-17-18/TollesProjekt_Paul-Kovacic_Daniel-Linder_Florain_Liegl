@@ -11,16 +11,14 @@ public class InBackground extends SwingWorker<Void, Void> {
     private boolean con;
     private LoadingDialog ld;
 
-    public InBackground(DatabaseConnection db, LoadingDialog ld) {
+    InBackground(DatabaseConnection db, LoadingDialog ld) {
         super();
         this.db = db;
         this.ld = ld;
-        // TODO Auto-generated constructor stub
     }
 
     @Override
-    protected Void doInBackground() throws Exception {
-        // TODO Auto-generated method stub
+    protected Void doInBackground() {
         this.con = db.checkConnection();
 
         return null;
@@ -28,7 +26,6 @@ public class InBackground extends SwingWorker<Void, Void> {
 
     @Override
     protected void done() {
-        // TODO Auto-generated method stub
         ld.setVisible(false);
         ld.dispose();
 
@@ -37,10 +34,6 @@ public class InBackground extends SwingWorker<Void, Void> {
 
     public boolean isCon() {
         return con;
-    }
-
-    public void setCon(boolean con) {
-        this.con = con;
     }
 
 

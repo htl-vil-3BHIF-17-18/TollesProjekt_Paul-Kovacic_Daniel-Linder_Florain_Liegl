@@ -6,7 +6,7 @@ import java.io.*;
 
 
 public class SerializationHelper {
-    private static Settings defaultSettings = new Settings("", false);
+    private static Settings defaultSettings = new Settings(false);
 
     public static void writeSettings(Settings settings, String filename) throws IOException {
         File file = new File(filename);
@@ -24,8 +24,10 @@ public class SerializationHelper {
 
     public static Settings readSettings(String filename) throws IOException, ClassNotFoundException {
         Settings settings;
+        File file = new File(filename);
 
-        writeSettings(defaultSettings, filename);
+        if(!file.exists())
+            writeSettings(defaultSettings, filename);
 
         try (FileInputStream fis = new FileInputStream(filename)) {
             ObjectInputStream ois = new ObjectInputStream(fis);

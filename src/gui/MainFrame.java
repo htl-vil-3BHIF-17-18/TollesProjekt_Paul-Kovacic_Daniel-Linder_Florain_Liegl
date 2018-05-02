@@ -67,7 +67,6 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
         try {
             this.setIconImage(ImageIO.read(new File("images" + File.separator + "task.png")));
         } catch (IOException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         }
         this.taskTable = new TaskTable(Toolkit.getDefaultToolkit().getScreenSize(), this);
@@ -94,8 +93,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
         // prevent adding tasks until data was loaded from database
         this.newTask.setEnabled(true);
         this.setStatusBar(
-                "Logged in as " + (this.userSettings.getAliasName().equals("") ? this.dbConnection.getUsername()
-                        : this.userSettings.getAliasName()));
+                "Logged in as " + this.dbConnection.getUsername());
     }
 
     private void initializeControls() {
@@ -173,9 +171,8 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
                 new LoadingDialog(this.dbConnection, this, "Connecting to database...", true);
                 this.dbConnection.addEntry(td.getTask());
                 this.taskTable.insertValueIntoTable(td.getTask());
-                if (fd.getFrom() != null) {
+                if (fd != null)
                     this.taskTable.filter(fd.getFrom(), fd.getUntil());
-                }
             }
 
         } else if (e.getSource().equals(this.exit)) {
@@ -198,6 +195,12 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
             new SettingsDialog(this, "Settings", true, this.userSettings);
             new LoadingDialog(this.dbConnection, this, "Connecting to database...", true);
             this.taskTable.insertValuesIntoTable(this.userSettings.isOnlyTodo() ? this.dbConnection.getUndoneTasks() : this.dbConnection.getAllTasks());
+            System.out.println(this.userSettings.isOnlyTodo());
+            try {
+                SerializationHelper.writeSettings(this.userSettings, "settings/" + this.dbConnection.getUsername() + ".bin");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         } else if (e.getSource().equals(this.github)) {
             if (Desktop.isDesktopSupported()) {
                 Desktop desktop = Desktop.getDesktop();
@@ -221,13 +224,12 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
             this.setStatusBar("Getting tasks from database...");
             try {
                 this.userSettings = SerializationHelper
-                        .readSettings("settings/" + this.dbConnection.getUsername() + ".txt");
+                        .readSettings("settings/" + this.dbConnection.getUsername() + ".bin");
             } catch (IOException | ClassNotFoundException e1) {
                 e1.printStackTrace();
             }
             this.taskTable.insertValuesIntoTable(this.userSettings.isOnlyTodo() ? this.dbConnection.getUndoneTasks() : this.dbConnection.getAllTasks());
-            this.setStatusBar("Logged in as " + (this.userSettings.getAliasName().equals("") ? this.dbConnection.getUsername()
-                    : this.userSettings.getAliasName()));
+            this.setStatusBar("Logged in as " + this.dbConnection.getUsername());
         } else if (e.getSource().equals(this.filter)) {
             this.resetFilter.setEnabled(true);
             this.fd = new FilterDialog(this, "Filter Tasks", true);
