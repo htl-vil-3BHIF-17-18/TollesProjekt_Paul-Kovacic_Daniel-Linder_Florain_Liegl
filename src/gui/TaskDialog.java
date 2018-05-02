@@ -162,4 +162,3 @@ class TaskDialog extends JDialog implements ActionListener {
         return task;
     }
 }
-
