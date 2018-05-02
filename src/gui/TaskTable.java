@@ -168,6 +168,14 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 		this.insertValuesIntoTable(this.taskList);
 
 	}
+	
+	public void resetFilter() {
+		this.taskList.removeAll(this.removedList);
+		this.taskList.addAll(this.removedList);
+		this.removedList = new ArrayList<Task>();
+		this.goodList = new ArrayList<Task>();
+		this.insertValuesIntoTable(this.taskList);
+	}
 
 	private void updateColor(int i, Task t) {
 

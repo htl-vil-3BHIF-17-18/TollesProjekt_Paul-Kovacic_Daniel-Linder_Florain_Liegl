@@ -34,6 +34,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 	private JMenuItem settingsItem;
 	private JMenuItem filter;
+	private JMenuItem resetFilter;
 
 	private JMenuItem github;
 
@@ -117,6 +118,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		JMenu settings = new JMenu("Advanced");
 		this.settingsItem = new JMenuItem("Settings");
 		this.filter = new JMenuItem("Filter");
+		this.resetFilter = new JMenuItem("Reset Filter");
 
 		JMenu help = new JMenu("Help");
 		this.github = new JMenuItem("Report a Bug");
@@ -132,6 +134,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.settingsItem.addActionListener(this);
 		this.filter.addActionListener(this);
 		this.github.addActionListener(this);
+		this.resetFilter.addActionListener(this);
 
 		// Build menu
 		this.setJMenuBar(menuBar);
@@ -150,6 +153,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		menuBar.add(settings);
 		settings.add(this.settingsItem);
 		settings.add(this.filter);
+		settings.add(this.resetFilter);
 
 		menuBar.add(help);
 		help.add(this.github);
@@ -226,6 +230,9 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			if (fd.getFrom() != null) {
 				this.taskTable.filter(fd.getFrom(), fd.getUntil());
 			}
+		} else if(e.getSource().equals(this.resetFilter)) {
+			this.fd=null;
+			this.taskTable.resetFilter();
 		}
 	}
 
