@@ -34,6 +34,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 
 	private JMenuItem settingsItem;
 	private JMenuItem filter;
+	private JMenuItem resetFilter;
 
 	private JMenuItem github;
 
@@ -41,6 +42,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	private Settings userSettings = null;
 
 	private JLabel statusBar = null;
+	private FilterDialog fd=null;
 
 	public MainFrame(String identifier) throws HeadlessException {
 		super(identifier);
@@ -116,6 +118,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		JMenu settings = new JMenu("Advanced");
 		this.settingsItem = new JMenuItem("Settings");
 		this.filter = new JMenuItem("Filter");
+		this.resetFilter = new JMenuItem("Reset Filter");
 
 		JMenu help = new JMenu("Help");
 		this.github = new JMenuItem("Report a Bug");
@@ -131,6 +134,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.settingsItem.addActionListener(this);
 		this.filter.addActionListener(this);
 		this.github.addActionListener(this);
+		this.resetFilter.addActionListener(this);
 
 		// Build menu
 		this.setJMenuBar(menuBar);
@@ -149,6 +153,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		menuBar.add(settings);
 		settings.add(this.settingsItem);
 		settings.add(this.filter);
+		settings.add(this.resetFilter);
 
 		menuBar.add(help);
 		help.add(this.github);
@@ -167,6 +172,9 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 				new LoadingDialog(this.dbConnection, this, "Connecting to database...", true);
 				this.dbConnection.addEntry(td.getTask());
 				this.taskTable.insertValueIntoTable(td.getTask());
+				if (fd.getFrom() != null) {
+					this.taskTable.filter(fd.getFrom(), fd.getUntil());
+				}
 			}
 
 		} else if (e.getSource().equals(this.exit)) {
@@ -218,10 +226,13 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
             this.setStatusBar("Logged in as " + (this.userSettings.getAliasName().equals("") ? this.dbConnection.getUsername()
                     : this.userSettings.getAliasName()));
 		} else if (e.getSource().equals(this.filter)) {
-			FilterDialog fd = new FilterDialog(this, "Filter Tasks", true);
+			 this.fd = new FilterDialog(this, "Filter Tasks", true);
 			if (fd.getFrom() != null) {
 				this.taskTable.filter(fd.getFrom(), fd.getUntil());
 			}
+		} else if(e.getSource().equals(this.resetFilter)) {
+			this.fd=null;
+			this.taskTable.resetFilter();
 		}
 	}
 
