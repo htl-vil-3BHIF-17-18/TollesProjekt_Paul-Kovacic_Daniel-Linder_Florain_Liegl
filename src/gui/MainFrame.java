@@ -85,7 +85,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
         }
         try {
             this.userSettings = SerializationHelper
-                    .readSettings("settings/" + this.dbConnection.getUsername() + ".txt");
+                    .readSettings("settings/" + this.dbConnection.getUsername() + ".bin");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
