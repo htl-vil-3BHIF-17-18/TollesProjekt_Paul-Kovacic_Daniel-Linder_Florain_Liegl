@@ -5,11 +5,11 @@ import java.util.Date;
 
 public class Task implements Serializable, Comparable {
 	private boolean done;
-	private Categories category;
-	private Subjects subject;
-	private String description;
-	private Date from;
-	private Date until;
+	private final Categories category;
+	private final Subjects subject;
+	private final String description;
+	private final Date from;
+	private final Date until;
 
 	public Task(boolean done, Categories category, Subjects subject, String description, Date from, Date until) {
 		this.done = done;

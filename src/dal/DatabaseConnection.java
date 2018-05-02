@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseConnection {
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
     private Connection con;
 
     public DatabaseConnection(String username, String password) {

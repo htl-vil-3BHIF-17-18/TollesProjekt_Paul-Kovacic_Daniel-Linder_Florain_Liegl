@@ -4,12 +4,12 @@ import dal.DatabaseConnection;
 
 import javax.swing.*;
 
-public class InBackground extends SwingWorker<Void, Void> {
+class InBackground extends SwingWorker<Void, Void> {
 
 
-    private DatabaseConnection db;
+    private final DatabaseConnection db;
     private boolean con;
-    private LoadingDialog ld;
+    private final LoadingDialog ld;
 
     InBackground(DatabaseConnection db, LoadingDialog ld) {
         super();

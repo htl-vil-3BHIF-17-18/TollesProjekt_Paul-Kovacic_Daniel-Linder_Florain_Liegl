@@ -6,7 +6,7 @@ import java.io.*;
 
 
 public class SerializationHelper {
-    private static Settings defaultSettings = new Settings(false);
+    private static final Settings defaultSettings = new Settings(false);
 
     public static void writeSettings(Settings settings, String filename) throws IOException {
         File file = new File(filename);

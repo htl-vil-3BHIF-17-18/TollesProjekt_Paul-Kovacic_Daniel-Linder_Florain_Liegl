@@ -7,17 +7,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginDialog extends JDialog implements ActionListener {
+class LoginDialog extends JDialog implements ActionListener {
     private static final long serialVersionUID = 6158225161645311129L;
     private JLabel lUsername = null;
     private JTextField tfUsername = null;
     private JPasswordField pfPasswordField = null;
     private JButton btnLogin = null;
     private JButton btnCancel = null;
-    private MainFrame parent;
+    private final MainFrame parent;
 
-    LoginDialog(MainFrame owner, String title, boolean modal) {
-        super(owner, title, modal);
+    LoginDialog(MainFrame owner, String title) {
+        super(owner, title, true);
         this.parent = owner;
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setMinimumSize(new Dimension(300, 130));
@@ -76,7 +76,7 @@ public class LoginDialog extends JDialog implements ActionListener {
         boolean successful = false;
         DatabaseConnection db = new DatabaseConnection(this.getUsername(), this.getPassword());
 
-        LoadingDialog loadingDialog = new LoadingDialog(db, this, "Connecting to database...", true);
+        LoadingDialog loadingDialog = new LoadingDialog(db, this, "Connecting to database...");
         try {
             if (loadingDialog.isCon()) {
                 this.parent.setDbConnection(db);

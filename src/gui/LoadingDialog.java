@@ -6,24 +6,19 @@ import javax.swing.*;
 import java.awt.*;
 
 class LoadingDialog extends JDialog {
-
-
-    private DatabaseConnection db;
     private boolean con;
-    private InBackground ib;
+    private final InBackground ib;
 
-    LoadingDialog(DatabaseConnection db, LoginDialog owner, String title, boolean modal) {
-        super(owner, title, modal);
-        this.db = db;
+    LoadingDialog(DatabaseConnection db, LoginDialog owner, String title) {
+        super(owner, title, true);
         this.ib = new InBackground(db, this);
         this.ib.execute();
 
         initializeControls();
     }
 
-    LoadingDialog(DatabaseConnection db, MainFrame owner, String title, boolean modal) {
-        super(owner, title, modal);
-        this.db = db;
+    LoadingDialog(DatabaseConnection db, MainFrame owner, String title) {
+        super(owner, title, true);
         this.ib = new InBackground(db, this);
         this.ib.execute();
 
@@ -43,11 +38,11 @@ class LoadingDialog extends JDialog {
         this.setCon(this.ib.isCon());
     }
 
-    public boolean isCon() {
+    boolean isCon() {
         return con;
     }
 
-    public void setCon(boolean con) {
+    private void setCon(boolean con) {
         this.con = con;
     }
 }

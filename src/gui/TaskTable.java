@@ -16,15 +16,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TaskTable extends JPanel implements TableModelListener, RowSorterListener {
+class TaskTable extends JPanel implements TableModelListener, RowSorterListener {
 	private static final long serialVersionUID = -3013523607123464946L;
 	private static final int BOOLEAN_COLUMN = 0;
-	private MainFrame mf;
-    private int width;
-	private int height;
+	private final MainFrame mf;
+    private final int width;
+	private final int height;
 	private JTable jTable;
-	private String separator = File.separator;
-	private ImageIcon ii = new ImageIcon("images" + separator + "check_24.png");
+	private final String separator = File.separator;
+	private final ImageIcon ii = new ImageIcon("images" + separator + "check_24.png");
 	private List<Task> taskList;
 	private List<Task> removedList;
 	private List<Task> goodList;

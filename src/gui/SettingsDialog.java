@@ -9,13 +9,13 @@ import java.awt.event.ActionListener;
 
 class SettingsDialog extends JDialog implements ActionListener {
     private static final long serialVersionUID = 4755471415460680864L;
-    private Settings settings;
+    private final Settings settings;
 
     private JCheckBox ckOnlyToDo;
     private JButton btnOk;
 
-	SettingsDialog(Frame owner, String title, boolean modal, Settings settings) {
-		super(owner, title, modal);
+	SettingsDialog(Frame owner, Settings settings) {
+		super(owner, "Settings", true);
 		this.settings = settings;
 		this.initializeControls();
 	}

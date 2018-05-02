@@ -1,9 +1,6 @@
 package gui;
 
-import bll.Categories;
 import bll.DateLabelFormatter;
-import bll.Subjects;
-import bll.Task;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -17,25 +14,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-public class FilterDialog extends JDialog implements ActionListener {
+class FilterDialog extends JDialog implements ActionListener {
 
-	private JLabel lbDateFrom = null;
-	private JFormattedTextField tfFrom = null;
-	private JLabel lbto = null;
-	private JFormattedTextField tfto = null;
-	private JButton btnOk = null;
+    private JButton btnOk = null;
 	private JButton btnCancel = null;
 	private JDatePickerImpl datePicker;
 	private JDatePickerImpl datePickerTo;
-	private UtilDateModel modelFrom;
-	private UtilDateModel modelTo;
-	private JDatePanelImpl datePanelFrom;
-	private JDatePanelImpl datePanelTo;
-	private Date from = null;
+    private Date from = null;
 	private Date until = null;
 
-	public FilterDialog(Frame owner, String title, boolean modal) {
-		super(owner, title, modal);
+	FilterDialog(Frame owner, String title) {
+		super(owner, title, true);
 		this.initializeControls();
 		this.setResizable(false);
 		this.pack();
@@ -47,12 +36,9 @@ public class FilterDialog extends JDialog implements ActionListener {
 		GridLayout grid = new GridLayout(3, 2);
 		this.setLayout(grid);
 
-		this.lbDateFrom = new JLabel("From:");
-		SimpleDateFormat time = new SimpleDateFormat("dd.mm.yyyy");
-		this.tfFrom = new JFormattedTextField(time);
+        JLabel lbDateFrom = new JLabel("From:");
 
-		this.lbto = new JLabel("To:");
-		this.tfto = new JFormattedTextField(time);
+		JLabel lbto = new JLabel("To:");
 
 		this.btnOk = new JButton("Filter");
 		this.btnOk.addActionListener(this);
@@ -60,23 +46,23 @@ public class FilterDialog extends JDialog implements ActionListener {
 		this.btnCancel = new JButton("Cancel");
 		this.btnCancel.addActionListener(this);
 
-		this.modelFrom = new UtilDateModel();
-		this.modelFrom.setSelected(true);
+        UtilDateModel modelFrom = new UtilDateModel();
+		modelFrom.setSelected(true);
 		Properties p = new Properties();
 		p.put("text.today", "Today");
 		p.put("text.month", "Month");
 		p.put("text.year", "Year");
-		datePanelFrom = new JDatePanelImpl(modelFrom, p);
+        JDatePanelImpl datePanelFrom = new JDatePanelImpl(modelFrom, p);
 		datePicker = new JDatePickerImpl(datePanelFrom, new DateLabelFormatter());
 
-		this.modelTo = new UtilDateModel();
-		this.modelFrom.setSelected(true);
-		datePanelTo = new JDatePanelImpl(modelTo, p);
+        UtilDateModel modelTo = new UtilDateModel();
+		modelFrom.setSelected(true);
+        JDatePanelImpl datePanelTo = new JDatePanelImpl(modelTo, p);
 		datePickerTo = new JDatePickerImpl(datePanelTo, new DateLabelFormatter());
 
-		this.add(this.lbDateFrom);
+		this.add(lbDateFrom);
 		this.add(this.datePicker);
-		this.add(this.lbto);
+		this.add(lbto);
 		this.add(this.datePickerTo);
 		this.add(this.btnOk);
 		this.add(this.btnCancel);
@@ -123,11 +109,11 @@ public class FilterDialog extends JDialog implements ActionListener {
 
 	}
 
-	public Date getFrom() {
+	Date getFrom() {
 		return from;
 	}
 
-	public Date getUntil() {
+	Date getUntil() {
 		return until;
 	}
 

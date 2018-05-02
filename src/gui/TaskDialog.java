@@ -17,39 +17,29 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-public class TaskDialog extends JDialog implements ActionListener {
+class TaskDialog extends JDialog implements ActionListener {
 
-    private JLabel lbCategory = null;
-    private JComboBox JCategory = null;
-    private JLabel lbSubject = null;
-    private JComboBox JSubject = null;
-    private JLabel lbDescription = null;
+    private JComboBox<Categories> JCategory = null;
+    private JComboBox<Subjects> JSubject = null;
     private JTextField tfDescription = null;
-    private JLabel lbDateFrom = null;
-    private JFormattedTextField tfFrom = null;
-    private JLabel lbto = null;
-    private JFormattedTextField tfto = null;
     private JButton btnOk = null;
     private JButton btnCancel = null;
     private Task task = null;
-    JDatePickerImpl datePicker;
-    JDatePickerImpl datePickerTo;
-    UtilDateModel modelFrom;
-    UtilDateModel modelTo;
-    JDatePanelImpl datePanelFrom;
-    JDatePanelImpl datePanelTo;
-    private JPanel panel = null;
+    private JDatePickerImpl datePicker;
+    private JDatePickerImpl datePickerTo;
+    private UtilDateModel modelFrom;
+    private UtilDateModel modelTo;
 
-    public TaskDialog(Frame owner, String title, boolean modal) {
-        super(owner, title, modal);
+    TaskDialog(Frame owner, String title) {
+        super(owner, title, true);
         this.initializeControls();
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
-    public TaskDialog(Frame owner, String title, boolean modal, Task task) {
-        super(owner, title, modal);
+    TaskDialog(Frame owner, String title, Task task) {
+        super(owner, title, true);
         this.task = task;
 
         this.initializeControls();
@@ -64,23 +54,20 @@ public class TaskDialog extends JDialog implements ActionListener {
         this.setLayout(grid);
         this.setResizable(false);
         
-        Categories[] Categoryvalues = Categories.values();
-        this.JCategory = new JComboBox(Categoryvalues);
-        this.lbCategory = new JLabel("Category:");
+        Categories[] CategoryValues = Categories.values();
+        this.JCategory = new JComboBox<>(CategoryValues);
+        JLabel lbCategory = new JLabel("Category:");
 
         Subjects[] Subjectvalues = Subjects.values();
-        this.JSubject = new JComboBox(Subjectvalues);
-        this.lbSubject = new JLabel("Subject:");
+        this.JSubject = new JComboBox<>(Subjectvalues);
+        JLabel lbSubject = new JLabel("Subject:");
 
-        this.lbDescription = new JLabel("Description:");
+        JLabel lbDescription = new JLabel("Description:");
         this.tfDescription = new JTextField();
 
-        this.lbDateFrom = new JLabel("From:");
-        SimpleDateFormat time = new SimpleDateFormat("dd.mm.yyyy");
-        this.tfFrom = new JFormattedTextField(time);
+        JLabel lbDateFrom = new JLabel("From:");
 
-        this.lbto = new JLabel("To:");
-        this.tfto = new JFormattedTextField(time);
+        JLabel lbto = new JLabel("To:");
 
         this.btnOk = new JButton("OK");
         this.btnOk.addActionListener(this);
@@ -95,24 +82,24 @@ public class TaskDialog extends JDialog implements ActionListener {
         p.put("text.today", "Today");
         p.put("text.month", "Month");
         p.put("text.year", "Year");
-        datePanelFrom = new JDatePanelImpl(modelFrom, p);
+        JDatePanelImpl datePanelFrom = new JDatePanelImpl(modelFrom, p);
         datePicker = new JDatePickerImpl(datePanelFrom, new DateLabelFormatter());
 
         this.modelTo = new UtilDateModel();
         this.modelTo.setValue(java.util.Calendar.getInstance().getTime());
         this.modelFrom.setSelected(true);
-        datePanelTo = new JDatePanelImpl(modelTo, p);
+        JDatePanelImpl datePanelTo = new JDatePanelImpl(modelTo, p);
         datePickerTo = new JDatePickerImpl(datePanelTo, new DateLabelFormatter());
 
-        this.add(this.lbCategory);
+        this.add(lbCategory);
         this.add(this.JCategory);
-        this.add(this.lbSubject);
+        this.add(lbSubject);
         this.add(this.JSubject);
-        this.add(this.lbDescription);
+        this.add(lbDescription);
         this.add(this.tfDescription);
-        this.add(this.lbDateFrom);
+        this.add(lbDateFrom);
         this.add(this.datePicker);
-        this.add(this.lbto);
+        this.add(lbto);
         this.add(this.datePickerTo);
         this.add(this.btnOk);
         this.add(this.btnCancel);
@@ -120,7 +107,6 @@ public class TaskDialog extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
         if (e.getSource().equals(this.btnOk)) {
 
             if (this.writeValuesToMenu()) {
@@ -132,10 +118,9 @@ public class TaskDialog extends JDialog implements ActionListener {
             this.setVisible(false);
             this.dispose();
         }
-
     }
 
-    public void fillControls() {
+    private void fillControls() {
 
         this.JCategory.setSelectedIndex(Categories.valueOf(this.task.getCategory().toString()).ordinal());
         this.JSubject.setSelectedIndex(Subjects.valueOf(this.task.getSubject().toString()).ordinal());
@@ -144,14 +129,11 @@ public class TaskDialog extends JDialog implements ActionListener {
         this.modelTo.setSelected(true);
         this.modelFrom.setValue(this.task.getFrom());
         this.modelFrom.setSelected(true);
-
-
     }
 
     private boolean writeValuesToMenu() {
         boolean isValid = false;
         SimpleDateFormat time = new SimpleDateFormat("dd.MM.yyyy");
-
 
         try {
             Date d1 = time.parse(this.datePicker.getJFormattedTextField().getText());
@@ -159,7 +141,6 @@ public class TaskDialog extends JDialog implements ActionListener {
             if (!this.tfDescription.getText().trim().isEmpty()
                     && !this.datePicker.getJFormattedTextField().getText().trim().isEmpty()
                     && !this.datePickerTo.getJFormattedTextField().getText().trim().isEmpty() && d2.compareTo(d1) >= 0) {
-
 
                 isValid = true;
 
@@ -177,9 +158,8 @@ public class TaskDialog extends JDialog implements ActionListener {
 
     }
 
-    public Task getTask() {
+    Task getTask() {
         return task;
     }
-
 }
 

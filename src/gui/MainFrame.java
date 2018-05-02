@@ -24,7 +24,7 @@ import static java.awt.BorderLayout.PAGE_END;
 
 public class MainFrame extends JFrame implements ActionListener, ListSelectionListener, Serializable {
     private static final long serialVersionUID = -8026416994513756565L;
-    private TaskTable taskTable;
+    private final TaskTable taskTable;
     private JMenuItem changeUser;
     private JMenuItem exit;
 
@@ -73,7 +73,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
         this.initializeControls();
         this.pack();
         this.setLocationRelativeTo(null);
-        new LoginDialog(this, "Log in", true);
+        new LoginDialog(this, "Log in");
 
         while (dbConnection == null) {
             try {
@@ -166,9 +166,9 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(this.newTask)) {
-            TaskDialog td = new TaskDialog(this, "New Task", true);
+            TaskDialog td = new TaskDialog(this, "New Task");
             if (td.getTask() != null) {
-                new LoadingDialog(this.dbConnection, this, "Connecting to database...", true);
+                new LoadingDialog(this.dbConnection, this, "Connecting to database...");
                 this.dbConnection.addEntry(td.getTask());
                 this.taskTable.insertValueIntoTable(td.getTask());
                 if (fd != null)
@@ -179,21 +179,21 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
             System.exit(NORMAL);
         } else if (e.getSource().equals(this.edit)) {
             Task t = this.taskTable.getTask();
-            TaskDialog td = new TaskDialog(this, "New Task", true, this.taskTable.getTask());
+            TaskDialog td = new TaskDialog(this, "New Task", this.taskTable.getTask());
 
             if (!t.equals(td.getTask())) {
-                new LoadingDialog(this.dbConnection, this, "Connecting to database...", true);
+                new LoadingDialog(this.dbConnection, this, "Connecting to database...");
                 this.dbConnection.updateEntry(t, td.getTask());
                 this.taskTable.insertTask(td.getTask());
             }
 
         } else if (e.getSource().equals(this.delete)) {
-            new LoadingDialog(this.dbConnection, this, "Connecting to database...", true);
+            new LoadingDialog(this.dbConnection, this, "Connecting to database...");
             this.dbConnection.removeEntry(this.taskTable.getTask());
             this.taskTable.deleteTask();
         } else if (e.getSource().equals(this.settingsItem)) {
-            new SettingsDialog(this, "Settings", true, this.userSettings);
-            new LoadingDialog(this.dbConnection, this, "Connecting to database...", true);
+            new SettingsDialog(this, this.userSettings);
+            new LoadingDialog(this.dbConnection, this, "Connecting to database...");
             this.taskTable.insertValuesIntoTable(this.userSettings.isOnlyTodo() ? this.dbConnection.getUndoneTasks() : this.dbConnection.getAllTasks());
             System.out.println(this.userSettings.isOnlyTodo());
             try {
@@ -220,7 +220,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
                 }
             }
         } else if (e.getSource().equals(this.changeUser)) {
-            new LoginDialog(this, "Change user", true);
+            new LoginDialog(this, "Change user");
             this.setStatusBar("Getting tasks from database...");
             try {
                 this.userSettings = SerializationHelper
@@ -232,7 +232,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
             this.setStatusBar("Logged in as " + this.dbConnection.getUsername());
         } else if (e.getSource().equals(this.filter)) {
             this.resetFilter.setEnabled(true);
-            this.fd = new FilterDialog(this, "Filter Tasks", true);
+            this.fd = new FilterDialog(this, "Filter Tasks");
             if (fd.getFrom() != null) {
                 this.taskTable.filter(fd.getFrom(), fd.getUntil());
             }
@@ -244,7 +244,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
     }
 
     void updateCheck(Task oldT, Task newT) {
-        new LoadingDialog(this.dbConnection, this, "Connecting to database...", true);
+        new LoadingDialog(this.dbConnection, this, "Connecting to database...");
         this.dbConnection.updateEntry(oldT, newT);
     }
 

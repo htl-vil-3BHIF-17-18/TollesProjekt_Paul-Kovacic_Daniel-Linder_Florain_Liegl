@@ -6,11 +6,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class MyTableModel extends DefaultTableModel {
+class MyTableModel extends DefaultTableModel {
     private static final long serialVersionUID = -2412407473703651652L;
-    private String[] columnNames = {"DONE", "Category", "Subject", "Description", "From", "Until"};
-    private SimpleDateFormat f = new SimpleDateFormat("dd.MM.yyyy");
-    private ArrayList<Color> rowColours = new ArrayList<>();
+    private final String[] columnNames = {"DONE", "Category", "Subject", "Description", "From", "Until"};
+    private final SimpleDateFormat f = new SimpleDateFormat("dd.MM.yyyy");
+    private final ArrayList<Color> rowColours = new ArrayList<>();
 
     @Override
     public int getColumnCount() {
