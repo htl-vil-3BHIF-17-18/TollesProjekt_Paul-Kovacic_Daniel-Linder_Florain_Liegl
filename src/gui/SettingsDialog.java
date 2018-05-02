@@ -37,6 +37,7 @@ class SettingsDialog extends JDialog implements ActionListener {
         this.setLayout(new GridLayout(2,1));
 
         this.ckOnlyToDo = new JCheckBox("Show only tasks to do");
+        this.ckOnlyToDo.setSelected(this.settings.isOnlyTodo());
         this.btnOk = new JButton("Apply");
 
         this.add(this.ckOnlyToDo);
@@ -54,10 +55,9 @@ class SettingsDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource().equals(this.btnOk)) {
-            //this.settings.setAliasName(this.tfAliasName.getText());
             this.settings.setOnlyTodo(this.ckOnlyToDo.isSelected());
-            System.out.println(this.ckOnlyToDo.isEnabled());
-            System.out.println(this.ckOnlyToDo.isSelected());
+            this.setVisible(false);
+            this.dispose();
         }
     }
 }
