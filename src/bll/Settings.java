@@ -10,7 +10,6 @@ public class Settings implements Serializable {
         this.onlyTodo = onlyTodo;
     }
 
-
     public boolean isOnlyTodo() {
         return onlyTodo;
     }

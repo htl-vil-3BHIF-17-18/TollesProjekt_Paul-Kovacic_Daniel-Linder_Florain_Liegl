@@ -34,9 +34,7 @@ public class DatabaseConnection {
 
     public List<Task> getAllTasks() {
         List<Task> tasks = new ArrayList<>();
-//        Connection con = null;
 
-//            con = this.createConnection();
         try {
             Statement stmtSelect = this.con.createStatement();
             ResultSet rs = null;
@@ -66,9 +64,8 @@ public class DatabaseConnection {
 
     public List<Task> getUndoneTasks() {
         List<Task> tasks = new ArrayList<>();
-//        Connection con = null;
+
         try {
-//            con = this.createConnection();
             Statement stmtSelect = con.createStatement();
             ResultSet rs = null;
             try {
@@ -94,9 +91,7 @@ public class DatabaseConnection {
     }
 
     public void addEntry(Task task) {
-//        Connection con = null;
         try {
-//            con = this.createConnection();
             PreparedStatement stmtInsert = this.con.prepareStatement("INSERT INTO task (done, cat, subject, description, von, bis) VALUES (?,?,?,?,?,?)");
             stmtInsert.setString(1, task.isDone() ? "Y" : "N");
             stmtInsert.setString(2, task.getCategory().toString());
@@ -120,9 +115,7 @@ public class DatabaseConnection {
     }
 
     public void removeEntry(Task task) {
-//        Connection con = null;
         try {
-//            con = this.createConnection();
             PreparedStatement stmtDelete = this.con.prepareStatement("DELETE FROM task WHERE cat LIKE ? AND subject LIKE ? AND von = ?");
             stmtDelete.setString(1, task.getCategory().toString());
             stmtDelete.setString(2, task.getSubject().toString());
@@ -144,9 +137,7 @@ public class DatabaseConnection {
     }
 
     public void updateEntry(Task oldTask, Task newTask) {
-//        Connection con = null;
         try {
-//            con = this.createConnection();
             PreparedStatement stmtUpdate = con.prepareStatement("UPDATE task SET done = ?, cat = ?, subject = ?, description = ?, von = ?, bis = ? WHERE cat LIKE ? AND subject LIKE ? AND bis = ?");
             stmtUpdate.setString(1, newTask.isDone() ? "Y" : "N");
             stmtUpdate.setString(2, newTask.getCategory().toString());

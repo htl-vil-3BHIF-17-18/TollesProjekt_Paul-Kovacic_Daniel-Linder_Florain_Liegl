@@ -32,9 +32,7 @@ public class InBackground extends SwingWorker<Void, Void> {
         super.done();
     }
 
-    public boolean isCon() {
+    boolean isCon() {
         return con;
     }
-
-
 }

@@ -15,7 +15,6 @@ public class LoginDialog extends JDialog implements ActionListener {
     private JButton btnLogin = null;
     private JButton btnCancel = null;
     private MainFrame parent;
-    private LoadingDialog loadingDialog;
 
     LoginDialog(MainFrame owner, String title, boolean modal) {
         super(owner, title, modal);
@@ -77,7 +76,7 @@ public class LoginDialog extends JDialog implements ActionListener {
         boolean successful = false;
         DatabaseConnection db = new DatabaseConnection(this.getUsername(), this.getPassword());
 
-        this.loadingDialog = new LoadingDialog(db, this, "Connecting to database...", true);
+        LoadingDialog loadingDialog = new LoadingDialog(db, this, "Connecting to database...", true);
         try {
             if (loadingDialog.isCon()) {
                 this.parent.setDbConnection(db);
