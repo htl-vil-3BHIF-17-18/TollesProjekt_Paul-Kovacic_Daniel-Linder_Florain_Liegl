@@ -113,7 +113,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.delete = new JMenuItem("Delete");
 		this.delete.setEnabled(false);
 
-		JMenu settings = new JMenu("Settings");
+		JMenu settings = new JMenu("Advanced");
 		this.settingsItem = new JMenuItem("Settings");
 		this.filter = new JMenuItem("Filter");
 
