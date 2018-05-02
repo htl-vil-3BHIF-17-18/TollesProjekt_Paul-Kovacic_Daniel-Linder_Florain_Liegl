@@ -119,6 +119,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		this.settingsItem = new JMenuItem("Settings");
 		this.filter = new JMenuItem("Filter");
 		this.resetFilter = new JMenuItem("Reset Filter");
+		this.resetFilter.setEnabled(false);
 
 		JMenu help = new JMenu("Help");
 		this.github = new JMenuItem("Report a Bug");
@@ -195,6 +196,8 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 			this.taskTable.deleteTask();
 		} else if (e.getSource().equals(this.settingsItem)) {
 			new SettingsDialog(this, "Settings", true, this.userSettings);
+            new LoadingDialog(this.dbConnection, this, "Connecting to database...", true);
+            this.taskTable.insertValuesIntoTable(this.userSettings.isOnlyTodo() ? this.dbConnection.getUndoneTasks() : this.dbConnection.getAllTasks());
 		} else if (e.getSource().equals(this.github)) {
 			if (Desktop.isDesktopSupported()) {
 				Desktop desktop = Desktop.getDesktop();
@@ -226,6 +229,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
             this.setStatusBar("Logged in as " + (this.userSettings.getAliasName().equals("") ? this.dbConnection.getUsername()
                     : this.userSettings.getAliasName()));
 		} else if (e.getSource().equals(this.filter)) {
+			this.resetFilter.setEnabled(true);
 			 this.fd = new FilterDialog(this, "Filter Tasks", true);
 			if (fd.getFrom() != null) {
 				this.taskTable.filter(fd.getFrom(), fd.getUntil());
@@ -233,10 +237,11 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 		} else if(e.getSource().equals(this.resetFilter)) {
 			this.fd=null;
 			this.taskTable.resetFilter();
+			this.resetFilter.setEnabled(false);
 		}
 	}
 
-	public void updateCheck(Task oldT,Task newT) {
+	void updateCheck(Task oldT, Task newT) {
 		new LoadingDialog(this.dbConnection, this, "Connecting to database...", true);
 		this.dbConnection.updateEntry(oldT,newT);
 	}

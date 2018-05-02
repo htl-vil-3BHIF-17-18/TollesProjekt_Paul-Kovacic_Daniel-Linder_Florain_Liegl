@@ -13,21 +13,14 @@ import java.awt.*;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class TaskTable extends JPanel implements TableModelListener, RowSorterListener {
-
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = -3013523607123464946L;
 	private static final int BOOLEAN_COLUMN = 0;
 	private MainFrame mf;
-	private JScrollPane scrollpane = null;
-	private int width;
+    private int width;
 	private int height;
 	private JTable jTable;
 	private String separator = File.separator;
@@ -35,10 +28,8 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 	private List<Task> taskList;
 	private List<Task> removedList;
 	private List<Task> goodList;
-	private boolean showDone = false;
-	private SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
 
-	public TaskTable(Dimension d, MainFrame mf) {
+    TaskTable(Dimension d, MainFrame mf) {
 		super();
 		this.mf = mf;
 		this.width = d.width;
@@ -50,9 +41,9 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 
 	private void initializeControls() {
 		this.setLayout(new GridLayout(0, 1));
-		this.taskList = new ArrayList<Task>();
-		this.removedList = new ArrayList<Task>();
-		this.goodList = new ArrayList<Task>();
+		this.taskList = new ArrayList<>();
+		this.removedList = new ArrayList<>();
+		this.goodList = new ArrayList<>();
 		this.jTable = new JTable(new MyTableModel());
 		this.jTable.getSelectionModel().addListSelectionListener(this.mf);
 		this.jTable.getModel().addTableModelListener(this);
@@ -72,12 +63,12 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 		column0.setHeaderRenderer(renderer);
 		column0.setHeaderValue(blueLabel);
 
-		this.scrollpane = new JScrollPane(this.jTable);
+        JScrollPane scrollpane = new JScrollPane(this.jTable);
 
-		this.scrollpane.setMinimumSize(new Dimension(this.width, this.height));
-		this.scrollpane.setPreferredSize(new Dimension(this.width, this.height));
+		scrollpane.setMinimumSize(new Dimension(this.width, this.height));
+		scrollpane.setPreferredSize(new Dimension(this.width, this.height));
 
-		this.add(this.scrollpane);
+		this.add(scrollpane);
 		// set visible
 		this.setVisible(true);
 
@@ -93,40 +84,39 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 		this.jTable.getColumnModel().getColumn(5).setMinWidth(100);
 	}
 
-	public void insertValueIntoTable(Task t) {
+	void insertValueIntoTable(Task t) {
 		DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
 		this.jTable.getRowSorter().removeRowSorterListener(this);
 
-		model.addRow(new Object[] { t.isDone(), t.getCategory(), t.getSubject(), t.getDescription(), t.getFrom(),
-				t.getUntil() });
-		this.updateColor(model.getRowCount() - 1, t);
-		taskList.add(t);
+        model.addRow(new Object[]{t.isDone(), t.getCategory(), t.getSubject(), t.getDescription(), t.getFrom(),
+                t.getUntil()});
+        this.updateColor(model.getRowCount() - 1, t);
+        taskList.add(t);
+
 		this.updateAllColors();
 		this.jTable.getRowSorter().addRowSorterListener(this);
 	}
 
-	public void insertValuesIntoTable(List<Task> l) {
-		int i = 0;
-		this.jTable.getRowSorter().removeRowSorterListener(this);
+	void insertValuesIntoTable(List<Task> l) {
+        this.jTable.getRowSorter().removeRowSorterListener(this);
 		this.taskList = new ArrayList<>();
 		DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
 		model.setRowCount(0);
 
 		for (Task t : l) {
-			model.addRow(new Object[] { t.isDone(), t.getCategory(), t.getSubject(), t.getDescription(), t.getFrom(),
-					t.getUntil() });
-			this.taskList.add(t);
-			i++;
+            model.addRow(new Object[] { t.isDone(), t.getCategory(), t.getSubject(), t.getDescription(), t.getFrom(),
+                    t.getUntil() });
+            this.taskList.add(t);
 		}
 		this.updateAllColors();
 		this.jTable.getRowSorter().addRowSorterListener(this);
 	}
 
-	public Task getTask() {
+	Task getTask() {
 		return taskList.get(getSelected());
 	}
 
-	public void insertTask(Task t) {
+	void insertTask(Task t) {
 
 		int i = this.jTable.getSelectedRow();
 		this.jTable.setValueAt(t.isDone(), i, 0);
@@ -142,14 +132,14 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 
 	}
 
-	public void filter(Date from, Date until) {
+	void filter(Date from, Date until) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		if (this.removedList.size() != 0) {
 			// this.taskList = new ArrayList<Task>(this.goodList);
 			this.taskList.removeAll(this.removedList);
 			this.taskList.addAll(this.removedList);
-			this.removedList = new ArrayList<Task>();
-			this.goodList = new ArrayList<Task>();
+			this.removedList = new ArrayList<>();
+			this.goodList = new ArrayList<>();
 			// Collections.sort(this.taskList);
 		}
 		for (Task t : this.taskList) {
@@ -161,19 +151,19 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 				this.goodList.add(t);
 			}
 		}
-		this.taskList = new ArrayList<Task>(this.goodList);
+		this.taskList = new ArrayList<>(this.goodList);
 		if (this.removedList.size() == 0) {
-			this.goodList = new ArrayList<Task>();
+			this.goodList = new ArrayList<>();
 		}
 		this.insertValuesIntoTable(this.taskList);
 
 	}
 	
-	public void resetFilter() {
+	void resetFilter() {
 		this.taskList.removeAll(this.removedList);
 		this.taskList.addAll(this.removedList);
-		this.removedList = new ArrayList<Task>();
-		this.goodList = new ArrayList<Task>();
+		this.removedList = new ArrayList<>();
+		this.goodList = new ArrayList<>();
 		this.insertValuesIntoTable(this.taskList);
 	}
 
@@ -195,7 +185,7 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 	}
 
 	private void updateAllColors() {
-		int i = 0;
+		int i;
 		for (int j = 0; j < this.taskList.size(); j++) {
 			i = this.jTable.getRowSorter().convertRowIndexToModel(j);
 			// System.out.println(this.jTable.getRowCount());
@@ -203,14 +193,14 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 		}
 	}
 
-	public int getSelected() {
+	int getSelected() {
 		if (this.jTable.getSelectedRow() >= 0)
 			return this.jTable.getRowSorter().convertRowIndexToModel(this.jTable.getSelectedRow());
 		else
 			return 0;
 	}
 
-	public void deleteTask() {
+	void deleteTask() {
 		if (getSelected() >= 0) {
 			taskList.remove(getSelected());
 			DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
@@ -221,29 +211,14 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 		// doTo: delete from table
 	}
 
-	public void clearTable() {
-		DefaultTableModel dtm = (DefaultTableModel) this.jTable.getModel();
-		dtm.setRowCount(0);
-	}
-
-	public boolean isShowDone() {
-		return showDone;
-	}
-
-	public void setShowDone(boolean showDone) {
-		this.showDone = showDone;
-	}
-
 	@Override
 	public void tableChanged(TableModelEvent e) {
 		int row = e.getFirstRow();
 		int column = e.getColumn();
 
 		if (column == BOOLEAN_COLUMN) {
-			DefaultTableModel dtm = (DefaultTableModel) this.jTable.getModel();
-			TableModel model = (TableModel) e.getSource();
-			String columnName = model.getColumnName(column);
-			Boolean checked = (Boolean) model.getValueAt(row, column);
+            TableModel model = (TableModel) e.getSource();
+            Boolean checked = (Boolean) model.getValueAt(row, column);
 			Task old = this.taskList.get(row);
 			if (checked) {
 				this.taskList.get(row).setDone(true);
