@@ -95,11 +95,14 @@ public class TaskTable extends JPanel implements TableModelListener, RowSorterLi
 
 	public void insertValueIntoTable(Task t) {
 		DefaultTableModel model = (DefaultTableModel) this.jTable.getModel();
+		this.jTable.getRowSorter().removeRowSorterListener(this);
 
 		model.addRow(new Object[] { t.isDone(), t.getCategory(), t.getSubject(), t.getDescription(), t.getFrom(),
 				t.getUntil() });
 		this.updateColor(model.getRowCount() - 1, t);
 		taskList.add(t);
+		this.updateAllColors();
+		this.jTable.getRowSorter().addRowSorterListener(this);
 	}
 
 	public void insertValuesIntoTable(List<Task> l) {

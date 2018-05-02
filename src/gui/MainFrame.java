@@ -41,6 +41,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 	private Settings userSettings = null;
 
 	private JLabel statusBar = null;
+	private FilterDialog fd=null;
 
 	public MainFrame(String identifier) throws HeadlessException {
 		super(identifier);
@@ -167,6 +168,9 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
 				new LoadingDialog(this.dbConnection, this, "Connecting to database...", true);
 				this.dbConnection.addEntry(td.getTask());
 				this.taskTable.insertValueIntoTable(td.getTask());
+				if (fd.getFrom() != null) {
+					this.taskTable.filter(fd.getFrom(), fd.getUntil());
+				}
 			}
 
 		} else if (e.getSource().equals(this.exit)) {
@@ -218,7 +222,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
             this.setStatusBar("Logged in as " + (this.userSettings.getAliasName().equals("") ? this.dbConnection.getUsername()
                     : this.userSettings.getAliasName()));
 		} else if (e.getSource().equals(this.filter)) {
-			FilterDialog fd = new FilterDialog(this, "Filter Tasks", true);
+			 this.fd = new FilterDialog(this, "Filter Tasks", true);
 			if (fd.getFrom() != null) {
 				this.taskTable.filter(fd.getFrom(), fd.getUntil());
 			}
