@@ -36,7 +36,7 @@ class MyTableModel extends DefaultTableModel {
         super.setValueAt(aValue, row, column);
     }
 
-    public void setRowColour(int row, Color c) {
+    void setRowColour(int row, Color c) {
         if (rowColours.size() == row) {
             rowColours.add(c);
         } else {
@@ -47,7 +47,7 @@ class MyTableModel extends DefaultTableModel {
     }
 
 
-    public Color getRowColour(int row) {
+    Color getRowColour(int row) {
         return rowColours.get(row);
     }
 

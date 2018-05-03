@@ -125,7 +125,6 @@ class TaskTable extends JPanel implements TableModelListener, RowSorterListener 
 		this.jTable.setValueAt(t.getDescription(), i, 3);
 		this.jTable.setValueAt(t.getFrom(), i, 4);
 		this.jTable.setValueAt(t.getUntil(), i, 5);
-		System.out.println(this.taskList.get(this.getSelected()));
 		this.taskList.set(this.getSelected(), t);
 
 		this.updateAllColors();
@@ -156,7 +155,6 @@ class TaskTable extends JPanel implements TableModelListener, RowSorterListener 
 			this.goodList = new ArrayList<>();
 		}
 		this.insertValuesIntoTable(this.taskList);
-
 	}
 	
 	void resetFilter() {
@@ -207,8 +205,6 @@ class TaskTable extends JPanel implements TableModelListener, RowSorterListener 
 			model.removeRow(getSelected());
 			updateAllColors();
 		}
-
-		// doTo: delete from table
 	}
 
 	@Override
@@ -237,7 +233,6 @@ class TaskTable extends JPanel implements TableModelListener, RowSorterListener 
 
 	@Override
 	public void sorterChanged(RowSorterEvent e) {
-		// TODO Auto-generated method stub
 		if (this.jTable.getRowCount() > 0)
 			this.updateAllColors();
 	}
