@@ -9,16 +9,16 @@ class LoadingDialog extends JDialog {
     private boolean con;
     private final InBackground ib;
 
-    LoadingDialog(DatabaseConnection db, LoginDialog owner, String title) {
-        super(owner, title, true);
+    LoadingDialog(DatabaseConnection db, LoginDialog owner) {
+        super(owner, "Connecting to database...", true);
         this.ib = new InBackground(db, this);
         this.ib.execute();
 
         initializeControls();
     }
 
-    LoadingDialog(DatabaseConnection db, MainFrame owner, String title) {
-        super(owner, title, true);
+    LoadingDialog(DatabaseConnection db, MainFrame owner) {
+        super(owner, "Connecting to database...", true);
         this.ib = new InBackground(db, this);
         this.ib.execute();
 

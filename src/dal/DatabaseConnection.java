@@ -23,8 +23,8 @@ public class DatabaseConnection {
         Connection con;
 
         Class.forName("oracle.jdbc.OracleDriver");
+        DriverManager.setLoginTimeout(3);
         try {
-            DriverManager.setLoginTimeout(3);
             con = DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@192.168.128.152:1521:ora11g");
         } catch (SQLException e) {
             con = DriverManager.getConnection("jdbc:oracle:thin:" + this.username + "/" + this.password + "@212.152.179.117:1521:ora11g");

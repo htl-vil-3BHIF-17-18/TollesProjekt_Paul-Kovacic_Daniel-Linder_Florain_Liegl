@@ -166,9 +166,9 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(this.newTask)) {
-            TaskDialog td = new TaskDialog(this, "New Task");
+            TaskDialog td = new TaskDialog(this);
             if (td.getTask() != null) {
-                new LoadingDialog(this.dbConnection, this, "Connecting to database...");
+                new LoadingDialog(this.dbConnection, this);
                 this.dbConnection.addEntry(td.getTask());
                 this.taskTable.insertValueIntoTable(td.getTask());
                 if (fd != null)
@@ -179,21 +179,21 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
             System.exit(NORMAL);
         } else if (e.getSource().equals(this.edit)) {
             Task t = this.taskTable.getTask();
-            TaskDialog td = new TaskDialog(this, "New Task", this.taskTable.getTask());
+            TaskDialog td = new TaskDialog(this, this.taskTable.getTask());
 
             if (!t.equals(td.getTask())) {
-                new LoadingDialog(this.dbConnection, this, "Connecting to database...");
+                new LoadingDialog(this.dbConnection, this);
                 this.dbConnection.updateEntry(t, td.getTask());
                 this.taskTable.insertTask(td.getTask());
             }
 
         } else if (e.getSource().equals(this.delete)) {
-            new LoadingDialog(this.dbConnection, this, "Connecting to database...");
+            new LoadingDialog(this.dbConnection, this);
             this.dbConnection.removeEntry(this.taskTable.getTask());
             this.taskTable.deleteTask();
         } else if (e.getSource().equals(this.settingsItem)) {
             new SettingsDialog(this, this.userSettings);
-            new LoadingDialog(this.dbConnection, this, "Connecting to database...");
+            new LoadingDialog(this.dbConnection, this);
             this.taskTable.insertValuesIntoTable(this.userSettings.isOnlyTodo() ? this.dbConnection.getUndoneTasks() : this.dbConnection.getAllTasks());
             System.out.println(this.userSettings.isOnlyTodo());
             try {
@@ -232,7 +232,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
             this.setStatusBar("Logged in as " + this.dbConnection.getUsername());
         } else if (e.getSource().equals(this.filter)) {
             this.resetFilter.setEnabled(true);
-            this.fd = new FilterDialog(this, "Filter Tasks");
+            this.fd = new FilterDialog(this);
             if (fd.getFrom() != null) {
                 this.taskTable.filter(fd.getFrom(), fd.getUntil());
             }
@@ -244,7 +244,7 @@ public class MainFrame extends JFrame implements ActionListener, ListSelectionLi
     }
 
     void updateCheck(Task oldT, Task newT) {
-        new LoadingDialog(this.dbConnection, this, "Connecting to database...");
+        new LoadingDialog(this.dbConnection, this);
         this.dbConnection.updateEntry(oldT, newT);
     }
 

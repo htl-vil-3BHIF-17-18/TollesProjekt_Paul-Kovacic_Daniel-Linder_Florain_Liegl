@@ -76,7 +76,7 @@ class LoginDialog extends JDialog implements ActionListener {
         boolean successful = false;
         DatabaseConnection db = new DatabaseConnection(this.getUsername(), this.getPassword());
 
-        LoadingDialog loadingDialog = new LoadingDialog(db, this, "Connecting to database...");
+        LoadingDialog loadingDialog = new LoadingDialog(db, this);
         try {
             if (loadingDialog.isCon()) {
                 this.parent.setDbConnection(db);

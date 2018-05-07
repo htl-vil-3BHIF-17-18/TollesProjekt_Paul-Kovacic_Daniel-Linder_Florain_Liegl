@@ -30,16 +30,16 @@ class TaskDialog extends JDialog implements ActionListener {
     private UtilDateModel modelFrom;
     private UtilDateModel modelTo;
 
-    TaskDialog(Frame owner, String title) {
-        super(owner, title, true);
+    TaskDialog(Frame owner) {
+        super(owner, "New Task", true);
         this.initializeControls();
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
-    TaskDialog(Frame owner, String title, Task task) {
-        super(owner, title, true);
+    TaskDialog(Frame owner, Task task) {
+        super(owner, "New Task", true);
         this.task = task;
 
         this.initializeControls();

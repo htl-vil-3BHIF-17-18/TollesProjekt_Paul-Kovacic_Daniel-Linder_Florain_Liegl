@@ -23,8 +23,8 @@ class FilterDialog extends JDialog implements ActionListener {
     private Date from = null;
 	private Date until = null;
 
-	FilterDialog(Frame owner, String title) {
-		super(owner, title, true);
+	FilterDialog(Frame owner) {
+		super(owner, "Filter Tasks", true);
 		this.initializeControls();
 		this.setResizable(false);
 		this.pack();
